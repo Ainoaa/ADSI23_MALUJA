@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset=utf-8 />
+  	<title>ERRESEINA</title>
+    <link rel="stylesheet" href="css/BiZutabe.css">
+  </head>
+  <body>
+    <td>Library:</td>
+  	<div id="contenedor">
+      <div id="sidebar">  
+        <p>Barra lateral.</p>
+         <img class="image" src="irudiak/1.jpeg" alt="Liburuaren azala">
+      </div>
+      <div id="principal">
+        <p>Contenido principal.</p>
+        <table>
+          <tr>
+            BALORAZIOA:		<!- BALORAZIOA laukia ipintzea !>
+            <td> <select name="balorazioa" id="balorazioa">
+              <option value="0Izar">0</option>
+              <option value="1Izar">1</option>
+              <option value="2Izar">2</option>
+              <option value="3Izar">3</option>
+              <option value="4Izar">4</option>
+              <option value="5Izar">5</option>
+          	</select></td>
+          </tr>
+          <tr>
+          	<td>Zure iruzkinak hemen ipini:</td>		<!- IRUZKINA laukia ipintzea !>
+          </tr>
+           <tr>
+          	 <td><textarea name="comentarios" rows="10" cols="50" maxlength="200" placeholder="200 karaktere maximo idatzi ahal dira"></textarea></td>
+          </tr>
+      	</table>
+      	 <div align="center">
+      		<td><a href="index.html"><input type="button" name="ATZERA" value="ATZERA" class="button"></a></td>
+      		<td><a href="index.html"><input type="button" name="GORDE" value="GORDE" class="button"></a></td>
+      </div>
+     </div>
+  	</div>
+  </body>
+</html>
+
+
+{% endblock %}	
