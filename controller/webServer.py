@@ -1,10 +1,12 @@
 from .LibraryController import LibraryController
+from .ErreseinaController import ErreseinaController
 from flask import Flask, render_template, request, make_response, redirect
 
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 
 
 library = LibraryController()
+erreseinak = ErreseinaController()
 
 
 @app.before_request
@@ -73,3 +75,39 @@ def logout():
 		request.user.delete_session(request.user.token)
 		request.user = None
 	return resp
+	
+
+def jadaMailegatuZuen(eraId, libId):
+	if library.jadaMailegatuZuen(eraId, libId):
+		return render_template('erreseina.html', eraId=eraId, libId=libId, data="", nota="", iruzkina="")
+	else:
+		return None
+		
+		
+def erreseinaSortu(eraId, libId, data, nota, iruzkina):
+	if library.jadaMailegatuZuen(eraId, libId):
+		erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
+		return render_template('erreseina.html', eraId=eraId, libId=libId)	# return al .py del mailegatu
+	else:
+		return None
+		
+
+def jadaErreseinaZuen(eraId, libId):
+	if library.jadaMailegatuZuen(eraId, libId):
+		if erreseinak.jadaErreseinaZuen(eraId, libId):
+			#Conseguir datos de la erreseina
+			return render_template('erreseina.html', eraId=eraId, libId=libId, data=data, nota=nota, iruzkina=iruzkina)
+		else:
+			return None
+	else:
+		return None
+		
+def erreseinaEditatu(eraId, libId, data, nota, iruzkina):
+	if library.jadaMailegatuZuen(eraId, libId):
+		if erreseinak.jadaErreseinaZuen(eraId, libId):
+			erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina)
+			return render_template('erreseina.html', eraId=eraId, libId=libId)	# return al .py del mailegatu
+		else:
+			return None
+	else:
+			return None

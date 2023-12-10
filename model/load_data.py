@@ -46,6 +46,18 @@ cur.execute("""
 	)
 """)
 
+cur.execute("""
+	CREATE TABLE Erreseina(
+		eraId integer primary key,
+		libId integer primary key,
+		data Date,
+		Nota integer,
+		Iruzkina varchar(200),
+		FOREIGN KEY(eraId) REFERENCES User(id),
+		FOREIGN KEY(libId) REFERENCES Book(id)
+	)
+""")
+
 ### Insert users
 
 with open('usuarios.json', 'r') as f:

@@ -37,8 +37,12 @@
           </tr>
       	</table>
       	 <div align="center">
-      		<td><a href="index.html"><input type="button" name="ATZERA" value="ATZERA" class="button"></a></td>
-      		<td><a href="index.html"><input type="button" name="GORDE" value="GORDE" class="button"></a></td>
+      		<td><a href="mailegu.html"><input type="button" name="ATZERA" value="ATZERA" class="button"></a></td>
+      		{% if nota == "" %}
+      		    <td><a href="index.html"><input type="button" name="SORTU" value="SORTU" class="button"></a></td>
+      		{% else %}
+      		    <td><a href="index.html"><input type="button" name="GORDE" value="GORDE" class="button"></a></td>
+      		{% endif %}
       </div>
      </div>
   	</div>
