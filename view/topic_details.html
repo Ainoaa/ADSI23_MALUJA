@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-5 my-5 border">
+
+    <div class="forum">
+        <h2>Detalles del Tema</h2>
+
+        <h3>{{ topic.title }}</h3>
+        <p>{{ topic.message }}</p>
+
+    </div>
+
+</div>
+{% endblock %}

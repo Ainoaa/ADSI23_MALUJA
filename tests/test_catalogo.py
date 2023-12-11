@@ -1,4 +1,4 @@
-from . import BaseTestClass
+	from . import BaseTestClass
 from bs4 import BeautifulSoup
 
 class TestCatalogo(BaseTestClass):

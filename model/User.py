@@ -40,6 +40,7 @@ class User:
 	def delete_session(self, session_hash):
 		db.delete("DELETE FROM Session WHERE session_hash = ? AND user_id = ?", (session_hash, self.id))
 	
+	"""
 	def get_books_read(self):
         # Obtener la lista de libros leídos por el usuario desde la base de datos
         books_read = db.select("SELECT book_id FROM UserBooks WHERE user_id = ?", (self.id,))
@@ -48,4 +49,5 @@ class User:
     	def get_book_topics(self, book_id):
         # Obtener los temas del libro desde la base de datos
         topics = db.select("SELECT topic FROM BookTopics WHERE book_id = ?", (book_id,))
-        return [topic[0] for topic in topics]
+        #return [topic[0] for topic in topics]
+	"""

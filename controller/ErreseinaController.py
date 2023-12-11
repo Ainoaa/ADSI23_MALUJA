@@ -24,6 +24,7 @@ class ErreseinaController:
 		else:
 			return False
 			
+	"""
 	def erreseinaEditatudef(self, eraId, libId, data, nota, iruzkina):
 		db.update("UPDATE ERRESEINA SET data = ?, nota = ?, iruzkina = ? WHERE eraId = ? AND libId = ?", (data, nota, iruzkina, eraId, libId))
 		erreseina = next((item for item in self.lista if item.geteraId() == eraId and item.getlibId() == libId), None)
@@ -31,5 +32,6 @@ class ErreseinaController:
 			erreseina.erreseinaEditatu(eraId, libId, data, nota, iruzkina)
 		else:
 			print("Ez da erreseina aurkitu")
-			
+	"""
+
 			

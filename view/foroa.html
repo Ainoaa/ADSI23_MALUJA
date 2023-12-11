@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-5 my-5 border">
+
+    <div class="forum">
+        <h2>Foro</h2>
+
+        <!-- Formulario para agregar un nuevo tema (solo visible si el usuario está autenticado) -->
+        {% if 'user' in request.__dict__ and request.user and request.user.token %}
+            <div class="new-topic">
+                <h3>Nuevo Tema</h3>
+            <form action="/create_topic" method="POST">
+    <div class="form-group">
+        <label for="title">Título del Tema:</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="form-group">
+        <label for="content">Mensaje:</label>
+        <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear Tema</button>
+</form>
+
+            </div>
+        {% else %}
+            <div class="login-alert">
+                <p>Debes iniciar sesión para crear un nuevo tema en el foro.</p>
+                <a href="/login" class="btn btn-primary">Iniciar Sesión</a>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}
