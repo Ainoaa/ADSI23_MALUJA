@@ -76,23 +76,32 @@ def logout():
 		request.user = None
 	return resp
 	
-
-def jadaMailegatuZuen(eraId, libId):
+@app.route('/erreseina_idatzi')
+def jadaMailegatuZuen():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
 	if library.jadaMailegatuZuen(eraId, libId):
 		return render_template('erreseina.html', eraId=eraId, libId=libId, data="", nota="", iruzkina="")
 	else:
 		return None
 		
-		
-def erreseinaSortu(eraId, libId, data, nota, iruzkina):
+@app.route('/mailegatu')	
+def erreseinaSortu():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	data = request.values.get("data")
+	nota = request.values.get("nota")
+	iruzkina = request.values.get("iruzkina")
 	if library.jadaMailegatuZuen(eraId, libId):
 		erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-		return render_template('erreseina.html', eraId=eraId, libId=libId)	# return al .py del mailegatu
+		return render_template('mailegatu.html', eraId=eraId, libId=libId)
 	else:
 		return None
 		
-
-def jadaErreseinaZuen(eraId, libId):
+@app.route('/erreseina_idatzi')
+def jadaErreseinaZuen():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
 	if library.jadaMailegatuZuen(eraId, libId):
 		if erreseinak.jadaErreseinaZuen(eraId, libId):
 			#Conseguir datos de la erreseina
@@ -101,13 +110,31 @@ def jadaErreseinaZuen(eraId, libId):
 			return None
 	else:
 		return None
-		
-def erreseinaEditatu(eraId, libId, data, nota, iruzkina):
+
+@app.route('/mailegatu')		
+def erreseinaEditatu():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	data = request.values.get("data")
+	nota = request.values.get("nota")
+	iruzkina = request.values.get("iruzkina")
 	if library.jadaMailegatuZuen(eraId, libId):
 		if erreseinak.jadaErreseinaZuen(eraId, libId):
 			erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina)
-			return render_template('erreseina.html', eraId=eraId, libId=libId)	# return al .py del mailegatu
+			return render_template('mailegatu.html', eraId=eraId, libId=libId)
 		else:
 			return None
 	else:
 			return None
+			
+			
+
+@app.route('/liburuko_erreseina_katalogoa')
+def catalogue():
+	eraId = request.values.get("eraId")
+	libId = request.values.get("libId")
+	page = int(request.values.get("page", 1))
+	erreseinak, nb_erreseinak = erreseinak.search_erreseinak(eraId=eraId, libId=libId, page=page - 1)
+	total_pages = (nb_books // 6) + 1
+	return render_template('libErreseinaKatalogo.html', erreseinak=erreseinak, eraId=eraId, libId=libId, current_page=page,
+	                       total_pages=total_pages, max=max, min=min)
