@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, make_response, redirect
 
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 
+
 library = LibraryController()
 erreseinak = ErreseinaController()
 forum_controller = ForumController()
@@ -131,8 +132,10 @@ def erreseinaEditatu():
 			return None
 	else:
 			return None
+			
+			
 
-"""@app.route('/liburuko_erreseina_katalogoa')
+@app.route('/liburuko_erreseina_katalogoa')
 def catalogue():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
@@ -141,20 +144,3 @@ def catalogue():
 	total_pages = (nb_books // 6) + 1
 	return render_template('libErreseinaKatalogo.html', erreseinak=erreseinak, eraId=eraId, libId=libId, current_page=page,
 	                       total_pages=total_pages, max=max, min=min)
-"""
-
-
-@app.route('/create_topic', methods=['GET', 'POST'])
-def create_topic():
-    if request.method == 'POST':
-        # Aquí deberías procesar los datos del formulario y crear el tema en la base de datos
-        user_id = 1  # Reemplaza con la lógica real para obtener el ID del usuario
-        title = request.form.get('title')
-        content = request.form.get('content')  # Agregamos la variable 'content'
-
-        forum_controller.create_forum_topic(user_id, title, content)  # Ajusta esto según tu lógica real
-
-        # Después de crear el tema, redirige a la página de lista de temas o donde sea apropiado
-        return redirect(url_for('list_topics'))
-
-    return render_template('create_topic.html')
