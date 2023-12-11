@@ -33,7 +33,8 @@ cur.execute("""
 		id integer primary key AUTOINCREMENT,
 		name varchar(20),
 		email varchar(30),
-		password varchar(32)
+		password varchar(32),
+		admin boolean
 	)
 """)
 
@@ -48,11 +49,12 @@ cur.execute("""
 
 cur.execute("""
 	CREATE TABLE Erreseina(
-		eraId integer primary key,
-		libId integer primary key,
+		eraId integer,
+		libId integer,
 		data Date,
 		Nota integer,
 		Iruzkina varchar(200),
+		PRIMARY KEY (eraId, libId, data)
 		FOREIGN KEY(eraId) REFERENCES User(id),
 		FOREIGN KEY(libId) REFERENCES Book(id)
 	)
@@ -67,7 +69,7 @@ for user in usuarios:
 	dataBase_password = user['password'] + salt
 	hashed = hashlib.md5(dataBase_password.encode())
 	dataBase_password = hashed.hexdigest()
-	cur.execute(f"""INSERT INTO User VALUES (NULL, '{user['nombres']}', '{user['email']}', '{dataBase_password}')""")
+	cur.execute(f"""INSERT INTO User VALUES (NULL, '{user['nombres']}', '{user['email']}', '{dataBase_password}', {user['admin']})""")
 	con.commit()
 
 

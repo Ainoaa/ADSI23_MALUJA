@@ -130,7 +130,7 @@ def erreseinaEditatu():
 			
 
 @app.route('/liburuko_erreseina_katalogoa')
-def catalogue():
+def liburuko_erreseina_katalogoa():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
 	page = int(request.values.get("page", 1))
