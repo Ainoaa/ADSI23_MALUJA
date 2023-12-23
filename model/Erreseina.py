@@ -21,7 +21,7 @@ class Erreseina:
 		self.nota = nota
 		self.iruzkin = iruzkin
 		
-	def geteraId():
+	def getEraId():
 		return self.eraId
 		
 	def getlibId():
