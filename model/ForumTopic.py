@@ -2,11 +2,12 @@ from model import Connection
 
 db = Connection()
 
+
 class ForumTopic:
-    def __init__(self, id, title, user_id):
-        self.id = id
-        self.title = title
+    def __init__(self, user_id, title, content):
         self.user_id = user_id
+        self.title = title
+        self.content = content
 
     def __str__(self):
         return f"Topic ID: {self.id}, Title: {self.title}, User ID: {self.user_id}"

@@ -1,7 +1,8 @@
-from .LibraryController import LibraryController
-from .ErreseinaController import ErreseinaController
-from .ForumController import ForumController
-from flask import Flask, render_template, request, make_response, redirect
+from controller.LibraryController import LibraryController
+from controller.ErreseinaController import ErreseinaController
+from controller.ForumController import ForumController
+from flask import Flask, render_template, request, make_response, redirect, url_for
+
 
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 
@@ -134,7 +135,7 @@ def erreseinaEditatu():
 			return None
 			
 			
-
+"""
 @app.route('/liburuko_erreseina_katalogoa')
 def catalogue():
 	eraId = request.values.get("eraId")
@@ -144,3 +145,23 @@ def catalogue():
 	total_pages = (nb_books // 6) + 1
 	return render_template('libErreseinaKatalogo.html', erreseinak=erreseinak, eraId=eraId, libId=libId, current_page=page,
 	                       total_pages=total_pages, max=max, min=min)
+
+"""
+@app.route('/create_topic', methods=['GET', 'POST'])
+def create_topic():
+    if request.method == 'POST':
+        user_id = request.user.id
+        title = request.form.get('title')
+        content = request.form.get('content')
+        forum_controller.create_forum_topic(user_id, title, content)
+        return redirect(url_for('list_topics'))
+
+    return render_template('create_topic.html')
+
+
+@app.route('/list_topics')
+def list_topics():
+    # Lógica para obtener y mostrar la lista de temas del foro
+    topics = forum_controller.get_forum_topics()
+    return render_template('foroa.html', topics=topics)
+

@@ -1,4 +1,3 @@
-# forum_controller.py
 from model import Connection, ForumTopic, ForumPost
 
 db = Connection()
@@ -14,15 +13,24 @@ class ForumController:
 
     def get_forum_topics(self):
         # Lógica para obtener temas del foro desde la base de datos
-        pass
+        topics = []  # Agrega la lógica para recuperar temas
+        print("Forum Topics:", topics)
+        return topics
 
     def get_forum_topic_by_id(self, topic_id):
         # Lógica para obtener un tema específico del foro por su ID desde la base de datos
         pass
 
     def create_forum_topic(self, user_id, title, content):
-        # Lógica para crear un nuevo tema en el foro y guardarlo en la base de datos
-        pass
+        try:
+            new_topic = ForumTopic(user_id=user_id, title=title, content=content)
+            db.session.add(new_topic)
+            db.session.commit()
+            print("Result of topic creation:", new_topic)
+            return new_topic
+        except Exception as e:
+            print("Error creating forum topic:", str(e))
+            return None
 
     def get_forum_posts_for_topic(self, topic_id):
         # Lógica para obtener mensajes relacionados con un tema específico desde la base de datos

@@ -1,6 +1,8 @@
 import hashlib
 import sqlite3
 import json
+from model import Connection
+
 
 salt = "library"
 
@@ -60,6 +62,17 @@ cur.execute("""
 	)
 """)
 
+cur.execute("""
+    CREATE TABLE ForumTopic(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        title VARCHAR(255),
+        content TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(user_id) REFERENCES User(id)
+    )
+""")
+
 ### Insert users
 
 with open('usuarios.json', 'r') as f:
@@ -89,6 +102,3 @@ for author, title, cover, description in libros:
 		            (title, author_id, cover, description.strip()))
 
 	con.commit()
-
-
-

@@ -22,14 +22,15 @@ class Connection:
 		rows = self.cur.fetchall()
 		return [x for x in rows]
 
-	def insert(self, sentence, parameters=None):
-		if parameters:
-			self.cur.execute(sentence, parameters)
-		else:
-			self.cur.execute(sentence)
-		self.con.commit()
-		answ = self.cur.rowcount
-		return answ
+	def insert(self, query, parameters):
+		try:
+			self.cur.execute(query, parameters)
+			self.con.commit()
+			return True
+		except Exception as e:
+			print(f"Error executing query: {e}")
+			self.con.rollback()
+			return False
 
 	def update(self, sentence, parameters=None):
 		if parameters:
@@ -46,3 +47,7 @@ class Connection:
 		answ = self.cur.rowcount
 		self.con.commit()
 		return answ
+
+
+def commit(self):
+        self.con.commit()

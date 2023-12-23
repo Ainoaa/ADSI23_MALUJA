@@ -13,12 +13,13 @@ class Session:
 		return f"{self.hash} ({self.time})"
 
 class User:
-	def __init__(self, id, username, email):
+	def __init__(self, id, username, email,password):
 		self.id = id
 		self.username = username
 		self.email = email
-		print(admin, type(admin))
-		self.admin = admin
+		#print(admin, type(admin))
+		#self.admin = admin
+		self.password = password
 
 	def __str__(self):
 		return f"{self.username} ({self.email})"
@@ -51,4 +52,3 @@ class User:
 		# Obtener los temas del libro desde la base de datos
 		topics = db.select("SELECT topic FROM BookTopics WHERE book_id = ?", (book_id,))
 		#return [topic[0] for topic in topics]
-	"""
