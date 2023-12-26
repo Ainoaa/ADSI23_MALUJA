@@ -138,3 +138,13 @@ def liburuko_erreseina_katalogoa():
 	total_pages = (nb_books // 6) + 1
 	return render_template('libErreseinaKatalogo.html', erreseinak=erreseinak, eraId=eraId, libId=libId, current_page=page,
 	                       total_pages=total_pages, max=max, min=min)
+
+
+
+@app.route('/admin')      
+def admin():
+	return render_template('admin.html')
+	
+
+#Hola
+	                
