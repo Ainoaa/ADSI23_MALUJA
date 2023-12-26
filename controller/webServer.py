@@ -146,5 +146,28 @@ def admin():
 	return render_template('admin.html')
 	
 
-#Hola
+@app.route('/liburuaGehitu')      
+def liburuaGehitu():
+	return render_template('liburuaGehitu.html')
+	                
+	                
+	                
+@app.route('/liburuaEzabatu')      
+def liburuaEzabatu():
+	return render_template('liburuaEzabatu.html')
+	
+#@app.route('/liburuaGehitu')      
+#def erabiltzaileaGehitu():
+	#return render_template('liburuaGehitu.html')	                
+@app.route('/erabiltzaileaEzabatu')      
+def erabiltzaileaEzabatu():
+	return render_template('erabiltzaileaEzabatu.html')	                	                
+	                
+	                
+	                
+	                
+	                
+	                
+	                
+	                
 	                
