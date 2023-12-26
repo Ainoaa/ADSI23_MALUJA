@@ -156,9 +156,9 @@ def liburuaGehitu():
 def liburuaEzabatu():
 	return render_template('liburuaEzabatu.html')
 	
-#@app.route('/liburuaGehitu')      
-#def erabiltzaileaGehitu():
-	#return render_template('liburuaGehitu.html')	                
+@app.route('/erabiltzaileaGehitu')      
+def erabiltzaileaGehitu():
+	return render_template('erabiltzaileaGehitu.html')	                
 @app.route('/erabiltzaileaEzabatu')      
 def erabiltzaileaEzabatu():
 	return render_template('erabiltzaileaEzabatu.html')	                	                
