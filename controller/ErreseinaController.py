@@ -10,26 +10,37 @@ class ErreseinaController:
 		if cls.__instance is None:
 			cls.__instance = super(ErreseinaController, cls).__new__(cls)
 			cls.__instance.__initialized = False
+			cls.__instance.lista = []
 		return cls.__instance
 
-	def erreseinaSortu(self, eraId, libId, data, nota, iruzkina):
-		db.insert("INSERT INTO ERRESEINA VALUES(?, ?, ?, ?, ?)", (eraId, libId, data, nota, iruzkina))
-		erreseina = Erreseina(eraId, libId, data, nota, iruzkina);
+	def gehituErreseina(self, erreseina):
 		self.lista.append(erreseina)
 		
-	def jadaErreseinaZuen(self, eraId, libId):
-		emaitza = db.select("SELECT * FROM ERRESEINA WHERE eraID = ? AND libId = ?", (eraId, libId))
-		if emaitza:
+		
+	def erreseinaSortu(self, eraId, libId, data, nota, iruzkina):
+		db.insert("INSERT INTO ERRESEINA VALUES(?, ?, ?, ?, ?)", (eraId, libId, data, nota, iruzkina))
+		erreseina = Erreseina(eraId, libId, data, nota, iruzkina)
+		gehituErreseina(erreseina)
+		
+		
+	def jadaErreseinaZuen(self, eraId, libId, data):
+		emaitza = db.select("SELECT count(*) FROM ERRESEINA WHERE eraID = ? AND libId = ? AND data = ?", (eraId, libId, data))
+		if emaitza >=1:
 			return True
 		else:
 			return False
 			
-	def erreseinaEditatudef(self, eraId, libId, data, nota, iruzkina):
-		db.update("UPDATE ERRESEINA SET data = ?, nota = ?, iruzkina = ? WHERE eraId = ? AND libId = ?", (data, nota, iruzkina, eraId, libId))
-		erreseina = next((item for item in self.lista if item.geteraId() == eraId and item.getlibId() == libId), None)
+	def erreseinaEditatu(self, eraId, libId, lehenData, nota, iruzkina, orainData):
+		db.update("UPDATE ERRESEINA SET data = ?, nota = ?, iruzkina = ? WHERE eraId = ? AND libId = ? AND data = ?", (orainData, nota, iruzkina, eraId, libId, lehenData))
+		erreseina = bilatuErreseina(eraId, libId, lehenData)
 		if erreseina:
-			erreseina.erreseinaEditatu(eraId, libId, data, nota, iruzkina)
+			erreseina.erreseinaEditatu(orainData, nota, iruzkina)
 		else:
 			print("Ez da erreseina aurkitu")
+			
+			
+	def bilatuErreseina(self, eraId, libId, lehenData):
+		erreseina = next((item for item in self.lista if item.getEraId() == eraId and item.getLibId() == libId and item.getData() == lehenData), None)
+		return erreseina
 			
 			
