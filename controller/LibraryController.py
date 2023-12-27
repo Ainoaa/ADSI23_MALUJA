@@ -57,11 +57,9 @@ class LibraryController:
 			return False
 			
 	def liburua_gehitu(self, libId, titulua, autorea, azala, deskribapena):
-		libId = request.values.get("libId")
-		izenburua = request.values.get("izenburua")
-		autorea = request.values.get("autorea")
-		azala = request.values.get("azala")
-		deskribapena = request.values.get("deskribapena")
+		db.insert("INSERT INTO AUTHOR VALUES (?)", (autorea))
+	#	autoreaa = db.select("SELECT id FROM AUTHOR WHERE name = ?", (autorea))
+	#	db.insert("INSERT INTO BOOK VALUES (?, ?, ?, ?, ?)", (libId, titulua, autorea, azala, deskribapena))
 
 		
 		

@@ -2,9 +2,9 @@ from .LibraryController import LibraryController
 from .ErreseinaController import ErreseinaController
 from .ErabiltzaileController import ErabiltzaileController
 from flask import Flask, render_template, request, make_response, redirect
-
+from model import Connection
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
-
+db = Connection()
 
 library = LibraryController()
 erreseinak = ErreseinaController()
@@ -152,15 +152,17 @@ def admin():
 
 @app.route('/liburuaGehitu')      
 def liburuaGehitu():
-	libId = request.values.get('id')
-	izenburua = request.values.get('titulo')
-	autorea = request.values.get('autor')
-	azala = request.values.get("azala")
-	deskribapena = request.values.get('cover')
-	if library.liburuaGehitutaZegoen(libId):
-		return render_template('liburuaGehitutaZegoen.html', libId=libId)
-	else:
-		return render_template('liburuaGehitu.html', libId=libId, izenburua=izenburua, autorea=autorea, azala=azala, deskribapena=deskribapena)
+	liburu_id = request.values.get("id")
+	titulua = request.values.get("titulo")
+	autorea = request.values.get("autor")
+	azala = request.values.get("cover")
+	deskribapena = request.values.get("descripcion")
+	print(liburu_id)
+	#if library.liburuaGehitutaZegoen(liburu_id):
+	#return render_template('liburuaGehitutaZegoen.html', liburu_id=liburu_id)
+#	else:
+	#library.liburua_gehitu(liburu_id, titulua, autorea, azala, deskribapena)
+	return render_template('liburuaGehitu.html', liburu_id=liburu_id, titulua=titulua, autorea=autorea, azala=azala, deskribapena=deskribapena)
 	
 	                
 	                
@@ -175,7 +177,13 @@ def liburuaEzabatu():
 	
 @app.route('/erabiltzaileaGehitu')      
 def erabiltzaileaGehitu():
-	return render_template('erabiltzaileaGehitu.html')	                
+	name = request.form.get('name')
+	email = request.form.get('email')
+	password = request.form.get('password')
+	admin = request.form.get('admin')
+	db.insert("INSERT INTO USER (name, email, password, admin) VALUES (?, ?, ?, ?)",(name, email, password, admin))
+	return render_template('erabiltzaileaGehitu.html')
+    	                
 @app.route('/erabiltzaileaEzabatu')      
 def erabiltzaileaEzabatu():
 	return render_template('erabiltzaileaEzabatu.html')	                	                

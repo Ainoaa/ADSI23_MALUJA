@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Erabiltzailea Ezabatu</title>
+  <title>Erabiltzailea Gehitu</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -55,18 +55,21 @@
   </style>
 </head>
 <body>
-  <h1>Erabiltzailea Ezabatu</h1>
-  <form action="/añadir_usuario" method="post">
+  <h1>Erabiltzailea Gehitu</h1>
+  <form action="/erabiltzaileaGehitu" method="post">
 
-    <label for="nan">Nan-a:</label>
-    <input type="text" id="nan" name="nan"required></br>
 
-    <label for="izena">Izena:</label>
-    <input type="izena" id="izena" name="izena"required></br>
+    <label for="name">Izena:</label>
+    <input type="text" id="name" name="name"required></br>
 
-    <label for="abizena">abizena:</label>
-    <input type="abizena" id="abizena" name="abziena"required></br>
+    <label for="email">Emaila:</label>
+    <input type="text" id="email" name="email"required></br>
 
+    <label for="password">Pasahitza:</label>
+    <input type="text" id="password" name="password"required></br>
+
+    <label for="admin">Administratzailea (True/False):</label>
+    <input type="text" id="admin" name="admin"required></br>
 
     <button type="submit">Ezabatu</button>
   </form>
