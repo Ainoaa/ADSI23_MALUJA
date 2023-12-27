@@ -15,4 +15,20 @@ class ErreserbatutakoLiburuakController:
 
 
 	def erreserbatu_liburua(self, izzena, idazlea, data):
+	
+	
+	
+	
+	
+	def jadaMailegatuZuen(self, eraId, libId):
+		zenbakia = db.select("""
+				SELECT count() 
+				FROM Mailegatu M
+				WHERE M.eraId= ?
+					AND M.libId= ?
+		""", (f"%{eraId}%", f"%{libId}%"))[0][0]
+		if zenbakia >=1:
+			return True
+		else:
+			return False
 

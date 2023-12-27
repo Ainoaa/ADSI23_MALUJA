@@ -1,12 +1,14 @@
 from .LibraryController import LibraryController
 from .ErreseinaController import ErreseinaController
 from flask import Flask, render_template, request, make_response, redirect
+import datetime
 
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 
 
 library = LibraryController()
 erreseinak = ErreseinaController()
+#erreserbatuak = ErreserbatutakoLiburuakController()
 
 
 @app.before_request
@@ -80,8 +82,10 @@ def logout():
 def jadaMailegatuZuen():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
-	if library.jadaMailegatuZuen(eraId, libId):
-		return render_template('erreseina.html', eraId=eraId, libId=libId, data="", nota="", iruzkina="")
+	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
+		dataOrain = datetime.datetime.now()
+		dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
+		return render_template('erreseina.html', eraId = eraId, libId = libId, data = dataFormatua, nota = None, iruzkina = None)
 	else:
 		return None
 		
@@ -92,19 +96,19 @@ def erreseinaSortu():
 	data = request.values.get("data")
 	nota = request.values.get("nota")
 	iruzkina = request.values.get("iruzkina")
-	if library.jadaMailegatuZuen(eraId, libId):
+	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
 		erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-		return render_template('mailegatu.html', eraId=eraId, libId=libId)
-	else:
-		return None
+	return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
 		
 @app.route('/erreseina_idatzi')
 def jadaErreseinaZuen():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
-	if library.jadaMailegatuZuen(eraId, libId):
+	data = request.values.get("data")
+	nota = request.values.get("nota")
+	iruzkina = request.values.get("iruzkina")
+	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
 		if erreseinak.jadaErreseinaZuen(eraId, libId):
-			#Conseguir datos de la erreseina
 			return render_template('erreseina.html', eraId=eraId, libId=libId, data=data, nota=nota, iruzkina=iruzkina)
 		else:
 			return None
@@ -118,14 +122,11 @@ def erreseinaEditatu():
 	data = request.values.get("data")
 	nota = request.values.get("nota")
 	iruzkina = request.values.get("iruzkina")
-	if library.jadaMailegatuZuen(eraId, libId):
+	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
 		if erreseinak.jadaErreseinaZuen(eraId, libId):
 			erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina)
-			return render_template('mailegatu.html', eraId=eraId, libId=libId)
-		else:
-			return None
-	else:
-			return None
+	return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+		
 			
 			
 
