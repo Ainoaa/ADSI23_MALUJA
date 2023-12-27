@@ -9,7 +9,4 @@ class ErabiltzaileController:
 		if cls.__instance is None:
 			cls.__instance = super(ErabiltzaileController, cls).__new__(cls)
 			cls.__instance.__initialized = False
-		return cls.__instance
-
-	def ezabatu_erabiltzailea(izena, abizenak, nan):
-		
+		return cls.__instance	

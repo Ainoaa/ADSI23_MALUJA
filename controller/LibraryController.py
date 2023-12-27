@@ -48,3 +48,46 @@ class LibraryController:
 			return User(user[0][0], user[0][1], user[0][2], user[0][4])
 		else:
 			return None
+			
+	def liburuaGehitutaZegoen(self, libId):
+		emaitza = db.select("SELECT * FROM BOOK WHERE id = ?", (libId,))
+		if emaitza:
+			return True
+		else:
+			return False
+			
+	def liburua_gehitu(self, libId, titulua, autorea, azala, deskribapena):
+		libId = request.values.get("libId")
+		izenburua = request.values.get("izenburua")
+		autorea = request.values.get("autorea")
+		azala = request.values.get("azala")
+		deskribapena = request.values.get("deskribapena")
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

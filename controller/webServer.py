@@ -1,15 +1,14 @@
 from .LibraryController import LibraryController
 from .ErreseinaController import ErreseinaController
+from .ErabiltzaileController import ErabiltzaileController
 from flask import Flask, render_template, request, make_response, redirect
-import datetime
 
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 
 
 library = LibraryController()
 erreseinak = ErreseinaController()
-#erreserbatuak = ErreserbatutakoLiburuakController()
-
+erabiltzaileak = ErabiltzaileController()
 
 @app.before_request
 def get_logged_user():
@@ -82,10 +81,8 @@ def logout():
 def jadaMailegatuZuen():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
-	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
-		dataOrain = datetime.datetime.now()
-		dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
-		return render_template('erreseina.html', eraId = eraId, libId = libId, data = dataFormatua, nota = None, iruzkina = None)
+	if library.jadaMailegatuZuen(eraId, libId):
+		return render_template('erreseina.html', eraId=eraId, libId=libId, data="", nota="", iruzkina="")
 	else:
 		return None
 		
@@ -96,19 +93,19 @@ def erreseinaSortu():
 	data = request.values.get("data")
 	nota = request.values.get("nota")
 	iruzkina = request.values.get("iruzkina")
-	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
+	if library.jadaMailegatuZuen(eraId, libId):
 		erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-	return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+		return render_template('mailegatu.html', eraId=eraId, libId=libId)
+	else:
+		return None
 		
 @app.route('/erreseina_idatzi')
 def jadaErreseinaZuen():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
-	data = request.values.get("data")
-	nota = request.values.get("nota")
-	iruzkina = request.values.get("iruzkina")
-	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
+	if library.jadaMailegatuZuen(eraId, libId):
 		if erreseinak.jadaErreseinaZuen(eraId, libId):
+			#Conseguir datos de la erreseina
 			return render_template('erreseina.html', eraId=eraId, libId=libId, data=data, nota=nota, iruzkina=iruzkina)
 		else:
 			return None
@@ -122,13 +119,14 @@ def erreseinaEditatu():
 	data = request.values.get("data")
 	nota = request.values.get("nota")
 	iruzkina = request.values.get("iruzkina")
-	if erreserbatuak.jadaMailegatuZuen(eraId, libId):
+	if library.jadaMailegatuZuen(eraId, libId):
 		if erreseinak.jadaErreseinaZuen(eraId, libId):
-			dataOrain = datetime.datetime.now()
-			dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
-			erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina, dataFormatua)
-	return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
-		
+			erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina)
+			return render_template('mailegatu.html', eraId=eraId, libId=libId)
+		else:
+			return None
+	else:
+			return None
 			
 			
 
@@ -149,15 +147,31 @@ def admin():
 	return render_template('admin.html')
 	
 
+
+	
+
 @app.route('/liburuaGehitu')      
 def liburuaGehitu():
-	return render_template('liburuaGehitu.html')
+	libId = request.values.get('id')
+	izenburua = request.values.get('titulo')
+	autorea = request.values.get('autor')
+	azala = request.values.get("azala")
+	deskribapena = request.values.get('cover')
+	if library.liburuaGehitutaZegoen(libId):
+		return render_template('liburuaGehitutaZegoen.html', libId=libId)
+	else:
+		return render_template('liburuaGehitu.html', libId=libId, izenburua=izenburua, autorea=autorea, azala=azala, deskribapena=deskribapena)
+	
 	                
 	                
 	                
 @app.route('/liburuaEzabatu')      
 def liburuaEzabatu():
-	return render_template('liburuaEzabatu.html')
+	libId = request.values.get("libId")
+	if library.liburuaGehitutaZegoen(libId):
+		return render_template('liburuaEzabatu.html')
+	else:
+		return render_template('liburuaEzDago.html')
 	
 @app.route('/erabiltzaileaGehitu')      
 def erabiltzaileaGehitu():
