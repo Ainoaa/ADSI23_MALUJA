@@ -24,3 +24,13 @@ class Book:
 
 	def __str__(self):
 		return f"{self.title} ({self.author})"
+	
+	def __eq__(self,obj):
+		if type(obj) != type(self):
+			return False
+		return self.id == obj.id
+
+	def __neq__(self,obj):
+		if type(obj) != type(self):
+			return True
+		return self.id != obj.id
