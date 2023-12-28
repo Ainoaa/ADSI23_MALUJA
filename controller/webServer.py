@@ -48,6 +48,17 @@ def catalogue():
 	                       total_pages=total_pages, max=max, min=min)
 
 
+@app.route('/LagunenGomendioak')
+def LagunenGomendioak():
+	title = request.values.get("title", "")
+	author = request.values.get("author", "")
+	page = int(request.values.get("page", 1))
+	books, nb_books = library.search_books(title=title, author=author, page=page - 1)
+	total_pages = (nb_books // 6) + 1
+	return render_template('LagunenGomendioak.html', books=books, title=title, author=author, current_page=page,
+	                       total_pages=total_pages, max=max, min=min)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if 'user' in dir(request) and request.user and request.user.token:
@@ -194,12 +205,4 @@ def erabiltzaileaGehitu():
 @app.route('/erabiltzaileaEzabatu')      
 def erabiltzaileaEzabatu():
 	return render_template('erabiltzaileaEzabatu.html')	                	                
-	                
-	                
-	                
-	                
-	                
-	                
-	                
-	                
-	                
+		                

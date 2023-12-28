@@ -35,6 +35,28 @@ class LibraryController:
 		]
 		return books, count
 
+	def search_people(self, izena="", abizena="", limit=6, page=0):
+		count = db.select("""
+		    SELECT count()
+		    FROM User u
+		    WHERE u.izena LIKE ? 
+		        AND u.abizena LIKE ? 
+		""", (f"%{izena}%", f"%{abizena}%"))[0][0]
+		
+		res = db.select("""
+		    SELECT u.*
+		    FROM User u
+		    WHERE u.izena LIKE ? 
+		        AND u.abizena LIKE ? 
+		    LIMIT ? OFFSET ?
+		""", (f"%{izena}%", f"%{abizena}%", limit, limit * page))
+
+		people = [
+		    User(u[0], u[1], u[2], u[4])
+		    for u in res
+		]
+		return people, count
+
 	def get_user(self, email, password):
 		user = db.select("SELECT * from User WHERE email = ? AND password = ?", (email, hash_password(password)))
 		if len(user) > 0:
@@ -68,31 +90,4 @@ class LibraryController:
 	def liburua_ezabatu(self, titulua, autorea):
 		autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
 		db.delete("DELETE FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			
