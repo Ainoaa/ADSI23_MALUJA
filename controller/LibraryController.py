@@ -66,7 +66,6 @@ class LibraryController:
 		return liburua
 
 	def liburua_ezabatu(self, titulua, autorea):
-		print(titulua, autorea)
 		autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
 		db.delete("DELETE FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))
 		
