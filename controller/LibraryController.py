@@ -56,11 +56,14 @@ class LibraryController:
 		else:
 			return False
 			
-	def liburua_gehitu(self, libId, titulua, autorea, azala, deskribapena):
-		db.insert("INSERT INTO AUTHOR VALUES (?)", (autorea))
-	#	autoreaa = db.select("SELECT id FROM AUTHOR WHERE name = ?", (autorea))
-	#	db.insert("INSERT INTO BOOK VALUES (?, ?, ?, ?, ?)", (libId, titulua, autorea, azala, deskribapena))
-
+	def liburua_gehitu(self, titulua, autorea, azala, deskribapena):
+		print (autorea, type(autorea))
+		db.insert("INSERT INTO Author VALUES (NULL, ?)", (autorea,))
+		autoreaa = db.select("SELECT id FROM AUTHOR WHERE name = ?", (autorea,))[0][0]
+		db.insert("INSERT INTO BOOK VALUES (null, ?, ?, ?, ?)", (titulua, autoreaa, azala, deskribapena))
+		b = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreaa))[0]
+		liburua = Book (b[0],b[1],b[2],b[3],b[4])
+		return liburua
 		
 		
 		
