@@ -1,5 +1,5 @@
 from model import Connection
-
+from model import tools
 db = Connection()
 
 class ErabiltzaileController:
