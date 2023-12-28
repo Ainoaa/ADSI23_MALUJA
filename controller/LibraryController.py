@@ -60,10 +60,15 @@ class LibraryController:
 		print (autorea, type(autorea))
 		db.insert("INSERT INTO Author VALUES (NULL, ?)", (autorea,))
 		autoreaa = db.select("SELECT id FROM AUTHOR WHERE name = ?", (autorea,))[0][0]
-		db.insert("INSERT INTO BOOK VALUES (null, ?, ?, ?, ?)", (titulua, autoreaa, azala, deskribapena))
+		db.insert("INSERT INTO Book VALUES (null, ?, ?, ?, ?)", (titulua, autoreaa, azala, deskribapena))
 		b = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreaa))[0]
 		liburua = Book (b[0],b[1],b[2],b[3],b[4])
 		return liburua
+
+	def liburua_ezabatu(self, titulua, autorea):
+		print(titulua, autorea)
+		autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
+		db.delete("DELETE FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))
 		
 		
 		

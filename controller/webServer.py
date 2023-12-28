@@ -167,13 +167,18 @@ def liburuaGehitu():
 	                
 	                
 	                
-@app.route('/liburuaEzabatu')      
+@app.route('/liburuaEzabatu', methods=['GET', 'POST'])      
 def liburuaEzabatu():
-	libId = request.values.get("libId")
-	if library.liburuaGehitutaZegoen(libId):
-		return render_template('liburuaEzabatu.html')
-	else:
-		return render_template('liburuaEzDago.html')
+	if request.method == 'POST':
+		titulua = request.values.get("titulo")
+		autorea = request.values.get("autor")
+		library.liburua_ezabatu(titulua, autorea)
+
+
+	#if library.liburuaGehitutaZegoen(libId):
+	#	return render_template('liburuaEzabatu.html')
+	#else:
+	return render_template('liburuaEzabatu.html')
 	
 @app.route('/erabiltzaileaGehitu')      
 def erabiltzaileaGehitu():
