@@ -1,53 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!DOCTYPE html>
-<html>
-  <head>
-  	<meta charset=utf-8 />
-  	<title>ERRESEINA</title>
-    <link rel="stylesheet" href="css/BiZutabe.css">
-  </head>
-  <body>
-    <td>Library:</td>
-  	<div id="contenedor">
-      <div id="sidebar">  
-        <p>Barra lateral.</p>
-         <img class="image" src="irudiak/1.jpeg" alt="Liburuaren azala">
+  <!DOCTYPE html>
+  <div class="container p-5 my-5 border">
+    <form class="form-inline">
+      <table>
+        <div class="input-group mb-2 mr-sm-2">
+          <label for="data" class="col-sm-2 col-form-label">Data</label>
+          <input type="text" class="form-control mb-2" id="data" name="data" value="{{ data }}">
+        </div>
+        <tr>
+          BALORAZIOA: <!-- BALORAZIOA laukia ipintzea -->
+          <td>
+            <select name="balorazioa" id="balorazioa">
+              <option value="0" {% if nota == '0' %}selected{% endif %}>0</option>
+              <option value="1" {% if nota == '1' %}selected{% endif %}>1</option>
+              <option value="2" {% if nota == '2' %}selected{% endif %}>2</option>
+              <option value="3" {% if nota == '3' %}selected{% endif %}>3</option>
+              <option value="4" {% if nota == '4' %}selected{% endif %}>4</option>
+              <option value="5" {% if nota == '5' %}selected{% endif %}>5</option>
+              <option value="" {% if nota is None %}selected{% endif %}>Aukeratu</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Zure iruzkinak hemen ipini:</td><!-- IRUZKINA laukia ipintzea -->
+        </tr>
+        <tr>
+          <td>
+            <textarea name="iruzkina" rows="10" cols="50" maxlength="200" placeholder="200 karaktere maximo idatzi ahal dira">
+              {% if iruzkina %}
+                {{ iruzkina }}
+              {% endif %}
+            </textarea>
+          </td>
+        </tr>
+      </table>
+      <div align="center">
+        {% if nota is None %}
+          <td><a href="index.html"><input type="button" name="SORTU" value="SORTU" class="button"></a></td>
+        {% else %}
+          <td><a href="index.html"><input type="button" name="EDITATU" value="EDITATU" class="button"></a></td>
+        {% endif %}
       </div>
-      <div id="principal">
-        <p>Contenido principal.</p>
-        <table>
-          <tr>
-            BALORAZIOA:		<!- BALORAZIOA laukia ipintzea !>
-            <td> <select name="balorazioa" id="balorazioa">
-              <option value="0Izar">0</option>
-              <option value="1Izar">1</option>
-              <option value="2Izar">2</option>
-              <option value="3Izar">3</option>
-              <option value="4Izar">4</option>
-              <option value="5Izar">5</option>
-          	</select></td>
-          </tr>
-          <tr>
-          	<td>Zure iruzkinak hemen ipini:</td>		<!- IRUZKINA laukia ipintzea !>
-          </tr>
-           <tr>
-          	 <td><textarea name="comentarios" rows="10" cols="50" maxlength="200" placeholder="200 karaktere maximo idatzi ahal dira"></textarea></td>
-          </tr>
-      	</table>
-      	 <div align="center">
-      		<td><a href="mailegu.html"><input type="button" name="ATZERA" value="ATZERA" class="button"></a></td>
-      		{% if nota == "" %}
-      		    <td><a href="index.html"><input type="button" name="SORTU" value="SORTU" class="button"></a></td>
-      		{% else %}
-      		    <td><a href="index.html"><input type="button" name="GORDE" value="GORDE" class="button"></a></td>
-      		{% endif %}
-      </div>
-     </div>
-  	</div>
-  </body>
-</html>
+    </form>
+  </div>
+{% endblock %}
 
-
-{% endblock %}	
