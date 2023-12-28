@@ -71,16 +71,23 @@ class LibraryController:
 		else:
 			return None
 			
-	def liburuaGehitutaZegoen(self, libId):
-		emaitza = db.select("SELECT * FROM BOOK WHERE id = ?", (libId,))
-		if emaitza:
-			return True
+	def liburua_dago(self, titulua, autorea):
+		a = db.select("SELECT * FROM Author WHERE name = ?", (autorea,))
+		if len(a)>0:
+			autore_id = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
+			emaitza = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autore_id))
+			if len(emaitza)>0:
+				return True
+			else:
+				return False
 		else:
 			return False
 			
 	def liburua_gehitu(self, titulua, autorea, azala, deskribapena):
 		print (autorea, type(autorea))
-		db.insert("INSERT INTO Author VALUES (NULL, ?)", (autorea,))
+		a = db.select("SELECT * FROM Author WHERE name = ?", (autorea,))
+		if len(a)<1:
+			db.insert("INSERT INTO Author VALUES (NULL, ?)", (autorea,))
 		autoreaa = db.select("SELECT id FROM AUTHOR WHERE name = ?", (autorea,))[0][0]
 		db.insert("INSERT INTO Book VALUES (null, ?, ?, ?, ?)", (titulua, autoreaa, azala, deskribapena))
 		b = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreaa))[0]
@@ -88,6 +95,17 @@ class LibraryController:
 		return liburua
 
 	def liburua_ezabatu(self, titulua, autorea):
+		print(titulua, autorea)
+		autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
+		db.delete("DELETE FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))
+	
+	
+	
+	
+	
+	
+	
+	
 		autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
 		db.delete("DELETE FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))
 			

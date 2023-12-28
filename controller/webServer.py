@@ -169,12 +169,13 @@ def liburuaGehitu():
 		autorea = request.values.get("autor")
 		azala = request.values.get("cover")
 		deskribapena = request.values.get("descripcion")
-		#print(liburu_id)
-		#if library.liburuaGehitutaZegoen(liburu_id):
-		#return render_template('liburuaGehitutaZegoen.html', liburu_id=liburu_id)
-		#	else:
-		liburua = library.liburua_gehitu(titulua, autorea, azala, deskribapena)
-	return render_template('liburuaGehitu.html')
+		if library.liburua_dago(titulua, autorea):
+			return render_template('liburuaGehitutaDagoJada.html')
+		else:
+			liburua = library.liburua_gehitu(titulua, autorea, azala, deskribapena)
+			return render_template('liburuaGehituDa.html')
+	else:
+		return render_template('liburuaGehitu.html')
 	
 	                
 	                
@@ -184,24 +185,38 @@ def liburuaEzabatu():
 	if request.method == 'POST':
 		titulua = request.values.get("titulo")
 		autorea = request.values.get("autor")
-		library.liburua_ezabatu(titulua, autorea)
-
-
-	#if library.liburuaGehitutaZegoen(libId):
-	#	return render_template('liburuaEzabatu.html')
-	#else:
-	return render_template('liburuaEzabatu.html')
+		if library.liburua_dago(titulua, autorea):
+			library.liburua_ezabatu(titulua, autorea)
+			return render_template('liburuaEzabatuDa.html')
+		else:
+			return render_template('ezDagoLiburua.html')
+	else:
+		return render_template('liburuaEzabatu.html')
 	
-@app.route('/erabiltzaileaGehitu')      
+@app.route('/erabiltzaileaGehitu', methods=['GET', 'POST'])      
 def erabiltzaileaGehitu():
-	name = request.form.get('name')
-	email = request.form.get('email')
-	password = request.form.get('password')
-	admin = request.form.get('admin')
-	db.insert("INSERT INTO USER (name, email, password, admin) VALUES (?, ?, ?, ?)",(name, email, password, admin))
-	return render_template('erabiltzaileaGehitu.html')
+	if request.method == 'POST':
+		izena = request.form.get('name')
+		emaila = request.form.get('email')
+		pasahitza = request.form.get('password')
+		admin = request.form.get('admin')
+		if erabiltzaileak.erabiltzailea_dago(emaila,):
+			return render_template('erabiltzaileaDagoJada.html')
+		else:
+			erabiltzaileak.erabiltzailea_gehitu(izena, emaila, pasahitza, admin)
+			return render_template('erabiltzaileaGehituDa.html')
+	else:
+		return render_template('erabiltzaileaGehitu.html')
     	                
-@app.route('/erabiltzaileaEzabatu')      
+@app.route('/erabiltzaileaEzabatu', methods=['GET', 'POST'])      
 def erabiltzaileaEzabatu():
+	if request.method == 'POST':
+		izena = request.form.get('name')
+		emaila = request.form.get('email')
+		if erabiltzaileak.erabiltzailea_dago(emaila,):
+			erabiltzaileak.erabiltzailea_ezabatu(izena, emaila)
+			return render_template('erabiltzaileaEzabatuDa.html')
+		else:
+			return render_template('erabiltzaileaEzDago.html')
 	return render_template('erabiltzaileaEzabatu.html')	                	                
 		                

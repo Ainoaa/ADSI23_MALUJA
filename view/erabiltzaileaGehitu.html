@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Erabiltzailea Gehitu</title>
-  <style>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-5 my-5 border">
+  <h1>Erabiltzailea Gehitu</h1>
+  <form action="/erabiltzaileaGehitu" method="post">
+
+
+    <label for="name">Izena:</label>
+    <input type="text" id="name" name="name"required></br>
+
+    <label for="email">Emaila:</label>
+    <input type="text" id="email" name="email"required></br>
+
+    <label for="password">Pasahitza:</label>
+    <input type="text" id="password" name="password"required></br>
+
+    <label for="admin">Administratzailea (True/False):</label>
+    <input type="text" id="admin" name="admin"required></br>
+
+    <button type="submit">Gehitu</button>
+  </form>
+</div>
+<style>
     body {
       font-family: 'Arial', sans-serif;
       background-color: #f4f4f4;
@@ -53,25 +70,5 @@
       background-color: #2980b9;
     }
   </style>
-</head>
-<body>
-  <h1>Erabiltzailea Gehitu</h1>
-  <form action="/erabiltzaileaGehitu" method="post">
+{% endblock %}
 
-
-    <label for="name">Izena:</label>
-    <input type="text" id="name" name="name"required></br>
-
-    <label for="email">Emaila:</label>
-    <input type="text" id="email" name="email"required></br>
-
-    <label for="password">Pasahitza:</label>
-    <input type="text" id="password" name="password"required></br>
-
-    <label for="admin">Administratzailea (True/False):</label>
-    <input type="text" id="admin" name="admin"required></br>
-
-    <button type="submit">Gehitu</button>
-  </form>
-</body>
-</html>

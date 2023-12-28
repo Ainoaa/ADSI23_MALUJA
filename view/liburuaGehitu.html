@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Liburua Gehitu</title>
-  <style>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-5 my-5 border">
+  <h1>Liburua Gehitu</h1>
+  <form action="/liburuaGehitu" method="post">
+
+    <label for="titulo">Titulua:</label>
+    <input type="text" id="titulo" name="titulo" required><br>
+
+    <label for="autor">Autorea:</label>
+    <input type="text" id="autor" name="autor" required><br>
+
+    <label for="cover">Azala:</label>
+    <input type="text" id="cover" name="cover" required><br>
+
+    <label for="descripcion">Deskribapena:</label>
+    <input type="text" id="descripcion" name="descripcion" required><br>
+
+    <!-- Otros campos del formulario según tus necesidades -->
+
+    <button type="submit">Gehitu</button>
+  </form>
+</div>
+<style>
     body {
       font-family: 'Arial', sans-serif;
       background-color: #f4f4f4;
@@ -53,27 +71,4 @@
       background-color: #2980b9;
     }
   </style>
-</head>
-<body>
-  <h1>Liburua Gehitu</h1>
-  <form action="/liburuaGehitu" method="post">
-
-    <label for="titulo">Titulua:</label>
-    <input type="text" id="titulo" name="titulo" required><br>
-
-    <label for="autor">Autorea:</label>
-    <input type="text" id="autor" name="autor" required><br>
-
-    <label for="cover">Azala:</label>
-    <input type="text" id="cover" name="cover" required><br>
-
-    <label for="descripcion">Deskribapena:</label>
-    <input type="text" id="descripcion" name="descripcion" required><br>
-
-    <!-- Otros campos del formulario según tus necesidades -->
-
-    <button type="submit">Gehitu</button>
-  </form>
-</body>
-</html>
-
+{% endblock %}
