@@ -2,9 +2,9 @@ from .LibraryController import LibraryController
 from .ErreseinaController import ErreseinaController
 from .ErabiltzaileController import ErabiltzaileController
 from flask import Flask, render_template, request, make_response, redirect
-from model import Connection
+
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
-db = Connection()
+
 
 library = LibraryController()
 erreseinak = ErreseinaController()
