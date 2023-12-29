@@ -51,3 +51,23 @@ class User:
 		# Obtener los temas del libro desde la base de datos
 		topics = db.select("SELECT topic FROM BookTopics WHERE book_id = ?", (book_id,))
 		return [topic[0] for topic in topics]
+		
+		
+		
+	def get_lagunen_zerrenda(self):
+		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id", (self.id,))
+		lagun_zerrenda = [
+			User(b[0],b[1],b[2],b[4])
+			for b in lagunak
+		]
+		return lagun_zerrenda
+		
+	
+	def get_irakurritako_liburuak(self):
+		books_read = db.select("SELECT T2.* FROM ErreserbenHistoriala T, Book T2 WHERE T.userId = ? AND T2.id = T.bookId", (self.id,))
+		books = [
+			Book(b[0],b[1],b[2],b[3],b[4])
+			for b in books_read
+		]
+		return books
+
