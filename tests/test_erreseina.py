@@ -9,7 +9,7 @@ class TestErreseina(BaseTestClass):
 			'libId' : "1"
 			'data' : "2023-09-10 15:13:12"
 		}
-		res = self.client.get('e/rreseina_idatzi', query_string = params)
+		res = self.client.get('/erreseina_idatzi', query_string = params)
 		self.assertEqual(200, res.status_code)
 	
 	

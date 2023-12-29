@@ -11,10 +11,16 @@ class ErreserbatutakoLiburuakController:
 			cls.__instance.__initialized = False
 		return cls.__instance
 
-	def bueltatu_liburua(self, izena, idazlea, data):
+	def bueltatu_liburua(self, hasiData, bukatuData, erabId, bookId):
+		db.delete("DELETE FROM Mailegatu WHERE hasiData = ? AND bukatuData = ? AND erabId = ? AND bookId = ?", (hasiData, bukatuData, erabId, bookId))
 
-
-	def erreserbatu_liburua(self, izzena, idazlea, data):
+	def erreserbatu_liburua(self, erabId, bookId, data):
+		db = tools.hash_password(pasahitza)
+		if admin == "true":
+			admin_balioa = 1
+		else:
+			admin_balioa = 0
+		db.insert("INSERT INTO Mailegatu VALUES (NULL, ?, ?, ?, ?)", (izena, emaila, hp, admin_balioa))
 	
 	
 	
