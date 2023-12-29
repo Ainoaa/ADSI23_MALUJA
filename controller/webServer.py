@@ -149,14 +149,13 @@ def admin():
 	return render_template('admin.html')
 	
 
-
+###############################################################################################################
 	
-
 @app.route('/liburuaGehitu', methods=['GET','POST'])      
 def liburuaGehitu():
 	if request.method == 'POST':
 		titulua = request.values.get("titulo")
-		autorea = request.values.get("autor")
+		autorea = request.values.get("autor")  
 		azala = request.values.get("cover")
 		deskribapena = request.values.get("descripcion")
 		if library.liburua_dago(titulua, autorea):
@@ -209,7 +208,7 @@ def erabiltzaileaEzabatu():
 		else:
 			return render_template('erabiltzaileaEzDago.html')
 	return render_template('erabiltzaileaEzabatu.html')
-
+##############################################################################################################
 	                	                
 @app.route('/LagunenGomendioak')
 def LagunenGomendioak():
