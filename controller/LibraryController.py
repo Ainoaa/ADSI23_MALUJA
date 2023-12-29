@@ -35,21 +35,21 @@ class LibraryController:
 		]
 		return books, count
 
-	def search_people(self, izena="", abizena="", limit=6, page=0):
+	def search_people(self, name="", email="", limit=4, page=0):
 		count = db.select("""
 		    SELECT count()
 		    FROM User u
-		    WHERE u.izena LIKE ? 
-		        AND u.abizena LIKE ? 
-		""", (f"%{izena}%", f"%{abizena}%"))[0][0]
+		    WHERE u.name LIKE ? 
+		        AND u.email LIKE ? 
+		""", (f"%{name}%", f"%{email}%"))[0][0]
 		
 		res = db.select("""
 		    SELECT u.*
 		    FROM User u
-		    WHERE u.izena LIKE ? 
-		        AND u.abizena LIKE ? 
+		    WHERE u.name LIKE ? 
+		        AND u.email LIKE ? 
 		    LIMIT ? OFFSET ?
-		""", (f"%{izena}%", f"%{abizena}%", limit, limit * page))
+		""", (f"%{name}%", f"%{email}%", limit, limit * page))
 
 		people = [
 		    User(u[0], u[1], u[2], u[4])

@@ -13,15 +13,15 @@ class Session:
 		return f"{self.hash} ({self.time})"
 
 class User:
-	def __init__(self, id, username, email, admin):
+	def __init__(self, id, name, email, admin):
 		self.id = id
-		self.username = username
+		self.name = name
 		self.email = email
 		print(admin, type(admin))
 		self.admin = admin
 
 	def __str__(self):
-		return f"{self.username} ({self.email})"
+		return f"{self.name} ({self.email})"
 
 	def new_session(self):
 		now = float(datetime.datetime.now().time().strftime("%Y%m%d%H%M%S.%f"))

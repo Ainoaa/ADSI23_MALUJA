@@ -49,13 +49,15 @@ def catalogue():
 
 @app.route('/LagunenGomendioak')
 def LagunenGomendioak():
-	title = request.values.get("title", "")
-	author = request.values.get("author", "")
+	if not('user' in dir(request) and request.user and request.user.token):
+		return redirect("/")
+	name = request.values.get("name", "")
+	email = request.values.get("email", "")
 	page = int(request.values.get("page", 1))
-	books, nb_books = library.search_books(title=title, author=author, page=page - 1)
-	total_pages = (nb_books // 6) + 1
-	return render_template('LagunenGomendioak.html', books=books, title=title, author=author, current_page=page,
-	                       total_pages=total_pages, max=max, min=min)
+	people, nb_people = library.search_people(name=name, email=email, page=page - 1)
+	total_pages = (nb_people // 4) + (1 if nb_people % 4 > 0 else 0)
+	return render_template('LagunenGomendioak.html', people=people, name=name, email=email, current_page=page,
+                       total_pages=total_pages, max=max, min=min)
 
 
 @app.route('/login', methods=['GET', 'POST'])
