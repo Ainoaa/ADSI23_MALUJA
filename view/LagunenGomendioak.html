@@ -2,78 +2,97 @@
 
 {% block content %}
 <div class="container p-5 my-5 border">
-
-    <form class="form-inline">
-      <div class="input-group mb-2 mr-sm-2">
-        <label for="Name" class="col-sm-2 col-form-label">Name</label>
-        <input type="text" class="form-control mb-2" id="Name" name="Name" placeholder="Write here the user's name" {% if Name != "": %}value="{{Name}}"{% endif %}>
-      </div>
-      <div class="input-group mb-2 mr-sm-2">
-        <label for="Email" class="col-sm-2 col-form-label">Email</label>
-        <input type="text" class="form-control mb-2" id="Email" name="Email" placeholder="Write here the user's email" {% if Email != "": %}value="{{Email}}"{% endif %}>
-      </div>
-      <button type="submit" class="btn btn-primary">
-          <i class="fa fa-search"></i>
-          Bilatu
-      </button>
-    </form>
-
-    <br>
-    <p style="font-size: 28px;">Lagunen lagunak</p>
-
-    <div class="row">
-        {% for person in people %}
-            <div class="col-lg-4 col-md-6 col-sm-12 my-2">
-                <div class="card d-flex flex-row" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{person.name}}</h5>
-                    </div>
-                </div>
-            </div>
+	<form class="form-inline">
+      		<div class="input-group mb-2 mr-sm-2">
+        		<label for="name" class="col-sm-2 col-form-label">Name</label>
+        		<input type="text" class="form-control mb-2" id="name" name="name" placeholder="Write here the user's name" {% if name != "": %}value="{{name}}"{% endif %}>
+      		</div>
+      		<div class="input-group mb-2 mr-sm-2">
+        		<label for="email" class="col-sm-2 col-form-label">Email</label>
+        		<input type="text" class="form-control mb-2" id="email" name="email" placeholder="Write here the user's email" {% if email != "": %}value="{{email}}"{% endif %}>
+      		</div>
+      		<button type="submit" class="btn btn-primary">
+          		<i class="fa fa-search"></i>
+          			Bilatu
+      		</button>
+    	</form>
+    	    
+    	<hr class="hr" />
+	<h1>Zure lagunen lagunak</h1>
+    	<div class="row">
+        {% for user in lagunen_lagunak %}
+        	<div class="col-lg-4 col-md-6 col-sm-12 my-2">
+                	<div class="card d-flex flex-row" style="width: 25rem;">
+                    		<div class="card-body">
+                        		<h5 class="card-title">{{user.name}}</h5>
+                        		<h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6>
+                    		</div>
+                	</div>
+            	</div>
         {% endfor %}
-    </div>
-
-    <hr class="hr" />
-
-    <p style="font-size: 28px;">Liburu berak irakurri dituzten erabiltzaileak</p>
-
-    <div class="row">
-        {% for person in people %}
-            <div class="col-lg-4 col-md-6 col-sm-12 my-2">
-                <div class="card d-flex flex-row" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{person.name}}</h5>
-                    </div>
-                </div>
-            </div>
+    	</div>
+    	<nav>
+      		<ul class="pagination justify-content-center">
+          		{% if current_page_lagunak-3 > 1: %}
+          			<li class="page-item">
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak=1&page_zure_lag={{current_page_zure_lag}}" aria-label="Previous"> 
+                  				<span aria-hidden="true">&laquo;</span>
+                  				<span class="sr-only">Previous</span>
+              				</a>
+          			</li>
+          		{% endif %}
+        		{% for page_lagunak in range(max(1, current_page_lagunak-3),min(total_pages_lagunak+1, current_page_lagunak+4)) %}
+            			<li class="page-item"><a class="page-link {% if page_lagunak == current_page_lagunak %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{page_lagunak}}&page_zure_lag={{current_page_zure_lag}}">{{page_lagunak}}</a></li>
+        		{% endfor %}
+        		{% if current_page_lagunak+3 < total_pages_lagunak : %}
+          			<li class="page-item">
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{total_pages_lagunak}}&page_zure_lag={{current_page_zure_lag}}" aria-label="Next">
+                  				<span aria-hidden="true">&raquo;</span>
+                  				<span class="sr-only">Next</span>
+              				</a>
+          			</li>
+        		{% endif %}
+      		</ul>
+    	</nav>
+    
+     	<hr class="hr" />
+     	<h1>Irakurritako liburuen arabera</h1>	
+     	<div class="row">
+        {% for user in books_zure_lag %}
+        	<div class="col-lg-4 col-md-6 col-sm-12 my-2">
+                	<div class="card d-flex flex-row" style="width: 25rem;">
+                    		<div class="card-body">
+                        		<h5 class="card-title">{{user.name}}</h5>
+                        		<h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6
+                    		</div>
+                	</div>
+            	</div>
         {% endfor %}
-    </div>
-
-    <nav>
-      <ul class="pagination justify-content-center">
-          {% if current_page-3 > 1: %}
-          <li class="page-item">
-              <a class="page-link" href="{{request.path}}?Name={{Name}}&Email={{Email}}&page=1" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-              </a>
-          </li>
-          {% endif %}
-        {% for page in range(max(1, current_page-3),min(total_pages+1, current_page+4)) %}
-            <li class="page-item"><a class="page-link {% if page == current_page %}active{% endif %}" href="{{request.path}}?Name={{Name}}&Email={{Email}}&page={{page}}">{{page}}</a></li>
-        {% endfor %}
-        {% if current_page+3 < total_pages : %}
-          <li class="page-item">
-              <a class="page-link" href="{{request.path}}?Name={{Name}}&Email={{Email}}&page={{total_pages}}" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-              </a>
-          </li>
-        {% endif %}
-      </ul>
-    </nav>
-
+    	</div>
+    	<nav>
+      		<ul class="pagination justify-content-center">
+          		{% if current_page_lagunak-3 > 1: %}
+          			<li class="page-item">
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak=1&page_zure_lag={{current_page_zure_lag}}" aria-label="Previous"> 
+                  				<span aria-hidden="true">&laquo;</span>
+                  				<span class="sr-only">Previous</span>
+              				</a>
+          			</li>
+          		{% endif %}
+        		{% for page_lagunak in range(max(1, current_page_lagunak-3),min(total_pages_lagunak+1, current_page_lagunak+4)) %}
+            			<li class="page-item"><a class="page-link {% if page_lagunak == current_page_lagunak %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{page_lagunak}}&page_zure_lag={{current_page_zure_lag}}">{{page_lagunak}}</a></li>
+        		{% endfor %}
+        		{% if current_page_lagunak+3 < total_pages_lagunak : %}
+          			<li class="page-item">
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{total_pages_lagunak}}&page_zure_lag={{current_page_zure_lag}}" aria-label="Next">
+                  				<span aria-hidden="true">&raquo;</span>
+                  				<span class="sr-only">Next</span>
+              				</a>
+          			</li>
+        		{% endif %}
+      		</ul>
+    	</nav>
+    
 </div>
 
 {% endblock %}
-

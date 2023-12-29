@@ -1,6 +1,7 @@
 import datetime
 from .Connection import Connection
 from .tools import hash_password
+from model import Book
 
 db = Connection()
 
@@ -51,8 +52,6 @@ class User:
 		# Obtener los temas del libro desde la base de datos
 		topics = db.select("SELECT topic FROM BookTopics WHERE book_id = ?", (book_id,))
 		return [topic[0] for topic in topics]
-		
-		
 		
 	def get_lagunen_zerrenda(self):
 		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id", (self.id,))

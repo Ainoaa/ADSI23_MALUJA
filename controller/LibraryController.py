@@ -44,11 +44,11 @@ class LibraryController:
 		""", (f"%{name}%", f"%{email}%"))[0][0]
 		
 		res = db.select("""
-		    SELECT u.*
-		    FROM User u
-		    WHERE u.name LIKE ? 
-		        AND u.email LIKE ? 
-		    LIMIT ? OFFSET ?
+				SELECT u.*
+				FROM Lagunak L, User U
+				WHERE L.lagun1Id LIKE ? 
+					AND L.Lagun2Id LIKE ? 
+				LIMIT ? OFFSET ?
 		""", (f"%{name}%", f"%{email}%", limit, limit * page))
 
 		people = [

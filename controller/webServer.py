@@ -3,9 +3,9 @@ from .ErreseinaController import ErreseinaController
 from .ErabiltzaileController import ErabiltzaileController
 #from .ErreserbatutakoLiburuakController import ErreserbatutakoLiburuakController
 from flask import Flask, render_template, request, make_response, redirect
-
+from model import Connection
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
-
+db = Connection()
 
 library = LibraryController()
 erreseinak = ErreseinaController()
@@ -46,18 +46,6 @@ def catalogue():
 	total_pages = (nb_books // 6) + 1
 	return render_template('catalogue.html', books=books, title=title, author=author, current_page=page,
 	                       total_pages=total_pages, max=max, min=min)
-
-@app.route('/LagunenGomendioak')
-def LagunenGomendioak():
-	if not('user' in dir(request) and request.user and request.user.token):
-		return redirect("/")
-	name = request.values.get("name", "")
-	email = request.values.get("email", "")
-	page = int(request.values.get("page", 1))
-	people, nb_people = library.search_people(name=name, email=email, page=page - 1)
-	total_pages = (nb_people // 4) + (1 if nb_people % 4 > 0 else 0)
-	return render_template('LagunenGomendioak.html', people=people, name=name, email=email, current_page=page,
-                       total_pages=total_pages, max=max, min=min)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -220,5 +208,41 @@ def erabiltzaileaEzabatu():
 			return render_template('erabiltzaileaEzabatuDa.html')
 		else:
 			return render_template('erabiltzaileaEzDago.html')
-	return render_template('erabiltzaileaEzabatu.html')	                	                
-		                
+	return render_template('erabiltzaileaEzabatu.html')
+
+	                	                
+@app.route('/LagunenGomendioak')
+def LagunenGomendioak():
+	if not('user' in dir(request) and request.user and request.user.token):
+		return redirect("/")
+	name = request.values.get("name", "")
+	email = request.values.get("email", "")
+	page_lagunak = int(request.values.get("page_lagunak", 1))
+	page_zure_lag = int(request.values.get("page_zure_lag", 1))
+
+
+	lagun_zerrenda = request.user.get_lagunen_zerrenda()
+	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
+	gomendatutako_lagunak = []
+	for User in lagun_zerrenda:
+		lista = User.get_lagunen_zerrenda()
+		for user in lista:
+			print(user.name)
+		gomendatutako_lagunak = [
+			user
+			for user in lista 
+			if user not in irakurritako_lagunak and 
+			user not in gomendatutako_lagunak
+		]
+	total_pages_lagunak = (len(gomendatutako_lagunak)//4) +1
+	lagunen_lagunak = gomendatutako_lagunak
+	for book in lagunen_lagunak:
+			print(user.name)
+
+	people, nb_people = library.search_people(name=name, email=email, page=page - 1)
+	total_pages_zure_lagunak = (nb_people // 4) + (1 if nb_people % 4 > 0 else 0)
+
+	return render_template('LagunenGomendioak.html', lagunen_lagunak=lagunen_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak, people=people,
+                       		current_page_zure_lag=page_zure_lag, total_pages_zure_lagunak=total_pages_zure_lagunak,
+				name=name, email=email, max=max, min=min)
+
