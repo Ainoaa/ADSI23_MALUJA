@@ -1,7 +1,6 @@
 import hashlib
 import sqlite3
 import json
-from model import Connection
 
 
 salt = "library"
