@@ -79,7 +79,7 @@ def logout():
 		request.user = None
 	return resp
 	
-@app.route('/erreseina_idatzi')
+@app.route('/erreseina_sortu')
 def jadaMailegatuZuen():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
@@ -90,7 +90,7 @@ def jadaMailegatuZuen():
 	else:
 		return None
 		
-@app.route('/mailegatu')	
+@app.route('/erreseina_sortuta')	
 def erreseinaSortu():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
@@ -101,7 +101,7 @@ def erreseinaSortu():
 		erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
 	return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
 		
-@app.route('/erreseina_idatzi')
+@app.route('/erreseina_editatu')
 def jadaErreseinaZuen():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
@@ -116,7 +116,7 @@ def jadaErreseinaZuen():
 	else:
 		return None
 
-@app.route('/mailegatu')		
+@app.route('/erreseina_editatuta')		
 def erreseinaEditatu():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")

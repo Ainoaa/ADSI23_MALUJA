@@ -10,13 +10,13 @@
                     <p>Nota: {{ item.nota }}</p>
                     <p>Iruzkinak: {{ item.iruzkina }}</p>
                     {% if item.eraId == eraId %}
-                        <form action="/editar" method="post">
+                        <form action="/erreseina_editatu" method="post">
                             <input type="hidden" name="eraId" value="{{ item.eraId }}">
                             <input type="hidden" name="libId" value="{{ item.libId }}">
                             <input type="hidden" name="data" value="{{ item.data }}">
                             <input type="hidden" name="nota" value="{{ item.nota }}">
                             <input type="hidden" name="iruzkina" value="{{ item.iruzkina }}">
-                            <input type="submit" value="Editar">
+                            <input type="submit" value="Editatu">
                         </form>
                     {% endif %}
                 </li>
