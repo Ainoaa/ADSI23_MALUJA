@@ -269,5 +269,5 @@ def list_topics():
 
 @app.route('/foroa')
 def foroa():
-	topics = forum_controller.get_forum_topics()
-	return render_template('foroa.html',topics=topics)
+    topics = ForumController().get_forum_topics()
+    return render_template('foroa.html', topics=topics)

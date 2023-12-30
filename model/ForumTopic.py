@@ -10,16 +10,23 @@ class ForumTopic:
         self.content = content
 
     def __str__(self):
-        return f"Topic ID: {self.id}, Title: {self.title}, User ID: {self.user_id}"
+        return f"Title: {self.title}, User ID: {self.user_id}"
 
     @staticmethod
     def create_topic(user_id, title):
-        # Lógica para crear un nuevo tema en la base de datos
-        db.execute("INSERT INTO forum_topics (user_id, title) VALUES (?, ?)", (user_id, title))
-        db.commit()
+        try:
+            # Lógica para crear un nuevo tema en la base de datos
+            db.insert("INSERT INTO ForumTopic (user_id, title) VALUES (?, ?)", (user_id, title))
+            print("Topic created successfully.")
+        except Exception as e:
+            print(f"Error creating forum topic: {str(e)}")
 
     @staticmethod
     def get_all_topics():
-        # Lógica para obtener todos los temas desde la base de datos
-        result = db.select("SELECT * FROM forum_topics")
-        return [ForumTopic(*row) for row in result]
+        try:
+            # Lógica para obtener todos los temas desde la base de datos
+            result = db.select("SELECT * FROM ForumTopic")
+            return [ForumTopic(*row) for row in result]
+        except Exception as e:
+            print(f"Error al obtener temas del foro: {str(e)}")
+            return []
