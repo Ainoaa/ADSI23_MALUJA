@@ -2,7 +2,8 @@ from .LibraryController import LibraryController
 from .ErreseinaController import ErreseinaController
 from controller.ForumController import ForumController
 from .ErabiltzaileController import ErabiltzaileController
-from flask import Flask, render_template, request, make_response, redirect
+from flask import Flask, render_template, request, redirect, make_response, url_for
+
 from model import Connection
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 db = Connection()
@@ -49,10 +50,7 @@ def catalogue():
 	return render_template('catalogue.html', books=books, title=title, author=author, current_page=page,
 	                       total_pages=total_pages, max=max, min=min)
 
-@app.route('/foroa')
-def foroa():
-	topics = forum_controller.get_forum_topics()
-	return render_template('foroa.html',topics=topics)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -250,7 +248,7 @@ def LagunenGomendioak():
 				name=name, email=email, max=max, min=min)
 
 
-"""
+
 @app.route('/create_topic', methods=['GET', 'POST'])
 def create_topic():
     if request.method == 'POST':
@@ -268,4 +266,8 @@ def list_topics():
     # Lógica para obtener y mostrar la lista de temas del foro
     topics = forum_controller.get_forum_topics()
     return render_template('foroa.html', topics=topics)
-"""
+
+@app.route('/foroa')
+def foroa():
+	topics = forum_controller.get_forum_topics()
+	return render_template('foroa.html',topics=topics)
