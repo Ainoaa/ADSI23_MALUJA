@@ -2,7 +2,6 @@ import hashlib
 import sqlite3
 import json
 
-
 salt = "library"
 
 
@@ -62,17 +61,6 @@ cur.execute("""
 """)
 
 cur.execute("""
-    CREATE TABLE ForumTopic(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        title VARCHAR(255),
-        content TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(user_id) REFERENCES User(id)
-    )
-""")
-
-cur.execute("""
 	CREATE TABLE Lagunak(
 		lagun1Id integer,
 		lagun2Id integer,
@@ -128,6 +116,8 @@ cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))
 con.commit()
 cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))
 con.commit()
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 4))
+con.commit()
 
 ### Insert Erreserben Historiala
 
@@ -153,6 +143,8 @@ cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 6))
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 8))
 con.commit()
+
+
 
 
 
