@@ -136,11 +136,8 @@ def erreseinaEditatu():
 def liburuko_erreseina_katalogoa():
 	eraId = request.values.get("eraId")
 	libId = request.values.get("libId")
-	page = int(request.values.get("page", 1))
-	erreseinak, nb_erreseinak = erreseinak.search_erreseinak(eraId=eraId, libId=libId, page=page - 1)
-	total_pages = (nb_books // 6) + 1
-	return render_template('libErreseinaKatalogo.html', erreseinak=erreseinak, eraId=eraId, libId=libId, current_page=page,
-	                       total_pages=total_pages, max=max, min=min)
+	lista = erreseinak.bilatuErreseinak(libId)
+	return render_template('libErreseinaKatalogo.html', lista, eraId)
 
 
 

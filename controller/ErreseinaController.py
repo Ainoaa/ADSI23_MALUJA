@@ -42,5 +42,11 @@ class ErreseinaController:
 	def bilatuErreseina(self, eraId, libId, lehenData):
 		erreseina = next((item for item in self.lista if item.getEraId() == eraId and item.getLibId() == libId and item.getData() == lehenData), None)
 		return erreseina
+		
+	
+	def bilatuErreseinak(self, libId):
+		erreseinak = [item for item in self.lista if item.getLibId() == libId]
+		return erreseinak
+
 			
 			
