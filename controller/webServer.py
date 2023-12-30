@@ -271,3 +271,49 @@ def list_topics():
 def foroa():
     topics = ForumController().get_forum_topics()
     return render_template('foroa.html', topics=topics)
+    
+    
+    
+    
+    
+@app.route('/liburuGomendioak')      
+def liburuGomendioak():
+	if not('user' in dir(request) and request.user and request.user.token):
+		return redirect("/")
+	title = request.values.get("title", "")
+	author = request.values.get("author", "")
+	page_lagunak = int(request.values.get("page_lagunak", 1))
+	page_zure_lib = int(request.values.get("page_zure_lib", 1))
+	
+	#Lagunak irakurritakoaren araberako gomendioak
+	lagun_zerrenda = request.user.get_lagunen_zerrenda()
+	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
+	gomendatutako_liburuak_lagunak = []
+	for User in lagun_zerrenda:
+		lista = User.get_irakurritako_liburuak(title,author)
+		gomendatutako_liburuak_lagunak.extend(
+			book
+			for book in lista 
+			if book not in irakurritako_liburuak and 
+			book not in gomendatutako_liburuak_lagunak
+		)
+	total_pages_lagunak = (len(gomendatutako_liburuak_lagunak)//6) +1
+	books_lagunak = gomendatutako_liburuak_lagunak
+	
+	#Erabiltzailearen irakurritakoaren araberako gomendioak
+	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
+	gomendatutako_liburuak = []
+	for book in irakurritako_liburuak:
+		autorearen_liburuak = library.get_autore_baten_liburuak(book.author,author,title)
+		gomendatutako_liburuak.extend(
+			book
+			for book in autorearen_liburuak 
+			if book not in irakurritako_liburuak and 
+			book not in gomendatutako_liburuak
+		)
+	books_zure_lib = gomendatutako_liburuak
+	total_pages_zure_lib = (len(gomendatutako_liburuak)//6) + 1
+	
+	return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak,
+				books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
+				title=title, author=author, max=max, min=min)

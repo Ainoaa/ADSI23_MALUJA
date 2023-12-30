@@ -107,3 +107,13 @@ class LibraryController:
 		if len(lista) == 0:
 			db.delete("DELETE FROM Author WHERE id = ? OR name = ?", (autoreId, autorea))
 			
+			
+			
+	def get_autore_baten_liburuak(self,author,autore="",title=""):
+		autorearen_liburuak = db.select("SELECT T.* FROM Book T, Author T2 WHERE T2.name = ? AND T2.id = T.author AND T.title LIKE ? AND T2.name LIKE ?",(author.name,f"%{title}%", f"%{autore}%"))
+		books = [
+			Book(b[0],b[1],b[2],b[3],b[4])
+			for b in autorearen_liburuak
+		]
+		return books
+			

@@ -59,13 +59,12 @@ class User:
 			for b in lagunak
 		]
 		return lagun_zerrenda
-
-
-	def get_irakurritako_liburuak(self):
-		books_read = db.select("SELECT T2.* FROM ErreserbenHistoriala T, Book T2 WHERE T.userId = ? AND T2.id = T.bookId", (self.id,))
+		
+	
+	def get_irakurritako_liburuak(self, title="", author=""):
+		books_read = db.select("SELECT T2.* FROM ErreserbenHistoriala T, Book T2, Author T3 WHERE T.userId = ? AND T2.id = T.bookId AND T2.title LIKE ? AND T2.author = T3.id And T3.name LIKE ? ", (self.id,f"%{title}%", f"%{author}%"))
 		books = [
 			Book(b[0],b[1],b[2],b[3],b[4])
 			for b in books_read
 		]
 		return books
-
