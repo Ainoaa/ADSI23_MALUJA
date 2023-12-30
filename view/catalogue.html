@@ -28,6 +28,8 @@
                     <div class="card d-flex flex-row" style="width: 18rem;">
                         {% if book.cover: %}
                             <img src="{{book.cover}}" class="rounded" style="max-width: 6rem; height: fit-content;">
+                        {% else %}
+                        	<img src="{{url_for('static', filename='none.jpg')}}" class="rounded" style="max-width: 6rem; height: fit-content; background-color: white;">	
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{book.title}}</h5>
