@@ -13,16 +13,15 @@ class Session:
 		return f"{self.hash} ({self.time})"
 
 class User:
-	def __init__(self, id, username, email,password):
+	def __init__(self, id, name, email, admin):
 		self.id = id
-		self.username = username
+		self.name = name
 		self.email = email
-		#print(admin, type(admin))
-		#self.admin = admin
-		self.password = password
+		print(admin, type(admin))
+		self.admin = admin
 
 	def __str__(self):
-		return f"{self.username} ({self.email})"
+		return f"{self.name} ({self.email})"
 
 	def new_session(self):
 		now = float(datetime.datetime.now().time().strftime("%Y%m%d%H%M%S.%f"))
@@ -51,4 +50,22 @@ class User:
 	def get_book_topics(self, book_id):
 		# Obtener los temas del libro desde la base de datos
 		topics = db.select("SELECT topic FROM BookTopics WHERE book_id = ?", (book_id,))
-		#return [topic[0] for topic in topics]
+		return [topic[0] for topic in topics]
+
+	def get_lagunen_zerrenda(self):
+		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id", (self.id,))
+		lagun_zerrenda = [
+			User(b[0],b[1],b[2],b[4])
+			for b in lagunak
+		]
+		return lagun_zerrenda
+
+
+	def get_irakurritako_liburuak(self):
+		books_read = db.select("SELECT T2.* FROM ErreserbenHistoriala T, Book T2 WHERE T.userId = ? AND T2.id = T.bookId", (self.id,))
+		books = [
+			Book(b[0],b[1],b[2],b[3],b[4])
+			for b in books_read
+		]
+		return books
+

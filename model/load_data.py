@@ -73,6 +73,24 @@ cur.execute("""
     )
 """)
 
+cur.execute("""
+	CREATE TABLE Lagunak(
+		lagun1Id integer,
+		lagun2Id integer,
+		FOREIGN KEY(lagun1Id) REFERENCES User(id),
+		FOREIGN KEY(lagun2Id) REFERENCES User(id)
+	)
+""")
+
+cur.execute("""
+	CREATE TABLE ErreserbenHistoriala(
+		userId integer,
+		bookId integer,
+		FOREIGN KEY(userId) REFERENCES User(id),
+		FOREIGN KEY(bookId) REFERENCES Book(id)
+	)
+""")
+
 ### Insert users
 
 with open('usuarios.json', 'r') as f:
@@ -102,3 +120,41 @@ for author, title, cover, description in libros:
 		            (title, author_id, cover, description.strip()))
 
 	con.commit()
+
+### Insert lagunak
+
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 4))
+con.commit()
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))
+con.commit()
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))
+con.commit()
+
+### Insert Erreserben Historiala
+
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 2))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 3))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 4))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 1))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 6))
+con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 8))
+con.commit()
+
+
+
+
