@@ -16,3 +16,16 @@ class BaseTestClass(unittest.TestCase):
 			email=email,
 			password=password
 		))
+	def liburuaGehitu(self, titulua, autorea, azala, deskribapena):
+		return self.client.post('/liburuaGehitu', data=dict(
+			titulua=titulua,
+			autorea=autorea,
+			azala=azala,
+			deskribapena=deskribapena
+			))
+
+	def liburua_dago(self, titulua, autorea):
+		return self.client.post('/liburuaGehitu', data=dict(
+			titulua=titulua,
+			autorea=autorea,
+			))
