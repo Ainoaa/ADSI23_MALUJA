@@ -22,7 +22,7 @@
     	<div class="row">
         {% for book in books_lagunak %}
         	<div class="col-lg-4 col-md-6 col-sm-12 my-2">
-                	<div class="card d-flex flex-row" style="width: 25rem;">
+                	<div class="card d-flex flex-row" style="width: 25rem;" data-section="lagunen arabera">
                     		{% if book.cover: %}
                         		<img src="{{book.cover}}" class="rounded" style="max-width: 6rem; height: fit-content;">
                         	{% else %}
@@ -68,7 +68,7 @@
      	<div class="row">
         {% for book in books_zure_lib %}
         	<div class="col-lg-4 col-md-6 col-sm-12 my-2">
-                	<div class="card d-flex flex-row" style="width: 25rem;">
+                	<div class="card d-flex flex-row" style="width: 25rem;" data-section="liburuen arabera">
                     		{% if book.cover: %}
                         		<img src="{{book.cover}}" class="rounded" style="max-width: 6rem; height: fit-content;">
                         	{% else %}
