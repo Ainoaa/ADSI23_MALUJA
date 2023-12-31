@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-5 my-5 border">
+    <h1>Liburua erreserbatu</h1>
+    <form action="/liburuaErreserbatu" method="post">
+
+        <label for="title">Titulu:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="author">Autorea:</label>
+        <input type="text" id="author" name="author" required>
+
+        <label for="cover">Portada (Image File or Path):</label>
+        <input type="text" id="cover" name="cover" required>
+
+        <label for="description">Deskripzioa:</label>
+        <textarea id="description" name="description" rows="4"></textarea>
+
+    <button type="submit">Erreserbatu</button>
+  </form>
+</div>
+
+<style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+{% endblock %}
