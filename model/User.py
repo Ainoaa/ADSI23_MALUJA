@@ -20,6 +20,9 @@ class User:
 		self.email = email
 		print(admin, type(admin))
 		self.admin = admin
+		
+	def __eq__(self, other):
+		return isinstance(other, User) and self.id == other.id
 
 	def __str__(self):
 		return f"{self.name} ({self.email})"
