@@ -1,4 +1,5 @@
 from model import Connection, ForumTopic
+from model.ForumTopic import ForumTopic
 
 db = Connection()
 
