@@ -2,6 +2,7 @@ from .LibraryController import LibraryController
 from .ErreseinaController import ErreseinaController
 from controller.ForumController import ForumController
 from .ErabiltzaileController import ErabiltzaileController
+from .ErreserbatutakoLiburuakController import ErreserbatutakoLiburuakController
 from flask import Flask, render_template, request, redirect, make_response, url_for
 
 from model import Connection
@@ -11,7 +12,7 @@ db = Connection()
 library = LibraryController()
 erreseinak = ErreseinaController()
 erabiltzaileak = ErabiltzaileController()
-#erreserbatuak = ErreserbatutakoLiburuakController()
+erreserbatuak = ErreserbatutakoLiburuakController()
 forum_controller = ForumController()
 
 
@@ -114,7 +115,6 @@ def jadaErreseinaZuen():
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
         if erreseinak.jadaErreseinaZuen(eraId, libId):
-            #Conseguir datos de la erreseina
             return render_template('erreseina.html', eraId=eraId, libId=libId, data=data, nota=nota, iruzkina=iruzkina)
         else:
             return None
@@ -142,7 +142,7 @@ def liburuko_erreseina_katalogoa():
     eraId = request.values.get("eraId")
     libId = request.values.get("libId")
     lista = erreseinak.bilatuErreseinak(libId)
-    return render_template('libErreseinaKatalogo.html', lista, eraId)
+    return render_template('libErreseinaKatalogo.html', lista=lista, eraId=eraId)
 
 
 

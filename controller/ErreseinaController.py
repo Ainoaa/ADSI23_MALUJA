@@ -1,5 +1,6 @@
-from model import Connection, Erreseina
+from model import Connection
 from model.tools import hash_password
+from model.Erreseina import Erreseina
 
 db = Connection()
 
@@ -20,19 +21,19 @@ class ErreseinaController:
 	def erreseinaSortu(self, eraId, libId, data, nota, iruzkina):
 		db.insert("INSERT INTO ERRESEINA VALUES(?, ?, ?, ?, ?)", (eraId, libId, data, nota, iruzkina))
 		erreseina = Erreseina(eraId, libId, data, nota, iruzkina)
-		gehituErreseina(erreseina)
+		self.gehituErreseina(erreseina)
 		
 
 	def jadaErreseinaZuen(self, eraId, libId, data):
 		emaitza = db.select("SELECT count(*) FROM ERRESEINA WHERE eraID = ? AND libId = ? AND data = ?", (eraId, libId, data))
-		if emaitza >=1:
+		if emaitza[0][0] >=1:
 			return True
 		else:
 			return False
 			
 	def erreseinaEditatu(self, eraId, libId, lehenData, nota, iruzkina, orainData):
 		db.update("UPDATE ERRESEINA SET data = ?, nota = ?, iruzkina = ? WHERE eraId = ? AND libId = ? AND data = ?", (orainData, nota, iruzkina, eraId, libId, lehenData))
-		erreseina = bilatuErreseina(eraId, libId, lehenData)
+		erreseina = self.bilatuErreseina(eraId, libId, lehenData)
 		if erreseina:
 			erreseina.erreseinaEditatu(orainData, nota, iruzkina)
 		else:
