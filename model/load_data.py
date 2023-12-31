@@ -21,7 +21,7 @@ cur.execute("""
 	CREATE TABLE Book(
 		id integer primary key AUTOINCREMENT,
 		title varchar(50),
-		author varchar(50),
+		author int,
 		cover varchar(50), --la ruta o el nombre de archivo de la portada
 		description TEXT,
 		FOREIGN KEY(author) REFERENCES Author(id)
@@ -137,17 +137,17 @@ for author, title, cover, description in libros:
 
 ### Insert lagunak
 
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 4))
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 4)) # no tocar
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))# no tocar
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))# no tocar
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 4))
+#cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 4))
 con.commit()
 cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 1))
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 2))
+#cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 2))
 con.commit()
 
 ### Insert Erreserben Historiala
@@ -160,15 +160,15 @@ cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 3))
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 4))
 con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 1))
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 1))# no tocar
 con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 7))
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 7))# no tocar
 con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 9))
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 9))# no tocar
 con.commit()
 #cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
 #con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))# no tocar
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 6))
 con.commit()
