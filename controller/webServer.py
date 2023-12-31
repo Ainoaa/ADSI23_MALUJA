@@ -329,7 +329,7 @@ def liburuGomendioak():
                 title=title, author=author, max=max, min=min)
                 
                 
-@app.route('/erreserbatutakoLiburuak)
+@app.route('/erreserbatutakoLiburuak')
 def erreserbatutakoLiburuak():
     title = request.values.get("title", "")
     author = request.values.get("author", "")
