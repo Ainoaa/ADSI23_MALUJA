@@ -333,6 +333,7 @@ def liburuGomendioak():
 def erreserbatutakoLiburuak():
     title = request.values.get("title", "")
     author = request.values.get("author", "")
+    page = request.args.get("page", default=1, type=int) 
     books, nb_books = erreserbatuak.search_books(title=title, author=author, page=page - 1)
     total_pages = (nb_books // 6) + 1
     return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author, current_page=page, total_pages=total_pages, max=max, min=min)
