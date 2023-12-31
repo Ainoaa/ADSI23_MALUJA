@@ -22,7 +22,7 @@
     	<div class="row">
         {% for user in lagunen_lagunak %}
         	<div class="col-lg-4 col-md-6 col-sm-12 my-2">
-                	<div class="card d-flex flex-row" style="width: 25rem;">
+                	<div class="card d-flex flex-row" style="width: 25rem;" data-section="lagunen arabera">
                     		<div class="card-body">
                         		<h5 class="card-title">{{user.name}}</h5>
                         		<h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6>
@@ -60,10 +60,10 @@
      	<div class="row">
         {% for user in irakurritako_liburuen_lagunak %}
         	<div class="col-lg-4 col-md-6 col-sm-12 my-2">
-                	<div class="card d-flex flex-row" style="width: 25rem;">
+                	<div class="card d-flex flex-row" style="width: 25rem;" data-section="liburuen arabera">
                     		<div class="card-body">
                         		<h5 class="card-title">{{user.name}}</h5>
-                        		<h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6
+                        		<h6 class="card-subtitle mb-2 text-muted">{{user.email}}</h6>
                     		</div>
                 	</div>
             	</div>
@@ -79,12 +79,12 @@
               				</a>
           			</li>
           		{% endif %}
-        		{% for page_lagunak in range(max(1, current_page_zure_lag_lib-3),min(total_pages_zure_lag_lib+1, current_page_zure_lag_lib+4)) %}
-            			<li class="page-item"><a class="page-link {% if page_lagunak == current_page_zure_lag_lib %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{current_page_lagunen_lagunak}}&page_zure_lag={{current_page_zure_lag}}">{{page_lagunak}}</a></li>
+        		{% for page_zure_lag_lib in range(max(1, current_page_zure_lag_lib-3),min(total_pages_zure_lag_lib+1, current_page_zure_lag_lib+4)) %}
+            			<li class="page-item"><a class="page-link {% if page_zure_lag_lib == current_page_zure_lag_lib %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunen_lagunak={{current_page_lagunen_lagunak}}&page_zure_lag_lib={{page_zure_lag_lib}}">{{page_zure_lag_lib}}</a></li>
         		{% endfor %}
         		{% if current_page_zure_lag_lib+3 < total_pages_zure_lag_lib : %}
           			<li class="page-item">
-              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{current_page_lagunen_lagunak}}&page_zure_lag={{current_page_zure_lag_lib}}" aria-label="Next">
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunen_lagunak={{current_page_lagunen_lagunak}}&page_zure_lag_lib={{total_pages_zure_lag_lib}}" aria-label="Next">
                   				<span aria-hidden="true">&raquo;</span>
                   				<span class="sr-only">Next</span>
               				</a>

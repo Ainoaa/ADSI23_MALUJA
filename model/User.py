@@ -53,8 +53,9 @@ class User:
 		topics = db.select("SELECT topic FROM BookTopics WHERE book_id = ?", (book_id,))
 		return [topic[0] for topic in topics]
 
-	def get_lagunen_zerrenda(self):
-		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id", (self.id,))
+	def get_lagunen_zerrenda(self, name="", email=""):
+		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id AND T2.name LIKE ? AND T2.email LIKE ?", (self.id,f"%{name}%", f"%{email}%"))
+		print(lagunak)
 		lagun_zerrenda = [
 			User(b[0],b[1],b[2],b[4])
 			for b in lagunak
@@ -70,8 +71,8 @@ class User:
 		]
 		return books
 		
-	def get_liburua_irakurri_dutenek(self, ida):
-		usuarios = db.select("SELECT T2.* FROM ErreserbenHistoriala T, User T2 WHERE T.userId = T2.id AND T.bookId = ?", (ida,))
+	def get_liburua_irakurri_dutenek(self, ida, name="", email=""):
+		usuarios = db.select("SELECT T2.* FROM ErreserbenHistoriala T, User T2 WHERE T.userId = T2.id AND T.bookId = ? AND T2.name LIKE ? AND T2.email LIKE ?", (ida,f"%{name}%", f"%{email}%"))
 		user_lista = [
 			User(b[0],b[1],b[2],b[4])
 			for b in usuarios
