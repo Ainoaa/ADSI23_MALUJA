@@ -27,10 +27,11 @@ class ForumController:
         # Implementa la lógica para obtener un tema específico por su ID
         pass
 
-    def create_forum_topic(self, user_id, title, content):
+    def create_forum_topic(self, user_id, username, title, content):
         try:
             # Utiliza directamente la conexión para interactuar con la base de datos
-            db.insert("INSERT INTO ForumTopic (user_id, title, content) VALUES (?, ?, ?)", (user_id, title, content))
+            db.insert("INSERT INTO ForumTopic (user_id, username, title, content) VALUES (?, ?, ?, ?)",
+                      (user_id, username, title, content))
             print("Topic created successfully.")
         except Exception as e:
             print("Error creating forum topic:", str(e))

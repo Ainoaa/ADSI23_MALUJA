@@ -3,19 +3,21 @@ from model import Connection
 db = Connection()
 
 class ForumTopic:
-    def __init__(self, user_id, title, content):
+    def __init__(self, id, user_id, username, title, content, created_at):
+        self.id = id
         self.user_id = user_id
+        self.username = username
         self.title = title
         self.content = content
-
+        self.created_at = created_at
     def __str__(self):
         return f"Title: {self.title}, User ID: {self.user_id}"
 
     @staticmethod
-    def create_topic(user_id, title):
+    def create_topic(user_id, username, title):
         try:
             # Lógica para crear un nuevo tema en la base de datos
-            db.insert("INSERT INTO ForumTopic (user_id, title) VALUES (?, ?)", (user_id, title))
+            db.insert("INSERT INTO ForumTopic (user_id,username, title) VALUES (?, ?)", (user_id, username, title))
             print("Topic created successfully.")
         except Exception as e:
             print(f"Error creating forum topic: {str(e)}")
