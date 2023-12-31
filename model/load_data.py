@@ -21,8 +21,8 @@ cur.execute("""
 	CREATE TABLE Book(
 		id integer primary key AUTOINCREMENT,
 		title varchar(50),
-		author integer,
-		cover varchar(50),
+		author varchar(50),
+		cover varchar(50), --la ruta o el nombre de archivo de la portada
 		description TEXT,
 		FOREIGN KEY(author) REFERENCES Author(id)
 	)
