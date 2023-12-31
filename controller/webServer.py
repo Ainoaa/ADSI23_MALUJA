@@ -231,12 +231,12 @@ def LagunenGomendioak():
             user
             for user in lista
             if user != request.user and
-            user not in gomendatutako_lagunen_lagunak and
-	user not in lagun_zerrenda
+            user not in lagun_zerrenda and
+            user not in gomendatutako_lagunen_lagunak
         )
     gomendatutako_lagunen_lagunak = [user for user in gomendatutako_lagunen_lagunak if user.id != request.user.id]
-    lagunen_lagunak = gomendatutako_lagunen_lagunak
     total_pages_lagunen_lagunak = (len(gomendatutako_lagunen_lagunak)//4) +1
+    lagunen_lagunak = gomendatutako_lagunen_lagunak
 
     #Irakurritako liburuen araberako lagunak gomendatu
     lagun_zerrenda = request.user.get_lagunen_zerrenda(name,email)

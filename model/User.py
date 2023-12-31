@@ -55,7 +55,6 @@ class User:
 
 	def get_lagunen_zerrenda(self, name="", email=""):
 		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id AND T2.name LIKE ? AND T2.email LIKE ?", (self.id,f"%{name}%", f"%{email}%"))
-		print(lagunak)
 		lagun_zerrenda = [
 			User(b[0],b[1],b[2],b[4])
 			for b in lagunak
