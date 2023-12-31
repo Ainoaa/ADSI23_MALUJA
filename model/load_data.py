@@ -47,6 +47,7 @@ cur.execute("""
 	)
 """)
 
+
 cur.execute("""
 	CREATE TABLE Erreseina(
 		eraId integer,
@@ -59,6 +60,18 @@ cur.execute("""
 		FOREIGN KEY(libId) REFERENCES Book(id)
 	)
 """)
+
+cur.execute("""
+    CREATE TABLE ForumTopic(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        title VARCHAR(50),
+        content TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(user_id) REFERENCES User(id)
+    )
+""")
+#con.commit()
 
 cur.execute("""
 	CREATE TABLE Lagunak(

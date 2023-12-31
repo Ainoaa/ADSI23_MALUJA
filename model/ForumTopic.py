@@ -2,7 +2,6 @@ from model import Connection
 
 db = Connection()
 
-
 class ForumTopic:
     def __init__(self, user_id, title, content):
         self.user_id = user_id
