@@ -55,7 +55,7 @@ cur.execute("""
 		data Date,
 		Nota integer,
 		Iruzkina varchar(200),
-		PRIMARY KEY (eraId, libId, data)
+		PRIMARY KEY (eraId, libId, data),
 		FOREIGN KEY(eraId) REFERENCES User(id),
 		FOREIGN KEY(libId) REFERENCES Book(id)
 	)
@@ -88,6 +88,20 @@ cur.execute("""
 		bookId integer,
 		FOREIGN KEY(userId) REFERENCES User(id),
 		FOREIGN KEY(bookId) REFERENCES Book(id)
+	)
+""")
+
+
+
+cur.execute("""
+	CREATE TABLE Mailegatu(
+		eraId integer,
+		libId integer,
+		hasieraData Date,
+		bukaeraData Date Null,
+		PRIMARY KEY (eraId, libId, hasieraData),
+		FOREIGN KEY(eraId) REFERENCES User(id),
+		FOREIGN KEY(libId) REFERENCES Book(id)
 	)
 """)
 
