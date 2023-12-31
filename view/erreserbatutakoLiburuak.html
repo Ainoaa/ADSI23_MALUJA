@@ -5,18 +5,19 @@
 
     <form class="form-inline">
       <div class="input-group mb-2 mr-sm-2">
-        <label for="Name" class="col-sm-2 col-form-label">Name</label>
-        <input type="text" class="form-control mb-2" id="Name" name="Name" placeholder="Write here the user's name" {% if Name != "": %}value="{{Name}}"{% endif %}>
+        <label for="title" class="col-sm-2 col-form-label">Title</label>
+        <input type="text" class="form-control mb-2" id="title" name="title" placeholder="Title" {% if title != "": %}value="{{title}}"{% endif %}>
       </div>
       <div class="input-group mb-2 mr-sm-2">
-        <label for="Email" class="col-sm-2 col-form-label">Email</label>
-        <input type="text" class="form-control mb-2" id="Email" name="Email" placeholder="Write here the user's email" {% if Email != "": %}value="{{Email}}"{% endif %}>
+        <label for="author" class="col-sm-2 col-form-label">Author</label>
+        <input type="text" class="form-control mb-2" id="author" name="author" placeholder="Author name" {% if author != "": %}value="{{author}}"{% endif %}>
       </div>
       <button type="submit" class="btn btn-primary">
           <i class="fa fa-search"></i>
-          Bilatu
+          Search
       </button>
     </form>
+
 
     <br>
     <p style="font-size: 28px;">Zuk erreserbatutako liburu zerrenda</p>
@@ -45,18 +46,18 @@
 
               {% if current_page-3 > 1: %}
               <li class="page-item">
-                  <a class="page-link" href="{{request.path}}?Name={{Name}}&Email={{Email}}&page=1" aria-label="Previous">
+                  <a class="page-link" href="{{request.path}}?Title={{Title}}&Author={{Author}}&page=1" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                       <span class="sr-only">Previous</span>
                   </a>
               </li>
               {% endif %}
             {% for page in range(max(1, current_page-3),min(total_pages+1, current_page+4)) %}
-                <li class="page-item"><a class="page-link {% if page == current_page %}active{% endif %}" href="{{request.path}}?Name={{Name}}&Email={{Email}}&page={{page}}">{{page}}</a></li>
+                <li class="page-item"><a class="page-link {% if page == current_page %}active{% endif %}" href="{{request.path}}?Title={{Title}}&Author={{Author}}&page={{page}}">{{page}}</a></li>
             {% endfor %}
             {% if current_page+3 < total_pages : %}
               <li class="page-item">
-                  <a class="page-link" href="{{request.path}}?Name={{Name}}&Email={{Email}}&page={{total_pages}}" aria-label="Next">
+                  <a class="page-link" href="{{request.path}}?Title={{Title}}&Author={{Author}}&page={{total_pages}}" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                       <span class="sr-only">Next</span>
                   </a>
@@ -65,7 +66,7 @@
           </ul>
         </nav>
     {% else %}
-        <p>No se encontraron libros con el nombre o correo electrónico proporcionado.</p>
+        <p>No se encontraron libros con el nombre o autor proporcionados.</p>
     {% endif %}
 
 </div>

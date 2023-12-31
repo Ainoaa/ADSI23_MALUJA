@@ -286,9 +286,6 @@ def foroa():
     return render_template('foroa.html', topics=topics)
 
 
-
-
-
 @app.route('/liburuGomendioak')
 def liburuGomendioak():
     if not('user' in dir(request) and request.user and request.user.token):
@@ -330,3 +327,12 @@ def liburuGomendioak():
     return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak,
                 books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
                 title=title, author=author, max=max, min=min)
+                
+                
+@app.route('/erreserbatutakoLiburuak)
+def erreserbatutakoLiburuak():
+    title = request.values.get("title", "")
+    author = request.values.get("author", "")
+    books, nb_books = erreserbatuak.search_books(title=title, author=author, page=page - 1)
+    total_pages = (nb_books // 6) + 1
+    return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author, current_page=page, total_pages=total_pages, max=max, min=min)
