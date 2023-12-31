@@ -69,3 +69,12 @@ class User:
 			for b in books_read
 		]
 		return books
+		
+	def get_liburua_irakurri_dutenek(self, ida):
+		usuarios = db.select("SELECT T2.* FROM ErreserbenHistoriala T, User T2 WHERE T.userId = T2.id AND T.bookId = ?", (ida,))
+		user_lista = [
+			User(b[0],b[1],b[2],b[4])
+			for b in usuarios
+			if b[0] != self.id
+		]
+		return user_lista

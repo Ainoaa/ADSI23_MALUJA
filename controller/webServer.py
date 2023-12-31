@@ -210,41 +210,53 @@ def erabiltzaileaEzabatu():
 		else:
 			return render_template('erabiltzaileaEzDago.html')
 	return render_template('erabiltzaileaEzabatu.html')
+	
 ##############################################################################################################
 
 @app.route('/LagunenGomendioak')
 def LagunenGomendioak():
+	print("Cookies:", request.cookies)
 	if not('user' in dir(request) and request.user and request.user.token):
 		return redirect("/")
 	name = request.values.get("name", "")
 	email = request.values.get("email", "")
-	page_lagunak = int(request.values.get("page_lagunak", 1))
-	page_zure_lag = int(request.values.get("page_zure_lag", 1))
+	page_lagunen_lagunak = int(request.values.get("page_lagunen_lagunak", 1))
+	page_zure_lag_lib = int(request.values.get("page_zure_lag_lib", 1))
 
-
+	#Lagunen lagunak gomendatu
 	lagun_zerrenda = request.user.get_lagunen_zerrenda()
-	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
-	gomendatutako_lagunak = []
+	gomendatutako_lagunen_lagunak = []
 	for User in lagun_zerrenda:
 		lista = User.get_lagunen_zerrenda()
-		for user in lista:
-			print(user.name)
-		gomendatutako_lagunak = [
+		gomendatutako_lagunen_lagunak.extend(
 			user
 			for user in lista
-			if user not in irakurritako_lagunak and
-			user not in gomendatutako_lagunak
-		]
-	total_pages_lagunak = (len(gomendatutako_lagunak)//4) +1
-	lagunen_lagunak = gomendatutako_lagunak
-	for book in lagunen_lagunak:
-			print(user.name)
+			if user != request.user and
+			user not in gomendatutako_lagunen_lagunak
+		)
+	gomendatutako_lagunen_lagunak = [user for user in gomendatutako_lagunen_lagunak if user.id != request.user.id]
+	total_pages_lagunen_lagunak = (len(gomendatutako_lagunen_lagunak)//4) +1
+	lagunen_lagunak = gomendatutako_lagunen_lagunak
+	
+	#Irakurritako liburuen araberako lagunak gomendatu
+	lagun_zerrenda = request.user.get_lagunen_zerrenda()
+	irakurritako_liburuak = request.user.get_irakurritako_liburuak()
+	gomendatutako_lagunak_liburuekiko = []
+	for book in irakurritako_liburuak:
+		liburua_irakurri_dutenek = request.user.get_liburua_irakurri_dutenek(book.id)
+		gomendatutako_lagunak_liburuekiko.extend(
+			user
+			for user in liburua_irakurri_dutenek
+			if user not in lagun_zerrenda and 
+			user not in gomendatutako_lagunak_liburuekiko
+		)	
 
-	people, nb_people = library.search_people(name=name, email=email, page=page - 1)
-	total_pages_zure_lagunak = (nb_people // 4) + (1 if nb_people % 4 > 0 else 0)
+	total_pages_zure_lag_lib = (len(gomendatutako_lagunak_liburuekiko)//4) +1
+	irakurritako_liburuen_lagunak = gomendatutako_lagunak_liburuekiko
+	
 
-	return render_template('LagunenGomendioak.html', lagunen_lagunak=lagunen_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak, people=people,
-                       		current_page_zure_lag=page_zure_lag, total_pages_zure_lagunak=total_pages_zure_lagunak,
+	return render_template('LagunenGomendioak.html', lagunen_lagunak=lagunen_lagunak, current_page_lagunen_lagunak=page_lagunen_lagunak, total_pages_lagunen_lagunak=total_pages_lagunen_lagunak,
+				irakurritako_liburuen_lagunak=irakurritako_liburuen_lagunak, current_page_zure_lag_lib=page_zure_lag_lib, total_pages_zure_lag_lib=total_pages_zure_lag_lib,
 				name=name, email=email, max=max, min=min)
 
 

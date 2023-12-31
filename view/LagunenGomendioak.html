@@ -9,7 +9,7 @@
       		</div>
       		<div class="input-group mb-2 mr-sm-2">
         		<label for="email" class="col-sm-2 col-form-label">Email</label>
-        		<input type="text" class="form-control mb-2" id="email" name="email" placeholder="Write here the user's email" {% if email != "": %}value="{{email}}"{% endif %}>
+        		<input type="text" class="form-control mb-2" id="email" name="user_email" placeholder="Write here the user's email" {% if email != "": %}value="{{email}}"{% endif %} autocomplete="off">
       		</div>
       		<button type="submit" class="btn btn-primary">
           		<i class="fa fa-search"></i>
@@ -33,20 +33,20 @@
     	</div>
     	<nav>
       		<ul class="pagination justify-content-center">
-          		{% if current_page_lagunak-3 > 1: %}
+          		{% if current_page_lagunen_lagunak-3 > 1: %}
           			<li class="page-item">
-              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak=1&page_zure_lag={{current_page_zure_lag}}" aria-label="Previous"> 
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak=1&page_zure_lag={{current_page_zure_lag_lib}}" aria-label="Previous"> 
                   				<span aria-hidden="true">&laquo;</span>
                   				<span class="sr-only">Previous</span>
               				</a>
           			</li>
           		{% endif %}
-        		{% for page_lagunak in range(max(1, current_page_lagunak-3),min(total_pages_lagunak+1, current_page_lagunak+4)) %}
-            			<li class="page-item"><a class="page-link {% if page_lagunak == current_page_lagunak %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{page_lagunak}}&page_zure_lag={{current_page_zure_lag}}">{{page_lagunak}}</a></li>
+        		{% for page_lagunak in range(max(1, current_page_lagunen_lagunak-3),min(total_pages_lagunen_lagunak+1, current_page_lagunen_lagunak+4)) %}
+            			<li class="page-item"><a class="page-link {% if page_lagunak == current_page_lagunen_lagunak %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{page_lagunak}}&page_zure_lag={{current_page_zure_lag_lib}}">{{page_lagunak}}</a></li>
         		{% endfor %}
-        		{% if current_page_lagunak+3 < total_pages_lagunak : %}
+        		{% if current_page_lagunen_lagunak+3 < total_pages_lagunen_lagunak : %}
           			<li class="page-item">
-              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{total_pages_lagunak}}&page_zure_lag={{current_page_zure_lag}}" aria-label="Next">
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{total_pages_lagunen_lagunak}}&page_zure_lag={{current_page_zure_lag_lib}}" aria-label="Next">
                   				<span aria-hidden="true">&raquo;</span>
                   				<span class="sr-only">Next</span>
               				</a>
@@ -58,7 +58,7 @@
      	<hr class="hr" />
      	<h1>Irakurritako liburuen arabera</h1>	
      	<div class="row">
-        {% for user in books_zure_lag %}
+        {% for user in irakurritako_liburuen_lagunak %}
         	<div class="col-lg-4 col-md-6 col-sm-12 my-2">
                 	<div class="card d-flex flex-row" style="width: 25rem;">
                     		<div class="card-body">
@@ -71,20 +71,20 @@
     	</div>
     	<nav>
       		<ul class="pagination justify-content-center">
-          		{% if current_page_lagunak-3 > 1: %}
+          		{% if current_page_zure_lag_lib-3 > 1: %}
           			<li class="page-item">
-              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak=1&page_zure_lag={{current_page_zure_lag}}" aria-label="Previous"> 
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{current_page_lagunen_lagunak}}&page_zure_lib=1" aria-label="Previous"> 
                   				<span aria-hidden="true">&laquo;</span>
                   				<span class="sr-only">Previous</span>
               				</a>
           			</li>
           		{% endif %}
-        		{% for page_lagunak in range(max(1, current_page_lagunak-3),min(total_pages_lagunak+1, current_page_lagunak+4)) %}
-            			<li class="page-item"><a class="page-link {% if page_lagunak == current_page_lagunak %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{page_lagunak}}&page_zure_lag={{current_page_zure_lag}}">{{page_lagunak}}</a></li>
+        		{% for page_lagunak in range(max(1, current_page_zure_lag_lib-3),min(total_pages_zure_lag_lib+1, current_page_zure_lag_lib+4)) %}
+            			<li class="page-item"><a class="page-link {% if page_lagunak == current_page_zure_lag_lib %}active{% endif %}" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{current_page_lagunen_lagunak}}&page_zure_lag={{current_page_zure_lag}}">{{page_lagunak}}</a></li>
         		{% endfor %}
-        		{% if current_page_lagunak+3 < total_pages_lagunak : %}
+        		{% if current_page_zure_lag_lib+3 < total_pages_zure_lag_lib : %}
           			<li class="page-item">
-              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{total_pages_lagunak}}&page_zure_lag={{current_page_zure_lag}}" aria-label="Next">
+              				<a class="page-link" href="{{request.path}}?name={{name}}&email={{email}}&page_lagunak={{current_page_lagunen_lagunak}}&page_zure_lag={{current_page_zure_lag_lib}}" aria-label="Next">
                   				<span aria-hidden="true">&raquo;</span>
                   				<span class="sr-only">Next</span>
               				</a>
