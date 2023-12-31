@@ -10,11 +10,6 @@ class ErreserbatutakoLiburuakController:
 			cls.__instance = super(ErreserbatutakoLiburuakController, cls).__new__(cls)
 			cls.__instance.__initialized = False
 		return cls.__instance
-		
-		
-	def __init__(self):
-        if not self.__initialized:
-            self.__initialized = True
 
 
 	def bueltatu_liburua(self, hasiData, bukatuData, erabId, bookId):
