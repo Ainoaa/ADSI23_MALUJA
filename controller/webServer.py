@@ -341,6 +341,6 @@ def erreserbatutakoLiburuak():
     books= erreserbatuak.get_liburu_erreserbatuak(title=title, author=author)
     return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author)
     
-@app.route('nireLagunak')
+@app.route('/nireLagunak')
 def nireLagunak():
     return render_template('nireLagunak.html')
