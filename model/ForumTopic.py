@@ -1,4 +1,5 @@
 from model import Connection
+from model.ForumPost import ForumPost
 
 db = Connection()
 
@@ -30,4 +31,12 @@ class ForumTopic:
             return [ForumTopic(*row) for row in result]
         except Exception as e:
             print(f"Error al obtener temas del foro: {str(e)}")
+            return []
+
+    def get_posts(self):
+        try:
+            result = db.select("SELECT * FROM forum_posts WHERE topic_id = ?", (self.id,))
+            return [ForumPost(*row) for row in result]
+        except Exception as e:
+            print("Error getting forum posts for topic:", str(e))
             return []

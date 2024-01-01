@@ -14,12 +14,18 @@ class ForumPost:
 
     @staticmethod
     def create_post(topic_id, user_id, content):
-        # Lógica para crear un nuevo mensaje en el foro en la base de datos
-        db.execute("INSERT INTO forum_posts (topic_id, user_id, content) VALUES (?, ?, ?)", (topic_id, user_id, content))
-        db.commit()
-
+        try:
+            db.insert("INSERT INTO forum_posts (topic_id, user_id, content) VALUES (?, ?, ?)",
+                      (topic_id, user_id, content))
+            db.commit()
+            print("Post created successfully.")
+        except Exception as e:
+            print("Error creating forum post:", str(e))
     @staticmethod
     def get_posts_for_topic(topic_id):
-        # Lógica para obtener todos los mensajes relacionados con un tema desde la base de datos
-        result = db.select("SELECT * FROM forum_posts WHERE topic_id = ?", (topic_id,))
-        return [ForumPost(*row) for row in result]
+        try:
+            result = db.select("SELECT * FROM forum_posts WHERE topic_id = ?", (topic_id,))
+            return [ForumPost(*row) for row in result]
+        except Exception as e:
+            print("Error getting forum posts for topic:", str(e))
+            return []

@@ -285,8 +285,37 @@ def foroa():
     topics = ForumController().get_forum_topics()
     return render_template('foroa.html', topics=topics)
 
+@app.route('/create_reply', methods=['POST'])
+def create_reply():
+    if 'user' in dir(request) and request.user and request.user.token:
+        user_id = request.user.id
+        topic_id = request.form.get('topic_id')  # Asegúrate de tener un campo oculto en el formulario HTML para el topic_id
+        content = request.form.get('reply_content')
+
+        # Aquí deberías llamar a la lógica para crear una respuesta en tu modelo o controlador
+        forum_controller.create_forum_post(user_id, topic_id, content)
+
+        # Después de crear la respuesta, redirige a la página del tema para mostrar la respuesta
+        return redirect(url_for('foroa'))
+
+    # Si el usuario no está autenticado, redirige a la página de inicio de sesión
+    return redirect(url_for('login'))
 
 
+@app.route('/get_forum_posts_for_topic/<int:topic_id>', methods=['GET'])
+def get_forum_posts_for_topic(topic_id):
+    # Instancia del controlador del foro
+    forum_controller = ForumController()
+    # Obtiene los mensajes relacionados con el tema específico
+    posts = forum_controller.get_forum_posts_for_topic(topic_id)
+    if posts is not None:
+        # Renderiza la plantilla con los mensajes del tema
+        return redirect(url_for('foroa'))
+    else:
+        # Manejo de errores: imprime un mensaje en la consola
+        print('Error al obtener mensajes del tema')
+        # Puedes redirigir a alguna otra página si lo deseas
+        return redirect(url_for('foroa'))
 
 
 @app.route('/liburuGomendioak')

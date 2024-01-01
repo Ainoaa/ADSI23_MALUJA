@@ -6,21 +6,6 @@
     <div class="forum">
         <h2>Foro</h2>
         <!-- -->
-        {% if topics %}
-            <!-- Lista de temas -->
-            <ul>
-                {% for topic in topics %}
-                    <li>
-                        <h4>{{ topic.title }}</h4>
-                        <p>{{ topic.content }}</p>
-                        <p>Creado por: {{ topic.username }} en {{ topic.created_at }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No hay temas en el foro.</p>
-        {% endif %}
-
         <!-- Formulario para agregar un nuevo tema (solo visible si el usuario está autenticado) -->
         {% if 'user' in request.__dict__ and request.user and request.user.token %}
             <div class="new-topic">
@@ -43,8 +28,51 @@
                 <a href="/login" class="btn btn-primary">Iniciar Sesión</a>
             </div>
         {% endif %}
-    </div>
 
+        <h2>Gaien Zerrenda</h2>
+
+        {% if topics %}
+            <!-- Lista de temas -->
+            <ul>
+                {% for topic in topics %}
+                    <li>
+                        <h4>{{ topic.title }}</h4>
+                        <p>{{ topic.content }}</p>
+                        <p>Creado por: {{ topic.username }} en {{ topic.created_at }}</p>
+
+                        <!-- Lista de respuestas -->
+                        <ul>
+                            {% for post in topic.posts %}
+                                <li>
+                                    <!-- Muestra el contenido de la respuesta -->
+                                    <p>{{ post.content }}</p>
+                                    <!-- ... (otra información de la respuesta) -->
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Formulario para agregar una respuesta al tema -->
+                        {% if 'user' in request.__dict__ and request.user and request.user.token %}
+                            <div class="new-reply">
+                                <h5>Responder al tema</h5>
+                                <form action="{{ url_for('create_reply') }}" method="POST">
+                                    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+                                    <div class="form-group">
+                                        <label for="reply_content">Respuesta:</label>
+                                        <textarea class="form-control" id="reply_content" name="reply_content" rows="3" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Responder</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                        <!-- Fin del formulario de respuesta -->
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay temas en el foro.</p>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

@@ -4,10 +4,8 @@ import json
 
 salt = "library"
 
-
 con = sqlite3.connect("datos.db")
 cur = con.cursor()
-
 
 ### Create tables
 cur.execute("""
@@ -47,7 +45,6 @@ cur.execute("""
 	)
 """)
 
-
 cur.execute("""
 	CREATE TABLE Erreseina(
 		eraId integer,
@@ -71,7 +68,17 @@ cur.execute("""
         FOREIGN KEY(user_id) REFERENCES User(id)
     )
 """)
-#con.commit()
+
+cur.execute("""
+	CREATE TABLE forum_posts (
+    	id INTEGER PRIMARY KEY AUTOINCREMENT,
+    	topic_id INTEGER,
+    	user_id INTEGER,
+    	content TEXT,
+    	FOREIGN KEY (topic_id) REFERENCES ForumTopic(id),
+    	FOREIGN KEY (user_id) REFERENCES User(id)
+    )
+""")
 
 cur.execute("""
 	CREATE TABLE Lagunak(
@@ -94,32 +101,32 @@ cur.execute("""
 ### Insert users
 
 with open('usuarios.json', 'r') as f:
-	usuarios = json.load(f)['usuarios']
+    usuarios = json.load(f)['usuarios']
 
 for user in usuarios:
-	dataBase_password = user['password'] + salt
-	hashed = hashlib.md5(dataBase_password.encode())
-	dataBase_password = hashed.hexdigest()
-	cur.execute(f"""INSERT INTO User VALUES (NULL, '{user['nombres']}', '{user['email']}', '{dataBase_password}', {user['admin']})""")
-	con.commit()
-
+    dataBase_password = user['password'] + salt
+    hashed = hashlib.md5(dataBase_password.encode())
+    dataBase_password = hashed.hexdigest()
+    cur.execute(
+        f"""INSERT INTO User VALUES (NULL, '{user['nombres']}', '{user['email']}', '{dataBase_password}', {user['admin']})""")
+    con.commit()
 
 #### Insert books
 with open('libros.tsv', 'r') as f:
-	libros = [x.split("\t") for x in f.readlines()]
+    libros = [x.split("\t") for x in f.readlines()]
 
 for author, title, cover, description in libros:
-	res = cur.execute(f"SELECT id FROM Author WHERE name=\"{author}\"")
-	if res.rowcount == -1:
-		cur.execute(f"""INSERT INTO Author VALUES (NULL, \"{author}\")""")
-		con.commit()
-		res = cur.execute(f"SELECT id FROM Author WHERE name=\"{author}\"")
-	author_id = res.fetchone()[0]
+    res = cur.execute(f"SELECT id FROM Author WHERE name=\"{author}\"")
+    if res.rowcount == -1:
+        cur.execute(f"""INSERT INTO Author VALUES (NULL, \"{author}\")""")
+        con.commit()
+        res = cur.execute(f"SELECT id FROM Author WHERE name=\"{author}\"")
+    author_id = res.fetchone()[0]
 
-	cur.execute("INSERT INTO Book VALUES (NULL, ?, ?, ?, ?)",
-		            (title, author_id, cover, description.strip()))
+    cur.execute("INSERT INTO Book VALUES (NULL, ?, ?, ?, ?)",
+                (title, author_id, cover, description.strip()))
 
-	con.commit()
+    con.commit()
 
 ### Insert lagunak
 
@@ -152,17 +159,11 @@ cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 7))
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 9))
 con.commit()
-#cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
-#con.commit()
+# cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
+# con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 6))
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 8))
 con.commit()
-
-
-
-
-
-

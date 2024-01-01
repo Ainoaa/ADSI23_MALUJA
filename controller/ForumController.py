@@ -1,5 +1,6 @@
-from model import Connection, ForumTopic
+from model import Connection, ForumTopic, ForumPost
 from model.ForumTopic import ForumTopic
+from model.ForumPost import ForumPost
 
 db = Connection()
 
@@ -37,9 +38,38 @@ class ForumController:
             print("Error creating forum topic:", str(e))
 
     def get_forum_posts_for_topic(self, topic_id):
-        # Implementa la lógica para obtener mensajes relacionados con un tema específico
-        pass
+        try:
+            posts = ForumPost.get_posts_for_topic(topic_id)
+            return posts
+        except Exception as e:
+            print("Error getting forum posts:", str(e))
+            return None
 
     def create_forum_post(self, user_id, topic_id, content):
-        # Implementa la lógica para crear un nuevo mensaje en el foro y guardarlo en la base de datos
-        pass
+        try:
+            ForumPost.create_post(topic_id, user_id, content)
+            print("Post created successfully.")
+        except Exception as e:
+            print("Error creating forum post:", str(e))
+
+    def create_reply(self, user_id, topic_id, content):
+        try:
+            # Implementa la lógica para crear un nuevo mensaje en el foro y guardarlo en la base de datos
+            ForumPost.create_post(topic_id, user_id, content)
+            # Después de insertar el nuevo mensaje, obtener los mensajes actualizados del tema
+            posts = ForumPost.get_posts_for_topic(topic_id)
+            # Redirigir a la página del foro con los mensajes actualizados
+            return posts
+        except Exception as e:
+            print("Error creating forum reply:", str(e))
+            return None
+
+    def get_forum_topics_with_posts(self):
+        try:
+            topics = ForumTopic.get_all_topics()
+            for topic in topics:
+                topic.posts = topic.get_posts()
+            return topics
+        except Exception as e:
+            print("Error getting forum topics:", str(e))
+            return None
