@@ -373,6 +373,32 @@ def erreserbatutakoLiburuak():
     books= erreserbatuak.get_liburu_erreserbatuak(title=title, author=author)
     return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author)
 
+
+@app.route('/ErreserbatutakoLiburuak')
+def erreserbatutakoLiburuak():
+    title = request.values.get("title", "")
+    author = request.values.get("author", "")
+    books= erreserbatuak.get_liburu_erreserbatuak(title=title, author=author)
+    return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author)
+    
+    
+@app.route('/catalogue/<int:bookId>') 
+def info_liburu(bookId):
+    book_info = library.info_liburu(bookId)
+    return render_template('info_liburu.html', book_info=book_info)
+
+
 @app.route('/nireLagunak')
 def nireLagunak():
     return render_template('nireLagunak.html')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

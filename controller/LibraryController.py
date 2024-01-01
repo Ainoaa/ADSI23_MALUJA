@@ -115,4 +115,21 @@ class LibraryController:
 			for b in autorearen_liburuak
 		]
 		return books
+		
+		
+		
+	def info_liburu(self, bookId):
+    		book_info = db.select("SELECT * FROM Book WHERE id = ?", (bookId,))
+
+    		if book_info:
+        		return Book(book_info[0][0], book_info[0][1], book_info[0][2], book_info[0][3], book_info[0][4])
+    		else:
+        		return None
+        		
+        		
+        		
+        		
+        		
+        		
+        		
 			
