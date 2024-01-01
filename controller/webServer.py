@@ -92,7 +92,7 @@ def jadaMailegatuZuen():
         dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
         return render_template('erreseina.html', eraId = eraId, libId = libId, data = dataFormatua, nota = None, iruzkina = None)
     else:
-        return None
+        return render_template('erroreaErreseina.html')
 
 @app.route('/erreseina_sortuta')
 def erreseinaSortu():
@@ -103,7 +103,9 @@ def erreseinaSortu():
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
         erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-    return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+        return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+    else:
+         return render_template('erroreaErreseina.html')
 
 @app.route('/erreseina_editatu')
 def jadaErreseinaZuen():
@@ -116,9 +118,9 @@ def jadaErreseinaZuen():
         if erreseinak.jadaErreseinaZuen(eraId, libId):
             return render_template('erreseina.html', eraId=eraId, libId=libId, data=data, nota=nota, iruzkina=iruzkina)
         else:
-            return None
+            return render_template('erroreaErreseina.html')
     else:
-        return None
+        return render_template('erroreaErreseina.html')
 
 @app.route('/erreseina_editatuta')
 def erreseinaEditatu():
@@ -132,7 +134,11 @@ def erreseinaEditatu():
             dataOrain = datetime.datetime.now()
             dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
             erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina, dataFormatua)
-    return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+            return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+        else:
+            return render_template('erroreaErreseina.html')
+    else:
+        return render_template('erroreaErreseina.html')
 
 
 

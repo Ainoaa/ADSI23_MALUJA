@@ -3,24 +3,29 @@
 {% block content %}
     <div class="container p-5 my-5 border">
         <h1>Erreseinen Lista</h1>
-        <ul>
-            {% for item in lista %}
-                <li>
-                    <p>Data: {{ item.data }}</p>
-                    <p>Nota: {{ item.nota }}</p>
-                    <p>Iruzkinak: {{ item.iruzkina }}</p>
-                    {% if item.eraId == eraId %}
-                        <form action="/erreseina_editatu" method="post">
-                            <input type="hidden" name="eraId" value="{{ item.eraId }}">
-                            <input type="hidden" name="libId" value="{{ item.libId }}">
-                            <input type="hidden" name="data" value="{{ item.data }}">
-                            <input type="hidden" name="nota" value="{{ item.nota }}">
-                            <input type="hidden" name="iruzkina" value="{{ item.iruzkina }}">
-                            <input type="submit" value="Editatu">
-                        </form>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        {% if lista %}
+            <ul>
+                {% for item in lista %}
+                    <li>
+                        <p>Data: {{ item.data }}</p>
+                        <p>Nota: {{ item.nota }}</p>
+                        <p>Iruzkinak: {{ item.iruzkina }}</p>
+                        {% if item.eraId == eraId %}
+                            <form action="/erreseina_editatu" method="post">
+                                <input type="hidden" name="eraId" value="{{ item.eraId }}">
+                                <input type="hidden" name="libId" value="{{ item.libId }}">
+                                <input type="hidden" name="data" value="{{ item.data }}">
+                                <input type="hidden" name="nota" value="{{ item.nota }}">
+                                <input type="hidden" name="iruzkina" value="{{ item.iruzkina }}">
+                                <input type="submit" value="Editatu">
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Liburu hau ez dauzka erreseinarik</p>
+        {% endif %}
     </div>
 {% endblock %}
+
