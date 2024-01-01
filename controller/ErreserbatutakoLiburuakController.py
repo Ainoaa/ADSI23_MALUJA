@@ -16,6 +16,7 @@ class ErreserbatutakoLiburuakController:
         db.delete("DELETE FROM Mailegatu WHERE hasiData = ? AND bukatuData = ? AND erabId = ? AND bookId = ?", (hasiData, bukatuData, erabId, bookId))
 
 
+
     def erreserbatu_liburua(self, userId, bookId):
         # Verificar si el usuario ya tiene reservado el libro
         erreserbatuta_dauka = db.select("SELECT * FROM Mailegatu WHERE userId = ? AND bookId = ?", (userId, bookId))
@@ -64,4 +65,16 @@ class ErreserbatutakoLiburuakController:
             return True
         else:
             return False
+            
+
+    def liburua_dago(self, titulua, autorea):
+    	autore_id = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))
+    
+    	if autore_id:
+        	autore_id = autore_id[0][0]
+        	emaitza = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autore_id))
+        	return len(emaitza) > 0
+
+    	return False
+
 

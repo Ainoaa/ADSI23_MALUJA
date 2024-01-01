@@ -366,21 +366,25 @@ def liburuGomendioak():
                 title=title, author=author, max=max, min=min)
 
 
-@app.route('/erreserbatutakoLiburuak')
+
+@app.route('/ErreserbatutakoLiburuak', methods=['GET', 'POST'])
 def erreserbatutakoLiburuak():
-    title = request.values.get("title", "")
-    author = request.values.get("author", "")
-    books= erreserbatuak.get_liburu_erreserbatuak(title=title, author=author)
-    return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author)
+    if request.method == 'POST':
+        libId = request.values.get("libId")
+        eraId = request.values.get("eraId")
+        title = request.values.get("title")
+        author = request.values.get("author")
+        cover = request.values.get("cover")
+        description = request.values.get("description")
+        if erreserbatuak.liburua_dago(title, author):
+            return render_template('liburuaErreserbatutaZegoenJada.html')
+        else:
+            book = erreserbatuak.erreserbatu_liburua(libId, eraId)
+            return render_template('liburuaErreserbatuDa.html')
+    else:
+        return render_template('liburuaErreserbatu.html')
 
 
-@app.route('/ErreserbatutakoLiburuak')
-def erreserbatutakoLiburuak():
-    title = request.values.get("title", "")
-    author = request.values.get("author", "")
-    books= erreserbatuak.get_liburu_erreserbatuak(title=title, author=author)
-    return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author)
-    
     
 @app.route('/catalogue/<int:bookId>') 
 def info_liburu(bookId):
