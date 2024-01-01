@@ -4,8 +4,10 @@ import json
 
 salt = "library"
 
+
 con = sqlite3.connect("datos.db")
 cur = con.cursor()
+
 
 ### Create tables
 cur.execute("""
@@ -19,7 +21,7 @@ cur.execute("""
 	CREATE TABLE Book(
 		id integer primary key AUTOINCREMENT,
 		title varchar(50),
-		author varchar(50),
+		author int,
 		cover varchar(50), --la ruta o el nombre de archivo de la portada
 		description TEXT,
 		FOREIGN KEY(author) REFERENCES Author(id)
@@ -45,6 +47,7 @@ cur.execute("""
 	)
 """)
 
+
 cur.execute("""
 	CREATE TABLE Erreseina(
 		eraId integer,
@@ -52,7 +55,7 @@ cur.execute("""
 		data Date,
 		Nota integer,
 		Iruzkina varchar(200),
-		PRIMARY KEY (eraId, libId, data)
+		PRIMARY KEY (eraId, libId, data),
 		FOREIGN KEY(eraId) REFERENCES User(id),
 		FOREIGN KEY(libId) REFERENCES Book(id)
 	)
@@ -98,10 +101,24 @@ cur.execute("""
 	)
 """)
 
+
+
+cur.execute("""
+	CREATE TABLE Mailegatu(
+		eraId integer,
+		libId integer,
+		hasieraData Date,
+		bukaeraData Date Null,
+		PRIMARY KEY (eraId, libId, hasieraData),
+		FOREIGN KEY(eraId) REFERENCES User(id),
+		FOREIGN KEY(libId) REFERENCES Book(id)
+	)
+""")
+
 ### Insert users
 
 with open('usuarios.json', 'r') as f:
-    usuarios = json.load(f)['usuarios']
+	usuarios = json.load(f)['usuarios']
 
 for user in usuarios:
     dataBase_password = user['password'] + salt
@@ -110,6 +127,7 @@ for user in usuarios:
     cur.execute(
         f"""INSERT INTO User VALUES (NULL, '{user['nombres']}', '{user['email']}', '{dataBase_password}', {user['admin']})""")
     con.commit()
+
 
 #### Insert books
 with open('libros.tsv', 'r') as f:
@@ -130,17 +148,17 @@ for author, title, cover, description in libros:
 
 ### Insert lagunak
 
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 4))
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 4)) # no tocar
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 2))# no tocar
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))
+cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (1, 3))# no tocar
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 4))
+#cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 4))
 con.commit()
 cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 1))
 con.commit()
-cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 2))
+#cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 2))
 con.commit()
 
 ### Insert Erreserben Historiala
@@ -153,17 +171,23 @@ cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 3))
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 4))
 con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 1))
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 1))# no tocar
 con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 7))
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 7))# no tocar
 con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 9))
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 9))# no tocar
 con.commit()
-# cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
-# con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))
+#cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
+#con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))# no tocar
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 6))
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 8))
 con.commit()
+
+
+
+
+
+
