@@ -103,7 +103,7 @@ def erreseinaSortu():
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
         erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-        return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+        return render_template('errseseinaEginda.html')
     else:
          return render_template('erroreaErreseina.html')
 
@@ -134,7 +134,7 @@ def erreseinaEditatu():
             dataOrain = datetime.datetime.now()
             dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
             erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina, dataFormatua)
-            return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+            return render_template('errseseinaEginda.html')
         else:
             return render_template('erroreaErreseina.html')
     else:
