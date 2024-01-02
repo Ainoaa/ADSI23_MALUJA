@@ -125,7 +125,6 @@ cur.execute("""
 	)
 """)
 
-
 ### Insert users
 
 with open('usuarios.json', 'r') as f:
