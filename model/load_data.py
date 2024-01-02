@@ -115,6 +115,16 @@ cur.execute("""
 	)
 """)
 
+cur.execute("""
+	CREATE TABLE Eskaerak(
+		idBidali integer,
+		idJaso integer,
+		PRIMARY KEY (idBidali, idJaso),
+		FOREIGN KEY(idBidali) REFERENCES User(id),
+		FOREIGN KEY(idJaso) REFERENCES User(id)
+	)
+""")
+
 ### Insert users
 
 with open('usuarios.json', 'r') as f:
