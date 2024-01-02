@@ -103,7 +103,7 @@ def erreseinaSortu():
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
         erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-        return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+        return render_template('errseseinaEginda.html')
     else:
          return render_template('erroreaErreseina.html')
 
@@ -134,7 +134,7 @@ def erreseinaEditatu():
             dataOrain = datetime.datetime.now()
             dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
             erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina, dataFormatua)
-            return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+            return render_template('errseseinaEginda.html')
         else:
             return render_template('erroreaErreseina.html')
     else:
@@ -366,13 +366,43 @@ def liburuGomendioak():
                 title=title, author=author, max=max, min=min)
 
 
-@app.route('/erreserbatutakoLiburuak')
+
+@app.route('/ErreserbatutakoLiburuak', methods=['GET', 'POST'])
 def erreserbatutakoLiburuak():
-    title = request.values.get("title", "")
-    author = request.values.get("author", "")
-    books= erreserbatuak.get_liburu_erreserbatuak(title=title, author=author)
-    return render_template('erreserbatutakoLiburuak.html', books=books, title=title, author=author)
+    if request.method == 'POST':
+        libId = request.values.get("libId")
+        eraId = request.values.get("eraId")
+        title = request.values.get("title")
+        author = request.values.get("author")
+        cover = request.values.get("cover")
+        description = request.values.get("description")
+        if erreserbatuak.liburua_dago(title, author):
+            return render_template('liburuaErreserbatutaZegoenJada.html')
+        else:
+            book = erreserbatuak.erreserbatu_liburua(libId, eraId)
+            return render_template('liburuaErreserbatuDa.html')
+    else:
+        return render_template('liburuaErreserbatu.html')
+
+
+    
+@app.route('/catalogue/<int:bookId>') 
+def info_liburu(bookId):
+    book_info = library.info_liburu(bookId)
+    return render_template('info_liburu.html', book_info=book_info)
+
 
 @app.route('/nireLagunak')
 def nireLagunak():
     return render_template('nireLagunak.html')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
