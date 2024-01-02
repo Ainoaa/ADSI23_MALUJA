@@ -22,7 +22,7 @@ cur.execute("""
 		id integer primary key AUTOINCREMENT,
 		title varchar(50),
 		author int,
-		cover varchar(50),
+		cover varchar(50), --la ruta o el nombre de archivo de la portada
 		description TEXT,
 		FOREIGN KEY(author) REFERENCES Author(id)
 	)
@@ -112,16 +112,6 @@ cur.execute("""
 		PRIMARY KEY (eraId, libId, hasieraData),
 		FOREIGN KEY(eraId) REFERENCES User(id),
 		FOREIGN KEY(libId) REFERENCES Book(id)
-	)
-""")
-
-cur.execute("""
-	CREATE TABLE Eskaerak(
-		idBidali integer,
-		idJaso integer,
-		PRIMARY KEY (idBidali, idJaso),
-		FOREIGN KEY(idBidali) REFERENCES User(id),
-		FOREIGN KEY(idJaso) REFERENCES User(id)
 	)
 """)
 
