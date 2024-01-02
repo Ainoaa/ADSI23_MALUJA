@@ -22,7 +22,7 @@ cur.execute("""
 		id integer primary key AUTOINCREMENT,
 		title varchar(50),
 		author int,
-		cover varchar(50), --la ruta o el nombre de archivo de la portada
+		cover varchar(50),
 		description TEXT,
 		FOREIGN KEY(author) REFERENCES Author(id)
 	)
