@@ -46,11 +46,10 @@
                                 <li>
                                     <!-- Muestra el contenido de la respuesta -->
                                     <p>{{ post.content }}</p>
-                                    <!-- ... (otra información de la respuesta) -->
+                                    <p>{{ post.username }} - {{ post.created_at }}</p>
                                 </li>
                             {% endfor %}
                         </ul>
-
                         <!-- Formulario para agregar una respuesta al tema -->
                         {% if 'user' in request.__dict__ and request.user and request.user.token %}
                             <div class="new-reply">

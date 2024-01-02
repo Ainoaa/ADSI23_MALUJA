@@ -282,12 +282,12 @@ def create_topic():
 @app.route('/list_topics')
 def list_topics():
     # Lógica para obtener y mostrar la lista de temas del foro
-    topics = forum_controller.get_forum_topics()
+    topics = forum_controller.get_forum_topics_with_posts()
     return render_template('foroa.html', topics=topics)
 
 @app.route('/foroa')
 def foroa():
-    topics = ForumController().get_forum_topics()
+    topics = ForumController().get_forum_topics_with_posts()
     return render_template('foroa.html', topics=topics)
 
 @app.route('/create_reply', methods=['POST'])
@@ -298,7 +298,7 @@ def create_reply():
         content = request.form.get('reply_content')
 
         # Aquí deberías llamar a la lógica para crear una respuesta en tu modelo o controlador
-        forum_controller.create_forum_post(user_id, topic_id, content)
+        forum_controller.create_reply(user_id, topic_id, content)
 
         # Después de crear la respuesta, redirige a la página del tema para mostrar la respuesta
         return redirect(url_for('foroa'))

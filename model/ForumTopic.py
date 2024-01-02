@@ -11,6 +11,8 @@ class ForumTopic:
         self.title = title
         self.content = content
         self.created_at = created_at
+        self.posts = []
+
     def __str__(self):
         return f"Title: {self.title}, User ID: {self.user_id}"
 
@@ -40,3 +42,6 @@ class ForumTopic:
         except Exception as e:
             print("Error getting forum posts for topic:", str(e))
             return []
+
+    def add_post(self, post):
+        self.posts.append(post)

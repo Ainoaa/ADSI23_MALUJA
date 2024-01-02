@@ -24,10 +24,6 @@ class ForumController:
             print("Error getting forum topics:", str(e))
             return None
 
-    def get_forum_topic_by_id(self, topic_id):
-        # Implementa la lógica para obtener un tema específico por su ID
-        pass
-
     def create_forum_topic(self, user_id, username, title, content):
         try:
             # Utiliza directamente la conexión para interactuar con la base de datos
@@ -40,6 +36,7 @@ class ForumController:
     def get_forum_posts_for_topic(self, topic_id):
         try:
             posts = ForumPost.get_posts_for_topic(topic_id)
+            print("Forum Posts:", posts)
             return posts
         except Exception as e:
             print("Error getting forum posts:", str(e))
@@ -67,8 +64,11 @@ class ForumController:
     def get_forum_topics_with_posts(self):
         try:
             topics = ForumTopic.get_all_topics()
+            # Obtén las respuestas para cada tema y agrúpalas
             for topic in topics:
-                topic.posts = topic.get_posts()
+                posts = ForumPost.get_posts_for_topic(topic.id)
+                topic.posts = posts
+
             return topics
         except Exception as e:
             print("Error getting forum topics:", str(e))
