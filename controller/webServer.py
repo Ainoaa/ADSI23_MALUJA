@@ -391,18 +391,21 @@ def info_liburu(bookId):
     book_info = library.info_liburu(bookId)
     return render_template('info_liburu.html', book_info=book_info)
 
-
 @app.route('/nireLagunak')
 def nireLagunak():
-    return render_template('nireLagunak.html')
+    eraId = request.values.get("eraId")
+
+    #Lagunak lortu
+    izenak = [lagun.erabIzen for lagun in erabiltzaileak.lagunakBilatu(eraId)]
+    info_lagunak = []
+    for erabIzen in izenak:
+        lagun = erabiltzaileak.ge
+    return render_template('nireLagunak.html', eraId=eraId)
     
+@app.route('/jasotakoEskaerak')
+def jasotakoEskaerak():
+    return render_template('jasotakoEskaerak.html')
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+@app.route('/bidalitakoEskaerak')
+def bidalitakoEskaerak():
+    return render_template('bidalitakoEskaerak.html')
