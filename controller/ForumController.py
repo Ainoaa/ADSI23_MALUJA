@@ -1,3 +1,5 @@
+from flask import request
+
 from model import Connection, ForumTopic, ForumPost
 from model.ForumTopic import ForumTopic
 from model.ForumPost import ForumPost
@@ -24,10 +26,6 @@ class ForumController:
             print("Error getting forum topics:", str(e))
             return None
 
-    def get_forum_topic_by_id(self, topic_id):
-        # Implementa la lógica para obtener un tema específico por su ID
-        pass
-
     def create_forum_topic(self, user_id, username, title, content):
         try:
             # Utiliza directamente la conexión para interactuar con la base de datos
@@ -40,6 +38,7 @@ class ForumController:
     def get_forum_posts_for_topic(self, topic_id):
         try:
             posts = ForumPost.get_posts_for_topic(topic_id)
+            print("Forum Posts:", posts)
             return posts
         except Exception as e:
             print("Error getting forum posts:", str(e))
@@ -54,8 +53,10 @@ class ForumController:
 
     def create_reply(self, user_id, topic_id, content):
         try:
+            # Obtiene el nombre de usuario del objeto de usuario en la solicitud
+            username = request.user.name
             # Implementa la lógica para crear un nuevo mensaje en el foro y guardarlo en la base de datos
-            ForumPost.create_post(topic_id, user_id, content)
+            ForumPost.create_post(topic_id, user_id, content, username)
             # Después de insertar el nuevo mensaje, obtener los mensajes actualizados del tema
             posts = ForumPost.get_posts_for_topic(topic_id)
             # Redirigir a la página del foro con los mensajes actualizados
@@ -67,8 +68,11 @@ class ForumController:
     def get_forum_topics_with_posts(self):
         try:
             topics = ForumTopic.get_all_topics()
+            # Obtén las respuestas para cada tema y agrúpalas
             for topic in topics:
-                topic.posts = topic.get_posts()
+                posts = ForumPost.get_posts_for_topic(topic.id)
+                topic.posts = posts
+
             return topics
         except Exception as e:
             print("Error getting forum topics:", str(e))

@@ -103,7 +103,7 @@ def erreseinaSortu():
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
         erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-        return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+        return render_template('errseseinaEginda.html')
     else:
          return render_template('erroreaErreseina.html')
 
@@ -134,7 +134,7 @@ def erreseinaEditatu():
             dataOrain = datetime.datetime.now()
             dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
             erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina, dataFormatua)
-            return render_template('mailegatu.html', eraId=eraId, libId=libId)	#Volver a otro sitio
+            return render_template('errseseinaEginda.html')
         else:
             return render_template('erroreaErreseina.html')
     else:
@@ -282,12 +282,12 @@ def create_topic():
 @app.route('/list_topics')
 def list_topics():
     # Lógica para obtener y mostrar la lista de temas del foro
-    topics = forum_controller.get_forum_topics()
+    topics = forum_controller.get_forum_topics_with_posts()
     return render_template('foroa.html', topics=topics)
 
 @app.route('/foroa')
 def foroa():
-    topics = ForumController().get_forum_topics()
+    topics = ForumController().get_forum_topics_with_posts()
     return render_template('foroa.html', topics=topics)
 
 @app.route('/create_reply', methods=['POST'])
@@ -298,7 +298,7 @@ def create_reply():
         content = request.form.get('reply_content')
 
         # Aquí deberías llamar a la lógica para crear una respuesta en tu modelo o controlador
-        forum_controller.create_forum_post(user_id, topic_id, content)
+        forum_controller.create_reply(user_id, topic_id, content)
 
         # Después de crear la respuesta, redirige a la página del tema para mostrar la respuesta
         return redirect(url_for('foroa'))
