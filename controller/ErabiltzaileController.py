@@ -28,3 +28,17 @@ class ErabiltzaileController:
 	def erabiltzailea_dago(self, emaila):
 		e = db.select("SELECT * FROM User WHERE email = ?", (emaila,))
 		return len(e)>0
+
+	def lagunakBilatu(self, id):
+		lagunak = db.select("SELECT DISTINCT us.name, us.email FROM User us, Lagunak l WHERE (l.lagun1Id = ? AND us.id = l.lagun2Id) OR (l.lagun2Id = ? AND us.id = l.lagun1Id)", (id, id))
+		return lagunak
+
+	def eskaeraOnartu(self, idB, idJ):
+		db.delete("DELETE FROM Eskaerak WHERE idBidali = ? AND idJaso = ?", (idB, idJ))
+		db.insert("INSERT INTO Lagunak(lagun1Id, lagun2Id) VALUES (?,?)", (idB, idJ))
+
+	def eskaeraEzeztatu(self, idB, idJ):
+		db.delete("DELETE FROM Eskaerak WHERE idBidali = ? AND idJaso = ?", (idB, idJ))
+
+	def lagunaEzabatu(self, idN, idL):
+		db.delete("DELETE FROM Lagunak WHERE (lagun1Id = ? AND lagun2Id = ?) OR (lagun1Id = ? AND lagun2Id = ?)", (idN, idL, idL, idN))
