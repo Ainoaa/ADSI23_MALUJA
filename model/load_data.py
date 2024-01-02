@@ -170,6 +170,8 @@ cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 1))
 con.commit()
 #cur.execute("INSERT INTO Lagunak VALUES (?, ?)", (3, 2))
 con.commit()
+#al usuario con id=4 no le añadáis amigos 		#importante
+
 
 ### Insert Erreserben Historiala
 
@@ -179,12 +181,11 @@ cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 7))# no tocar
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (3, 9))# no tocar
 con.commit()
+cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 9))# no tocar
+con.commit()
 #cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 2))
 #con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))# no tocar
 con.commit()
-
-
-
-
+#al usuario con id=4 no le pongáis que ha leido libros		#importante
 
