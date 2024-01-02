@@ -163,14 +163,6 @@ con.commit()
 
 ### Insert Erreserben Historiala
 
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 1))
-con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 2))
-con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 3))
-con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 4))
-con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 1))# no tocar
 con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (2, 7))# no tocar
@@ -181,11 +173,6 @@ con.commit()
 #con.commit()
 cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (1, 3))# no tocar
 con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 6))
-con.commit()
-cur.execute("INSERT INTO ErreserbenHistoriala VALUES (?, ?)", (0, 8))
-con.commit()
-
 
 
 
