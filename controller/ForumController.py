@@ -1,3 +1,5 @@
+from flask import request
+
 from model import Connection, ForumTopic, ForumPost
 from model.ForumTopic import ForumTopic
 from model.ForumPost import ForumPost
@@ -51,8 +53,10 @@ class ForumController:
 
     def create_reply(self, user_id, topic_id, content):
         try:
+            # Obtiene el nombre de usuario del objeto de usuario en la solicitud
+            username = request.user.name
             # Implementa la lógica para crear un nuevo mensaje en el foro y guardarlo en la base de datos
-            ForumPost.create_post(topic_id, user_id, content)
+            ForumPost.create_post(topic_id, user_id, content, username)
             # Después de insertar el nuevo mensaje, obtener los mensajes actualizados del tema
             posts = ForumPost.get_posts_for_topic(topic_id)
             # Redirigir a la página del foro con los mensajes actualizados
