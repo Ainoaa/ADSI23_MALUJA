@@ -243,7 +243,6 @@ def LagunenGomendioak():
     lagunen_lagunak = gomendatutako_lagunen_lagunak
 
     #Irakurritako liburuen araberako lagunak gomendatu
-    lagun_zerrenda = request.user.get_lagunen_zerrenda(name,email)
     irakurritako_liburuak = request.user.get_irakurritako_liburuak()
     gomendatutako_lagunak_liburuekiko = []
     for book in irakurritako_liburuak:

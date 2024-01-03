@@ -74,7 +74,7 @@ class TestLagunenGomendioak(BaseTestClass):
 
 	def test_bilaketa_ondo(self):
 		params = {
-			'Name': "j"
+			'name': "juan"
 		}
 		self.login('ejemplo@gmail.com', '123456')
 		res = self.client.get('/LagunenGomendioak', query_string=params)
@@ -83,6 +83,6 @@ class TestLagunenGomendioak(BaseTestClass):
 		lagunak = page.find_all('div', class_='card')
 		self.assertGreater(len(lagunak), 0)
 		for lagun in lagunak:
-			self.assertIn(params['Name'].lower(), lagun.find(class_='card-title').get_text().lower())
+			self.assertIn(params['name'].lower(), lagun.find(class_='card-title').get_text().lower())
 			
 			
