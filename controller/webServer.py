@@ -365,8 +365,8 @@ def liburuGomendioak():
 
 
 
-@app.route('/ErreserbatutakoLiburuak', methods=['GET', 'POST'])
-def erreserbatutakoLiburuak():
+@app.route('/catalogue', methods=['GET','POST'])
+def liburuaErreserbatu():
     if request.method == 'POST':
         libId = request.values.get("libId")
         eraId = request.values.get("eraId")
@@ -377,11 +377,16 @@ def erreserbatutakoLiburuak():
         if erreserbatuak.liburua_dago(title, author):
             return render_template('liburuaErreserbatutaZegoenJada.html')
         else:
-            book = erreserbatuak.erreserbatu_liburua(libId, eraId)
+            liburua = library.erreserbatu(libId, eraId)
             return render_template('liburuaErreserbatuDa.html')
     else:
-        return render_template('erreserbatutakoLiburuak.html')
+        return render_template('liburuaErreserbatu.html')
 
+    
+@app.route('/catalogue/<int:bookId>') 
+def info_liburu(bookId):
+    book_info = library.info_liburu(bookId)
+    return render_template('info_liburu.html', book_info=book_info)
 
     
 @app.route('/catalogue/<int:bookId>') 
