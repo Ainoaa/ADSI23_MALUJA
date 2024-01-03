@@ -227,7 +227,7 @@ def LagunenGomendioak():
     page_zure_lag_lib = int(request.values.get("page_zure_lag_lib", 1))
 
     #Lagunen lagunak gomendatu
-    lagun_zerrenda = request.user.get_lagunen_zerrenda(name,email)
+    lagun_zerrenda = request.user.get_lagunen_zerrenda()
     gomendatutako_lagunen_lagunak = []
     for User in lagun_zerrenda:
         lista = User.get_lagunen_zerrenda(name,email)
