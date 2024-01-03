@@ -2,8 +2,28 @@
 
 {% block content %}
 <div class="container p-5 my-5 border">
-	<div style="text-align: center; margin-top: 50px;">
+    <div style="text-align: center; margin-top: 50px;">
         <h1>Liburua ongi erreserbatu da!</h1>
+        <button class="back-button" onclick="goBack()">Atzera</button>
     </div>
 </div>
+
+<script>
+    function goBack() {
+        window.history.go(-2);
+    }
+</script>
+
+<style>
+    .back-button {
+        background-color: #3498db;
+        color: #ffffff;  
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
 {% endblock %}
+

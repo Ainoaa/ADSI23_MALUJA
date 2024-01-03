@@ -9,6 +9,7 @@ class ErreserbatutakoLiburuakController:
         if cls.__instance is None:
             cls.__instance = super(ErreserbatutakoLiburuakController, cls).__new__(cls)
             cls.__instance.__initialized = False
+            cls.__instance.libros_reservados = []
         return cls.__instance
 
 
@@ -31,7 +32,7 @@ class ErreserbatutakoLiburuakController:
 
 
     def add_liburu_erreserbatua(self, bookId):
-        self.reserved_books.append(bookId)
+        self.libros_reservados.append(bookId)
 
 
     def get_liburu_erreserbatuak(self, title="", author=""):
@@ -80,5 +81,3 @@ class ErreserbatutakoLiburuakController:
         	return len(emaitza) > 0
 
     	return False
-
-
