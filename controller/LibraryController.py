@@ -95,9 +95,9 @@ class LibraryController:
 			resultado1 = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))
 			autoreaa = resultado1[0][0]
 		db.insert("INSERT INTO Book VALUES (null, ?, ?, ?, ?)", (titulua, autoreaa, azala, deskribapena))
-		#b = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreaa))[0]
-		#liburua = Book (b[0],b[1],b[2],b[3],b[4])
-		#return liburua
+		b = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreaa))[0]
+		liburua = Book(b[0],b[1],b[2],b[3],b[4])
+		return liburua
 
 	def liburua_ezabatu(self, titulua, autorea):
 		#print(titulua, autorea)

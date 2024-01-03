@@ -3,7 +3,10 @@
 {% block content %}
 <div class="container p-5 my-5 border">
 	<div style="text-align: center; margin-top: 50px;">
-        <h1>Liburua gehitu da!</h1>
+        <p>Azala: {{ liburua.cover }}</p>
+        <p>Izenburua: {{ liburua.title }}</p>
+    	<p>Autorea: {{ liburua.author }}</p>
+    	<p>Deskribapena: {{ liburua.description }}</p>
     </div>
 </div>
 {% endblock %}
