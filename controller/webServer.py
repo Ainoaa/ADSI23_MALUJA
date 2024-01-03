@@ -168,7 +168,6 @@ def liburuaGehitu():
             return render_template('liburuaGehitutaDagoJada.html')
         else:
             liburua = library.liburua_gehitu(titulua, autorea, azala, deskribapena)
-            print(liburua)
             return render_template('liburuaGehituDa.html', liburua=liburua)
     else:
         return render_template('liburuaGehitu.html')
