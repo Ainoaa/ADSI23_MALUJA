@@ -5,9 +5,15 @@ db = Connection()
 class TestAdmin(BaseTestClass):
 
     def test_liburua_gehitu(self):
+        data = {
+            'titulo': 'Liburu Berria',
+            'autor': 'Mercedes Abad',
+        }
+        res = self.client.post('/liburuaEzabatu', data=data)
         #Liburua ez dagoela konprobatuko dugu:
             # Liburua ez dagoela konprobatuko dugu:
-        emaitza = self.db.select("SELECT * FROM Book WHERE title = 'Liburu Berria' and author = '1'")
+        autoreId = self.db.select("SELECT id FROM Author WHERE name = 'Mercedes Abad'")[0][0]
+        emaitza = self.db.select("SELECT * FROM Book WHERE title = 'Liburu Berria' and author = ?", (autoreId,))
         self.assertTrue(len(emaitza)==0)
 
         # liburua gehitu egiten da
@@ -18,14 +24,15 @@ class TestAdmin(BaseTestClass):
             'descripcion': 'B'
         }
         res = self.client.post('/liburuaGehitu', data=data)
-        emaitza1 = self.db.select("SELECT * FROM Book WHERE title = 'Liburu Berria' and author = '1'")
+        self.assertEqual(200, res.status_code)
+        emaitza1 = self.db.select("SELECT * FROM Book WHERE title = 'Liburu Berria' and author = ?", (autoreId,))
         self.assertTrue(len(emaitza1)>0)
         data = {
             'titulo': 'Liburu Berria',
             'autor': 'Mercedes Abad',
         }
         res = self.client.post('/liburuaEzabatu', data=data)
-        
+
 
     def test_liburuaEzabatu(self):
     	#Beste liburu bat gehitzen dut
@@ -37,8 +44,9 @@ class TestAdmin(BaseTestClass):
             'descripcion': 'B'
         }
         res = self.client.post('/liburuaGehitu', data=data)
+        autoreId = self.db.select("SELECT id FROM Author WHERE name = 'Mercedes Abad'")[0][0]
+        emaitza = self.db.select("SELECT * FROM Book WHERE title = 'Ezabatzeko liburua' and author = ?", (autoreId,))
         # Orain begiratzen dugu ziurtatzeko liburua dagoela
-        emaitza = self.db.select("SELECT * FROM Book WHERE title = 'Ezabatzeko liburua' and author = '1'")
         self.assertTrue(len(emaitza) > 0) 
 
         # Orain liburu hori ezabatuko dugu
@@ -47,16 +55,17 @@ class TestAdmin(BaseTestClass):
             'autor': 'Mercedes Abad'
         }
         res = self.client.post('/liburuaEzabatu', data=data)
-
+        self.assertEqual(200, res.status_code)
         # Orain katalogoan begiratuko dugu ea beneta ezabatu den ala ez
-        emaitza1 = self.db.select("SELECT * FROM Book WHERE title = 'Ezabatzeko liburua' and author = '1'")
+        emaitza1 = self.db.select("SELECT * FROM Book WHERE title = 'Ezabatzeko liburua' and author = ?", (autoreId,))
         self.assertTrue(len(emaitza1) == 0)
 
 
 
     def test_bazegoen_liburua_gehitu(self):
         #Liburua gure katagora igotzen saiatuko gara
-        lib = self.db.select("SELECT * FROM Book WHERE author = '1'")
+        autoreId = self.db.select("SELECT id FROM Author WHERE name = 'Mercedes Abad'")[0][0]
+        lib = self.db.select("SELECT * FROM Book WHERE author = ?", (autoreId,))
         self.assertTrue(len(lib)>0)
         data = {
             'titulo': 'Vuelo con turbulencias',
@@ -66,7 +75,7 @@ class TestAdmin(BaseTestClass):
         }
         res = self.client.post('/liburuaGehitu', data=data)
         self.assertEqual(200, res.status_code)
-        lib1 = self.db.select("SELECT * FROM Book WHERE author = '1'")
+        lib1 = self.db.select("SELECT * FROM Book WHERE author = ?", (autoreId,))
         self.assertTrue(len(lib1)>0)
         self.assertEqual(lib,lib1)
 
@@ -86,61 +95,87 @@ class TestAdmin(BaseTestClass):
             'descripcion': 'adfasd'
         }
         res = self.client.post('/liburuaEzabatu', data=data)
+        self.assertEqual(200, res.status_code)
 
+    def test_liburua_gehitu_eta_autorea_ere(self):
+        data = {
+            'titulo': 'kaixo',
+            'autor': 'amadeo',
+        }
+        res = self.client.post('/liburuaEzabatu', data=data)
+        autoreId = self.db.select("SELECT id FROM Author WHERE name = 'amadeo'")
+        self.assertTrue(len(autoreId)==0)
+        emaitza = self.db.select("SELECT * FROM Book WHERE title = 'kaixo'")
+        self.assertTrue(len(emaitza) == 0)
+        data = {
+            'titulo': 'kaixo',
+            'autor': 'amadeo',
+        }
+        res = self.client.post('/liburuaGehitu', data=data)
+        self.assertEqual(200, res.status_code)
+        autoreId = self.db.select("SELECT id FROM Author WHERE name = 'amadeo'")[0][0]
+        emaitza1 = self.db.select("SELECT * FROM Book WHERE title = 'kaixo' and author = ?", (autoreId,))
+        self.assertFalse(len(emaitza1)==0)
+        data = {
+            'titulo': 'kaixo',
+            'autor': 'amadeo',
+        }
+        res = self.client.post('/liburuaEzabatu', data=data)
+        
 
 ##################################ERABILTZAILEA################################
 
     def test_bazegoen_erabiltzailea_ezabatu(self):
         data = {
-            'name': 'Julio',
-            'email': 'julio@gmail.com',
+            'name': 'Jaime',
+            'email': 'jaime@gmail.com',
             'password': '123',
             'admin': 'false'
         }
         res = self.client.post('erabiltzaileaGehitu', data=data)
 
-        era = self.db.select("SELECT * FROM USER WHERE email = 'julio@gmail.com'")
+        era = self.db.select("SELECT * FROM USER WHERE email = 'jaime@gmail.com'")
         self.assertTrue(len(era)>0)
         data = {
-            'name': 'Julio',
-            'email': 'julio@gmail.com'
+            'name': 'Jaime',
+            'email': 'jaime@gmail.com'
         }
         res = self.client.post('erabiltzaileaEzabatu', data=data)
         self.assertEqual(200, res.status_code)
-        era = self.db.select("SELECT * FROM USER WHERE email = 'julio@gmail.com'")
+        era = self.db.select("SELECT * FROM USER WHERE email = 'jaime@gmail.com'")
         self.assertTrue(len(era)==0)
 
         
 
     def test_ez_zegoen_erabiltzailea_ezabatu(self):
-        era = self.db.select("SELECT * FROM USER WHERE email = 'francisco@gmail.com'")
+        era = self.db.select("SELECT * FROM USER WHERE email = 'asdfasdfasdf@gmail.com'")
         self.assertTrue(len(era)==0)
         data = {
             'name': 'Francisco',
-            'email': 'francisco@gmail.com'
+            'email': 'asdfasdfasdf@gmail.com'
         }
         res = self.client.post('erabiltzaileaEzabatu', data=data)
-        era = self.db.select("SELECT * FROM USER WHERE email = 'francisco@gmail.com'")
+        era = self.db.select("SELECT * FROM USER WHERE email = 'asdfasdfasdf@gmail.com'")
         self.assertTrue(len(era)==0)
 
 
 
     def test_ez_zegoen_erabiltzailea_gehitu(self):
-        era = self.db.select("SELECT * FROM USER WHERE email = 'javi@gmail.com'")
+        era = self.db.select("SELECT * FROM USER WHERE email = 'mamadu@gmail.com'")
         self.assertFalse(len(era)>0)
         data = {
-            'name': 'Javi',
-            'email': 'javi@gmail.com',
+            'name': 'Mamadu',
+            'email': 'mamadu@gmail.com',
             'password': '123',
             'admin': 'true'
         }
         res = self.client.post('erabiltzaileaGehitu', data=data)
-        era = self.db.select("SELECT * FROM USER WHERE email = 'javi@gmail.com'")
+        era = self.db.select("SELECT * FROM USER WHERE email = 'mamadu@gmail.com'")
         self.assertTrue(len(era)>0)
         
         data = {
-            'name': 'Javi',
-            'email': 'javi@gmail.com'
+            'name': 'Mamadu',
+            'email': 'mamadu@gmail.com'
         }
         res = self.client.post('erabiltzaileaEzabatu', data=data)
 

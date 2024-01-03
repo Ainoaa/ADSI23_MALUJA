@@ -13,10 +13,15 @@ class Book:
 
 	@property
 	def author(self):
-		if type(self._author) == int:
-			em = db.select("SELECT * from Author WHERE id=?", (self._author,))[0]
-			self._author = Author(em[0], em[1])
-		return self._author
+	    if isinstance(self._author, int):
+	        result = db.select("SELECT * FROM Author WHERE id=?", (self._author,))
+	        if result:
+	            em = result[0]
+	            self._author = Author(em[0], em[1])
+	        else:
+	            self._author = None  # O puedes asignar cualquier otro valor por defecto
+	    return self._author
+
 
 	@author.setter
 	def author(self, value):
