@@ -5,7 +5,7 @@
   <div class="container p-5 my-5 border" style="margin: 0 auto; width: 50%;">
     <div style="text-align: center;">
       <h1>Erreseina</h1>
-      <form class="form-inline" method="post" action="{% if nota is none %}/erreseina_sortuta{% else %}/erreseina_editatuta{% endif %}">
+      <form class="form-inline" method="get" action="{% if nota is none %}/erreseina_sortuta{% else %}/erreseina_editatuta{% endif %}">
         <input type="hidden" name="eraId" value="{{ eraId }}">
         <input type="hidden" name="libId" value="{{ libId }}">
         <input type="hidden" name="data" value="{{ data }}">
@@ -13,19 +13,19 @@
           <tr>
             <div class="input-group mb-2 mr-sm-2">
               <label for="data" class="col-sm-2 col-form-label">DATA: </label>
-              <input type="text" class="form-control mb-2" id="data" name="data" value="{{ data }}">
+              <input type="text" class="form-control mb-2" id="data" name="data" value="{{ data }}" readonly>
             </div>
           </tr>
           <tr>
             <td>
               BALORAZIOA: <!-- BALORAZIOA laukia ipintzea -->
               <select name="nota" id="nota">
-                <option value="0" {% if nota == '0' %}selected{% endif %}>0</option>
-                <option value="1" {% if nota == '1' %}selected{% endif %}>1</option>
-                <option value="2" {% if nota == '2' %}selected{% endif %}>2</option>
-                <option value="3" {% if nota == '3' %}selected{% endif %}>3</option>
-                <option value="4" {% if nota == '4' %}selected{% endif %}>4</option>
-                <option value="5" {% if nota == '5' %}selected{% endif %}>5</option>
+                <option value="0" {% if nota == '0' or nota == 0 %}selected{% endif %}>0</option>
+                <option value="1" {% if nota == '1' or nota == 1 %}selected{% endif %}>1</option>
+                <option value="2" {% if nota == '2' or nota == 2 %}selected{% endif %}>2</option>
+                <option value="3" {% if nota == '3' or nota == 3 %}selected{% endif %}>3</option>
+                <option value="4" {% if nota == '4' or nota == 4 %}selected{% endif %}>4</option>
+                <option value="5" {% if nota == '5' or nota == 5 %}selected{% endif %}>5</option>
               </select>
             </td>
           </tr>
@@ -34,8 +34,8 @@
           </tr>
           <tr>
             <td>
-              <textarea name="iruzkina" rows="10" cols="50" maxlength="200" placeholder="200 karaktere maximo idatzi ahal dira">{{ iruzkina }}</textarea>
-            </td>
+    <textarea name="iruzkina" rows="10" cols="70" maxlength="200" placeholder="200 karaktere maximo idatzi ahal dira">{{ '' if iruzkina is none else iruzkina }}</textarea>
+	    </td>
           </tr>
         </table>
         <div align="center">

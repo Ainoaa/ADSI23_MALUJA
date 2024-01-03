@@ -11,7 +11,7 @@
                         <p>Nota: {{ item.nota }}</p>
                         <p>Iruzkinak: {{ item.iruzkina }}</p>
                         {% if item.eraId == eraId %}
-                            <form action="/erreseina_editatu" method="post">
+                            <form action="/erreseina_editatu" method="get">
                                 <input type="hidden" name="eraId" value="{{ item.eraId }}">
                                 <input type="hidden" name="libId" value="{{ item.libId }}">
                                 <input type="hidden" name="data" value="{{ item.data }}">

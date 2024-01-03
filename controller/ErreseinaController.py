@@ -64,6 +64,12 @@ class ErreseinaController:
 			print(item)
 			kont = kont+1
 		print("#######################################")
+		
+	def kargatu(self):
+		emaitza = db.select("SELECT * FROM ERRESEINA")
+		for atr in emaitza:
+			erreseina = Erreseina(atr[0], atr[1], atr[2], atr[3], atr[4])
+			self.gehituErreseina(erreseina)
 
 
 
