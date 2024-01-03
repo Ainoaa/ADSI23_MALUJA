@@ -18,9 +18,9 @@ class ErabiltzaileController:
 		else:
 			admin_balioa = 0
 		db.insert("INSERT INTO User VALUES (NULL, ?, ?, ?, ?)", (izena, emaila, hp, admin_balioa))
-		#e = db.select("SELECT * FROM User WHERE name = ? AND email = ?", (izena, emaila))[0]
-		#erabiltzailea = User (e[0],e[1],e[2],e[3]),e[4])
-		#return erabiltzailea
+		e = db.select("SELECT * FROM User WHERE name = ? AND email = ?", (izena, emaila))[0]
+		erabiltzailea = User(e[0],e[1],e[2],e[3])
+		return erabiltzailea
 
 	def erabiltzailea_ezabatu(self, izena, emaila):
 		e = db.select("SELECT * FROM User WHERE name = ? AND email = ?", (izena, emaila))[0]
