@@ -13,44 +13,30 @@
           Bilatu
       </button>
     </form>
-
+    <h1>Nire lagunak</h1>
     <hr class="hr" />
 
-        <!-- Lista de libros -->
-    <div class="row">
-        {% for User in lagunak %}
+        {% for lagun in lagunak %}
             <div class="col-lg-4 col-md-6 col-sm-12 my-2">
                 <div class="card d-flex flex-row" style="width: 18rem;">
-                    {% if book.cover: %}
-                        <img src="{{book.cover}}" class="rounded" style="max-width: 6rem; height: fit-content;">
-                    {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{book.title}}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{book.author}}</h6>
-                        {% if book.description: %}
-                        <p class="card-text">{{book.description}}</p>
-                        {% endif %}
-                        {% if request.user %}
-                            <a href='/reserve/book/{{book.id}}' class="btn btn-primary mt-2">
-                                <i class="fas fa-book"></i> Reservar
-                            </a>
-                        {% endif %}
+                        <h5 class="card-title">{{lagun.name}}</h5>
+                        <p class="card-text">{{lagun.email}}</p>
+                        <button type="button" class="btn btn-primary">Ezabatu</button>
                     </div>
                 </div>
             </div>
+
         {% endfor %}
-    </div>
 
+    <a href="/jasotakoEskaerak">
+    <button type="button" class="btn btn-primary">Jasotako lagun eskaerak ikusi</button>
+    </a>
 
-<h1>Nire lagunak</h1>
-<a href="/jasotakoEskaerak">
-<button type="button" class="btn btn-primary">Jasotako lagun eskaerak ikusi</button>
-</a>
+    <a href="/bidalitakoEskaerak">
+    <button type="button" class="btn btn-primary">Bidalitako lagun eskaerak ikusi</button>
+    </a>
 
-<a href="/bidalitakoEskaerak">
-<button type="button" class="btn btn-primary">Bidalitako lagun eskaerak ikusi</button>
-</a>
-
+    <hr class="hr" />
 </div>
-
 {% endblock %}

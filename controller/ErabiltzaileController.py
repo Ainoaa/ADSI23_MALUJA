@@ -30,7 +30,7 @@ class ErabiltzaileController:
 		return len(e)>0
 
 	def lagunakBilatu(self, id):
-		lagunak = db.select("SELECT DISTINCT us.name, us.email FROM User us, Lagunak l WHERE (l.lagun1Id = ? AND us.id = l.lagun2Id) OR (l.lagun2Id = ? AND us.id = l.lagun1Id)", (id, id))
+		lagunak = db.select("SELECT DISTINCT us.* FROM User us, Lagunak l WHERE (l.lagun1Id = ? AND us.id = l.lagun2Id) OR (l.lagun2Id = ? AND us.id = l.lagun1Id)", (id, id))
 		return lagunak
 
 	def eskaeraOnartu(self, idB, idJ):

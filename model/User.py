@@ -58,12 +58,14 @@ class User:
 
 	def get_lagunen_zerrenda(self, name="", email=""):
 		lagunak = db.select("SELECT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id AND T2.name LIKE ? AND T2.email LIKE ?", (self.id,f"%{name}%", f"%{email}%"))
-		lagun_zerrenda = [
+		lagun_zerrenda = list(set(
 			User(b[0],b[1],b[2],b[4])
 			for b in lagunak
-		]
+		))
 		return lagun_zerrenda
-		
+
+	def __hash__(self):
+		return hash(self.id)
 	
 	def get_irakurritako_liburuak(self, title="", author=""):
 		books_read = db.select("SELECT T2.* FROM ErreserbenHistoriala T, Book T2, Author T3 WHERE T.userId = ? AND T2.id = T.bookId AND T2.title LIKE ? AND T2.author = T3.id And T3.name LIKE ? ", (self.id,f"%{title}%", f"%{author}%"))
@@ -81,3 +83,18 @@ class User:
 			if b[0] != self.id
 		]
 		return user_lista
+
+	def getLagunak(self, name="", email=""):
+		#lagunak = db.select( "SELECT DISTINCT us.* FROM User us, Lagunak l WHERE (l.lagun1Id = ? AND us.id = l.lagun2Id) OR (l.lagun2Id = ? AND us.id = l.lagun1Id)", (self.id, self.id))
+		#return lagunak
+		lagunak = db.select(
+			"SELECT DISTINCT T2.* FROM Lagunak T, User T2 WHERE T.lagun1Id = ? AND T2.id = T.lagun2Id AND T2.name LIKE ? AND T2.email LIKE ?",
+			(self.id, f"%{name}%", f"%{email}%"))
+		lagun_zerrenda = [
+			User(b[0],b[1],b[2],b[4])
+			for b in lagunak
+		]
+		return lagun_zerrenda
+
+	def getIzena(self):
+		return self.name
