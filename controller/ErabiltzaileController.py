@@ -1,4 +1,4 @@
-from model import Connection
+from model import Connection, User
 from model import tools
 db = Connection()
 
@@ -25,8 +25,8 @@ class ErabiltzaileController:
 	def erabiltzailea_ezabatu(self, izena, emaila):
 		e = db.select("SELECT * FROM User WHERE name = ? AND email = ?", (izena, emaila))[0]
 		erabiltzailea = User(e[0],e[1],e[2],e[3])
-		return erabiltzailea
 		db.delete("DELETE FROM User WHERE name = ? AND email = ?", (izena, emaila))
+		return erabiltzailea
 
 	def erabiltzailea_dago(self, emaila):
 		e = db.select("SELECT * FROM User WHERE email = ?", (emaila,))

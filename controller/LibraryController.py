@@ -104,13 +104,12 @@ class LibraryController:
 		autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
 		b = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreId))[0]
 		liburua = Book(b[0],b[1],b[2],b[3],b[4])
-		return liburua
 		db.delete("DELETE FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))
 		#print (autoreId)
 		lista = db.select("SELECT * FROM Book WHERE author = ?", (autoreId,))
 		if len(lista) == 0:
 			db.delete("DELETE FROM Author WHERE id = ? OR name = ?", (autoreId, autorea))
-		
+		return liburua
 			
 				
 	def get_autore_baten_liburuak(self,author,autore="",title=""):
