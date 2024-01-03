@@ -182,8 +182,8 @@ def liburuaEzabatu():
         titulua = request.values.get("titulo")
         autorea = request.values.get("autor")
         if library.liburua_dago(titulua, autorea):
-            library.liburua_ezabatu(titulua, autorea)
-            return render_template('liburuaEzabatuDa.html')
+            liburua = library.liburua_ezabatu(titulua, autorea)
+            return render_template('liburuaEzabatuDa.html',liburua=liburua)
         else:
             return render_template('ezDagoLiburua.html')
     else:
@@ -199,8 +199,8 @@ def erabiltzaileaGehitu():
         if erabiltzaileak.erabiltzailea_dago(emaila,):
             return render_template('erabiltzaileaDagoJada.html')
         else:
-            erabiltzaileak.erabiltzailea_gehitu(izena, emaila, pasahitza, admin)
-            return render_template('erabiltzaileaGehituDa.html')
+            erabiltzailea = erabiltzaileak.erabiltzailea_gehitu(izena, emaila, pasahitza, admin)
+            return render_template('erabiltzaileaGehituDa.html', erabiltzailea=erabiltzailea)
     else:
         return render_template('erabiltzaileaGehitu.html')
 
@@ -210,8 +210,8 @@ def erabiltzaileaEzabatu():
         izena = request.form.get('name')
         emaila = request.form.get('email')
         if erabiltzaileak.erabiltzailea_dago(emaila,):
-            erabiltzaileak.erabiltzailea_ezabatu(izena, emaila)
-            return render_template('erabiltzaileaEzabatuDa.html')
+            erabiltzailea = erabiltzaileak.erabiltzailea_ezabatu(izena, emaila)
+            return render_template('erabiltzaileaEzabatuDa.html', erabiltzailea=erabiltzailea)
         else:
             return render_template('erabiltzaileaEzDago.html')
     return render_template('erabiltzaileaEzabatu.html')

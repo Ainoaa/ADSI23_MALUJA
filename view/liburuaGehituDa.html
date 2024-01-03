@@ -3,10 +3,13 @@
 {% block content %}
 <div class="container p-5 my-5 border">
 	<div style="text-align: center; margin-top: 50px;">
-        <p>Azala: {{ liburua.cover }}</p>
-        <p>Izenburua: {{ liburua.title }}</p>
-    	<p>Autorea: {{ liburua.author }}</p>
-    	<p>Deskribapena: {{ liburua.description }}</p>
+       	<h2> Liburua gehitu da!</h2>
+		<img src="{{liburua.cover}}" class="rounded" style="max-width: 6rem; height: fit-content;">
+		<p> </p>
+        <p><b>Izenburua:</b> {{ liburua.title }}</p>
+		<p><b>Autorea:</b> {{ liburua.author }}</p>
+		<p><b>Deskribapena:</b> {{ liburua.description }}</p>
+
     </div>
 </div>
 {% endblock %}

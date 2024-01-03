@@ -23,6 +23,9 @@ class ErabiltzaileController:
 		#return erabiltzailea
 
 	def erabiltzailea_ezabatu(self, izena, emaila):
+		e = db.select("SELECT * FROM User WHERE name = ? AND email = ?", (izena, emaila))[0]
+		erabiltzailea = User(e[0],e[1],e[2],e[3])
+		return erabiltzailea
 		db.delete("DELETE FROM User WHERE name = ? AND email = ?", (izena, emaila))
 
 	def erabiltzailea_dago(self, emaila):
