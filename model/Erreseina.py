@@ -11,7 +11,7 @@ class Erreseina:
 		self.iruzkina = iruzkina
 		
 	def __str__(self):
-		return f"{self.id} {self.iruzkina} {self.nota} {self.data}"
+		return f"{self.eraId} {self.libId} {self.data} {self.nota} {self.iruzkina} "
 		
 		
 	def erreseinaEditatu(self, orainData, nota, iruzkina):
@@ -19,12 +19,12 @@ class Erreseina:
 		self.nota = nota
 		self.iruzkina = iruzkina
 		
-	def getEraId():
+	def getEraId(self):
 		return self.eraId
 		
-	def getLibId():
+	def getLibId(self):
 		return self.libId
 		
-	def getData():
+	def getData(self):
 		return self.data
 		

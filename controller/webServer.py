@@ -4,7 +4,7 @@ from controller.ForumController import ForumController
 from .ErabiltzaileController import ErabiltzaileController
 from .ErreserbatutakoLiburuakController import ErreserbatutakoLiburuakController
 from flask import Flask, render_template, request, redirect, make_response, url_for
-
+from datetime import datetime
 from model import Connection
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 db = Connection()
@@ -88,8 +88,8 @@ def jadaMailegatuZuen():
     eraId = request.values.get("eraId")
     libId = request.values.get("libId")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
-        dataOrain = datetime.datetime.now()
-        dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
+        dataOrain = datetime.now()
+        dataFormatua = dataOrain.strftime("%Y-%m-%d %H:%M:%S")
         return render_template('erreseina.html', eraId = eraId, libId = libId, data = dataFormatua, nota = None, iruzkina = None)
     else:
         return render_template('erroreaErreseina.html')
@@ -103,7 +103,7 @@ def erreseinaSortu():
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
         erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
-        return render_template('errseseinaEginda.html')
+        return render_template('erreseinaEginda.html')
     else:
          return render_template('erroreaErreseina.html')
 
@@ -115,7 +115,7 @@ def jadaErreseinaZuen():
     nota = request.values.get("nota")
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
-        if erreseinak.jadaErreseinaZuen(eraId, libId):
+        if erreseinak.jadaErreseinaZuen(eraId, libId, data):
             return render_template('erreseina.html', eraId=eraId, libId=libId, data=data, nota=nota, iruzkina=iruzkina)
         else:
             return render_template('erroreaErreseina.html')
@@ -130,11 +130,11 @@ def erreseinaEditatu():
     nota = request.values.get("nota")
     iruzkina = request.values.get("iruzkina")
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
-        if erreseinak.jadaErreseinaZuen(eraId, libId):
-            dataOrain = datetime.datetime.now()
-            dataFormatua = dataOrain("%Y-%m-%d %H:%M:%S")
+        if erreseinak.jadaErreseinaZuen(eraId, libId, data):
+            dataOrain = datetime.now()
+            dataFormatua = dataOrain.strftime("%Y-%m-%d %H:%M:%S")
             erreseinak.erreseinaEditatu(eraId, libId, data, nota, iruzkina, dataFormatua)
-            return render_template('errseseinaEginda.html')
+            return render_template('erreseinaEginda.html')
         else:
             return render_template('erroreaErreseina.html')
     else:
@@ -148,7 +148,6 @@ def liburuko_erreseina_katalogoa():
     libId = request.values.get("libId")
     lista = erreseinak.bilatuErreseinak(libId)
     return render_template('libErreseinaKatalogo.html', lista=lista, eraId=eraId)
-
 
 
 @app.route('/admin')

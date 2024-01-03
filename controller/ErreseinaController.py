@@ -41,13 +41,29 @@ class ErreseinaController:
 			
 			
 	def bilatuErreseina(self, eraId, libId, lehenData):
-		erreseina = next((item for item in self.lista if item.getEraId() == eraId and item.getLibId() == libId and item.getData() == lehenData), None)
+		erreseina = None
+		for item in self.lista:
+			if item.getEraId() == int(eraId) and item.getLibId() == int(libId) and item.getData() == lehenData:
+				erreseina = item
+				return erreseina
 		return erreseina
 
 
 	def bilatuErreseinak(self, libId):
-		erreseinak = [item for item in self.lista if item.getLibId() == libId]
+		erreseinak = [item for item in self.lista if item.getLibId() == int(libId)]
 		return erreseinak
+		
+	def inprimatu(self):
+		kont = 1
+		print("#######################################")
+		print("Erreseinak:")
+		print("eraId, libId, data, nota, iruzkina")
+		print()
+		for item in self.lista:
+			print(kont)
+			print(item)
+			kont = kont+1
+		print("#######################################")
 
 
 

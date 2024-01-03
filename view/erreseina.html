@@ -5,7 +5,7 @@
   <div class="container p-5 my-5 border" style="margin: 0 auto; width: 50%;">
     <div style="text-align: center;">
       <h1>Erreseina</h1>
-      <form class="form-inline" method="post" action="{% if nota is None %}/erreseina_sortuta{% else %}/erreseina_editatuta{% endif %}">
+      <form class="form-inline" method="post" action="{% if nota is none %}/erreseina_sortuta{% else %}/erreseina_editatuta{% endif %}">
         <input type="hidden" name="eraId" value="{{ eraId }}">
         <input type="hidden" name="libId" value="{{ libId }}">
         <input type="hidden" name="data" value="{{ data }}">
@@ -39,7 +39,7 @@
           </tr>
         </table>
         <div align="center">
-          {% if nota is None %}
+          {% if nota is none %}
             <input type="submit" name="SORTU" value="SORTU" class="button">
           {% else %}
             <input type="submit" name="EDITATU" value="EDITATU" class="button">
