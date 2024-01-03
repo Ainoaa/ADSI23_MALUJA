@@ -19,15 +19,19 @@ class ErreserbatutakoLiburuakController:
 
     def erreserbatu_liburua(self, userId, bookId):
         # Verificar si el usuario ya tiene reservado el libro
-        erreserbatuta_dauka = db.select("SELECT * FROM Mailegatu WHERE userId = ? AND bookId = ?", (userId, bookId))
+        erreserbatuta_dauka = db.select("SELECT * FROM Mailegatu WHERE eraId = ? AND libId = ?", (userId, bookId))
 
         if erreserbatuta_dauka:
             # El usuario ya tiene reservado este libro
             return False
         else:
             # Reservar el libro para el usuario
-            db.insert("INSERT INTO Mailegatu (userId, bookId, hasiData) VALUES (?, ?, CURRENT_TIMESTAMP)", (userId, bookId))
+            db.insert("INSERT INTO Mailegatu (eraId, libId, hasiData) VALUES (?, ?, CURRENT_TIMESTAMP)", (userId, bookId))
             return True
+
+
+    def add_liburu_erreserbatua(self, bookId):
+        self.reserved_books.append(bookId)
 
 
     def get_liburu_erreserbatuak(self, title="", author=""):

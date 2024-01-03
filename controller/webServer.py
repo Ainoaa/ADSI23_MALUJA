@@ -382,7 +382,7 @@ def erreserbatutakoLiburuak():
             book = erreserbatuak.erreserbatu_liburua(libId, eraId)
             return render_template('liburuaErreserbatuDa.html')
     else:
-        return render_template('liburuaErreserbatu.html')
+        return render_template('erreserbatutakoLiburuak.html')
 
 
     
@@ -390,6 +390,10 @@ def erreserbatutakoLiburuak():
 def info_liburu(bookId):
     book_info = library.info_liburu(bookId)
     return render_template('info_liburu.html', book_info=book_info)
+    
+   
+    
+    
 
 @app.route('/nireLagunak')
 def nireLagunak():
@@ -402,10 +406,20 @@ def nireLagunak():
         lagun = erabiltzaileak.ge
     return render_template('nireLagunak.html', eraId=eraId)
     
+    
 @app.route('/jasotakoEskaerak')
 def jasotakoEskaerak():
     return render_template('jasotakoEskaerak.html')
     
+    
 @app.route('/bidalitakoEskaerak')
 def bidalitakoEskaerak():
     return render_template('bidalitakoEskaerak.html')
+    
+    
+    
+    
+    
+    
+    
+    

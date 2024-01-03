@@ -125,11 +125,13 @@ class LibraryController:
         		return Book(book_info[0][0], book_info[0][1], book_info[0][2], book_info[0][3], book_info[0][4])
     		else:
         		return None
+        			
         		
-        		
-        		
-        		
-        		
-        		
-        		
-			
+	def erreserbatu(self, bookId, userId):
+    		book_info = self.info_liburu(bookId)
+
+    		# Marcar el libro como reservado en la base de datos
+    		hasiera_data = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    		db.insert("INSERT INTO Mailegatu (eraId, libId, hasieraData) VALUES (?, ?, ?)", (userId, bookId, hasiera_data))
+    		return book_info
+
