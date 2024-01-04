@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-5 my-5 border">
+
+    <h1>Libros Reservados</h1>
+
+    {% if libros_reservados %}
+        <div class="row">
+            {% for libro_reservado in libros_reservados %}
+                <div class="col-lg-4 col-md-6 col-sm-12 my-2">
+                    <div class="card d-flex flex-row" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{libro_reservado.title}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{libro_reservado.author}}</h6>
+                            {% if libro_reservado.description %}
+                                <p class="card-text">{{libro_reservado.description}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr class="hr" />
+
+    {% else %}
+        <p>No hay libros reservados actualmente.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
