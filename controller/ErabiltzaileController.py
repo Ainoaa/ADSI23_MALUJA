@@ -45,3 +45,22 @@ class ErabiltzaileController:
 
 	def lagunaEzabatu(self, idN, idL):
 		db.delete("DELETE FROM Lagunak WHERE (lagun1Id = ? AND lagun2Id = ?) OR (lagun1Id = ? AND lagun2Id = ?)", (idN, idL, idL, idN))
+##################### ERLAZIOAK EZABATZEKO ######################
+	def lagunakEzabatu(self,izena, emaila):
+		eraId = db.select("SELECT id FROM User WHERE name = ? AND email = ?", (izena, emaila))[0][0]
+		db.delete("DELETE FROM Lagunak WHERE lagun1Id = ? OR lagun2Id = ?", (eraId, eraId))
+	def erreseinakEzabatu(self, izena, emaila):
+		eraId = db.select("SELECT id FROM User WHERE name = ? AND email = ?", (izena, emaila))[0][0]
+		db.delete("DELETE FROM Erreseina WHERE eraId = ?", (eraId,))
+	def forumTopicEzabatu(self, izena, emaila):
+		eraId = db.select("SELECT id FROM User WHERE name = ? AND email = ?", (izena, emaila))[0][0]
+		db.delete("DELETE FROM ForumTopic WHERE user_id = ?", (eraId,))
+	def forum_posts_ezabatu(self, izena, emaila):
+		eraId = db.select("SELECT id FROM User WHERE name = ? AND email = ?", (izena, emaila))[0][0]
+		db.delete("DELETE FROM forum_posts WHERE user_id = ?", (eraId,))
+	def erreserbenHistorialaEzabatu(self, izena, emaila):
+		eraId = db.select("SELECT id FROM User WHERE name = ? AND email = ?", (izena, emaila))[0][0]
+		db.delete("DELETE FROM ErreserbenHIstoriala WHERE userid = ?", (eraId,))
+	def mailegatuakEzabatu(self, izena, emaila):
+		eraId = db.select("SELECT id FROM User WHERE name = ? AND email = ?", (izena, emaila))[0][0]
+		db.delete("DELETE FROM Mailegatu WHERE eraId = ?", (eraId,))

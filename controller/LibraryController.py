@@ -139,3 +139,25 @@ class LibraryController:
     		db.insert("INSERT INTO Mailegatu (eraId, libId, hasieraData) VALUES (?, ?, ?)", (userId, bookId, hasiera_data))
     		return book_info
 
+
+
+##################### ERLAZIOAK EZABATZEKO ######################
+
+
+	def erreseinakEzabatu(self, titulua, autorea):
+	    autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
+	    libId = db.select("SELECT id FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))[0][0]
+	    db.delete("DELETE FROM Erreseina WHERE libId = ?", (libId,))
+
+	def erreserbenHistorialaEzabatu(self, titulua, autorea):
+	    autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
+	    libId = db.select("SELECT id FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))[0][0]
+	    db.delete("DELETE FROM ErreserbenHistoriala WHERE bookId = ?", (libId,))
+
+	def mailegatuakEzabatu(self, titulua, autorea):
+	    autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
+	    libId = db.select("SELECT id FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))[0][0]
+	    db.delete("DELETE FROM Mailegatu WHERE libId = ?", (libId,))
+
+
+

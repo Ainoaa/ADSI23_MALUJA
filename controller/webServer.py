@@ -181,6 +181,9 @@ def liburuaEzabatu():
         titulua = request.values.get("titulo")
         autorea = request.values.get("autor")
         if library.liburua_dago(titulua, autorea):
+            library.erreseinakEzabatu(titulua, autorea)
+            library.erreserbenHistorialaEzabatu(titulua, autorea)
+            library.mailegatuakEzabatu(titulua, autorea)
             liburua = library.liburua_ezabatu(titulua, autorea)
             return render_template('liburuaEzabatuDa.html',liburua=liburua)
         else:
@@ -209,6 +212,12 @@ def erabiltzaileaEzabatu():
         izena = request.form.get('name')
         emaila = request.form.get('email')
         if erabiltzaileak.erabiltzailea_dago(emaila,):
+            erabiltzaileak.lagunakEzabatu(izena, emaila)
+            erabiltzaileak.erreseinakEzabatu(izena, emaila)
+            erabiltzaileak.forumTopicEzabatu(izena, emaila)
+            erabiltzaileak.forum_posts_ezabatu(izena, emaila)
+            erabiltzaileak.erreserbenHistorialaEzabatu(izena, emaila)
+            erabiltzaileak.mailegatuakEzabatu(izena, emaila)
             erabiltzailea = erabiltzaileak.erabiltzailea_ezabatu(izena, emaila)
             return render_template('erabiltzaileaEzabatuDa.html', erabiltzailea=erabiltzailea)
         else:
@@ -329,7 +338,6 @@ def liburuGomendioak():
     author = request.values.get("author", "")
     page_lagunak = int(request.values.get("page_lagunak", 1))
     page_zure_lib = int(request.values.get("page_zure_lib", 1))
-
     #Lagunak irakurritakoaren araberako gomendioak
     lagun_zerrenda = request.user.get_lagunen_zerrenda()
     irakurritako_liburuak = request.user.get_irakurritako_liburuak()
@@ -344,7 +352,6 @@ def liburuGomendioak():
         )
     total_pages_lagunak = (len(gomendatutako_liburuak_lagunak)//6) +1
     books_lagunak = gomendatutako_liburuak_lagunak
-
     #Erabiltzailearen irakurritakoaren araberako gomendioak
     irakurritako_liburuak = request.user.get_irakurritako_liburuak()
     gomendatutako_liburuak = []
@@ -358,7 +365,6 @@ def liburuGomendioak():
         )
     books_zure_lib = gomendatutako_liburuak
     total_pages_zure_lib = (len(gomendatutako_liburuak)//6) + 1
-
     return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak,
                 books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
                 title=title, author=author, max=max, min=min)

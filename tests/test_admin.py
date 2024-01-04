@@ -10,13 +10,9 @@ class TestAdmin(BaseTestClass):
             'autor': 'Mercedes Abad',
         }
         res = self.client.post('/liburuaEzabatu', data=data)
-        #Liburua ez dagoela konprobatuko dugu:
-            # Liburua ez dagoela konprobatuko dugu:
         autoreId = self.db.select("SELECT id FROM Author WHERE name = 'Mercedes Abad'")[0][0]
         emaitza = self.db.select("SELECT * FROM Book WHERE title = 'Liburu Berria' and author = ?", (autoreId,))
         self.assertTrue(len(emaitza)==0)
-
-        # liburua gehitu egiten da
         data = {
             'titulo': 'Liburu Berria',
             'autor': 'Mercedes Abad', #BERE ID-a 1 DA!
@@ -33,10 +29,7 @@ class TestAdmin(BaseTestClass):
         }
         res = self.client.post('/liburuaEzabatu', data=data)
 
-
     def test_liburuaEzabatu(self):
-    	#Beste liburu bat gehitzen dut
-    	    # Beste liburu bat gehitzen dut
         data = {
             'titulo': 'Ezabatzeko liburua',
             'autor': 'Mercedes Abad',
@@ -46,10 +39,7 @@ class TestAdmin(BaseTestClass):
         res = self.client.post('/liburuaGehitu', data=data)
         autoreId = self.db.select("SELECT id FROM Author WHERE name = 'Mercedes Abad'")[0][0]
         emaitza = self.db.select("SELECT * FROM Book WHERE title = 'Ezabatzeko liburua' and author = ?", (autoreId,))
-        # Orain begiratzen dugu ziurtatzeko liburua dagoela
         self.assertTrue(len(emaitza) > 0) 
-
-        # Orain liburu hori ezabatuko dugu
         data = {
             'titulo': 'Ezabatzeko liburua',
             'autor': 'Mercedes Abad'
@@ -59,8 +49,6 @@ class TestAdmin(BaseTestClass):
         # Orain katalogoan begiratuko dugu ea beneta ezabatu den ala ez
         emaitza1 = self.db.select("SELECT * FROM Book WHERE title = 'Ezabatzeko liburua' and author = ?", (autoreId,))
         self.assertTrue(len(emaitza1) == 0)
-
-
 
     def test_bazegoen_liburua_gehitu(self):
         #Liburua gure katagora igotzen saiatuko gara
@@ -78,11 +66,6 @@ class TestAdmin(BaseTestClass):
         lib1 = self.db.select("SELECT * FROM Book WHERE author = ?", (autoreId,))
         self.assertTrue(len(lib1)>0)
         self.assertEqual(lib,lib1)
-
-        # Nahiz eta guk ez ikusi, gure programa pentsatuta dago horrelako kasuetarako,
-        #liburua errepikatu beharrean, soilik behin agertuko da, hau da, aurretik zegoen
-        #moduan utziko da, eta web orrialdetik eginez gero, mezu bat agertuko litzateke
-        #adieraziz liburu hori bazegoela.
 
     def test_ez_zegoen_liburua_ezabatu(self):
         #Liburua gure katagora igotzen saiatuko gara
@@ -121,7 +104,60 @@ class TestAdmin(BaseTestClass):
             'autor': 'amadeo',
         }
         res = self.client.post('/liburuaEzabatu', data=data)
+
+    def test_erreseinak_erreserbenHistoriala_mailegatuak_dituen_liburua_ezabatu(self):
+        data = {
+            'name': 'Jaime1',
+            'email': 'jaime1@gmail.com',
+            'password': '123',
+            'admin': 'true'
+        }
+        res = self.client.post('erabiltzaileaGehitu', data=data)
+        data = {
+            'titulo': 'Liburua',
+            'autor': 'Jon', 
+            'cover': 'A',
+            'descripcion': 'B'
+        }
+        res = self.client.post('liburuaGehitu', data=data)
+
+        id1 = self.db.select("SELECT id FROM USER WHERE email = 'jaime1@gmail.com'")[0][0]
+        idlib = self.db.select("SELECT id FROM Book WHERE title = 'Liburua'")[0][0]
+        self.db.insert("INSERT INTO Erreseina VALUES (?,?,'2024-01-03','hola','iepa!')", (id1, idlib))
+        self.db.insert("INSERT INTO ErreserbenHistoriala VALUES (?,?)", (id1, idlib))
+        self.db.insert("INSERT INTO Mailegatu VALUES (?,?,'2024-01-04',NULL)", (id1, idlib))
         
+        erreseinak = self.db.select("SELECT * FROM Erreseina WHERE eraId = ?", (id1,))
+        self.assertTrue(len(erreseinak)>0)
+        erreserbaHistoriala = self.db.select("SELECT * FROM ErreserbenHistoriala WHERE userId = ?", (id1,))
+        self.assertTrue(len(erreserbaHistoriala)>0)
+        mailegatuak = self.db.select("SELECT * FROM Mailegatu WHERE eraId = ?", (id1,))
+        self.assertTrue(len(mailegatuak)>0)
+
+        data = {
+            'titulo': 'Liburua',
+            'autor': 'Jon', 
+            'cover': 'A',
+            'descripcion': 'B'
+        }
+        res = self.client.post('/liburuaEzabatu', data=data)
+        data = {
+            'name': 'Jaime1',
+            'email': 'jaime1@gmail.com',
+            'password': '123',
+            'admin': 'true'
+        }
+        erreseinak = self.db.select("SELECT * FROM Erreseina WHERE eraId = ?", (id1,))
+        self.assertFalse(len(erreseinak)>0)
+        erreserbaHistoriala = self.db.select("SELECT * FROM ErreserbenHistoriala WHERE userId = ?", (id1,))
+        self.assertFalse(len(erreserbaHistoriala)>0)
+        mailegatuak = self.db.select("SELECT * FROM Mailegatu WHERE eraId = ?", (id1,))
+        self.assertFalse(len(mailegatuak)>0)
+
+
+
+
+
 
 ##################################ERABILTZAILEA################################
 
@@ -212,12 +248,91 @@ class TestAdmin(BaseTestClass):
         res = self.client.post('erabiltzaileaGehitu', data=data)
         era = self.db.select("SELECT admin FROM USER WHERE email = 'tom@gmail.com'")[0][0]
         self.assertEqual(era, 0)
-        #O false adierazten du, eta 1 true
-        #Adierazita dago, "true" ez den zerbait jartzen baldin bada, "false" jartzeko automatikoki
         data = {
             'name': 'Tom',
             'email': 'tom@gmail.com'
         }
         res = self.client.post('erabiltzaileaEzabatu', data=data)
 
-    
+    def test_lagunak_Erreseinak_ForumTopic_ForumPosts_ErreserbenHistoriala_Mailegatuak_dituen_erabiltzailea_ezabatu(self):
+        data = {
+            'name': 'Jaime1',
+            'email': 'jaime1@gmail.com',
+            'password': '123',
+            'admin': 'true'
+        }
+        res = self.client.post('erabiltzaileaGehitu', data=data)
+        data = {
+            'name': 'Jaime2',
+            'email': 'jaime2@gmail.com',
+            'password': '123',
+            'admin': 'true'
+        }
+        res = self.client.post('erabiltzaileaGehitu', data=data)
+        data = {
+            'titulo': 'Liburua',
+            'autor': 'Jon', 
+            'cover': 'A',
+            'descripcion': 'B'
+        }
+        res = self.client.post('/liburuaGehitu', data=data)
+        id1 = self.db.select("SELECT id FROM USER WHERE email = 'jaime1@gmail.com'")[0][0]
+        id2 = self.db.select("SELECT id FROM USER WHERE email = 'jaime2@gmail.com'")[0][0]
+        idlib = self.db.select("SELECT id FROM Book WHERE title = 'Liburua'")[0][0]
+        self.db.insert("INSERT INTO Lagunak VALUES (?,?)", (id1, id2))
+        self.db.insert("INSERT INTO Erreseina VALUES (?,?,'2024-01-03','hola','iepa!')", (id1, idlib))
+        self.db.insert("INSERT INTO ForumTopic VALUES (NULL,?,'kaixo','polita',null)", (id1,))
+        topicid = self.db.select("SELECT id FROM ForumTopic WHERE user_id = ?", (id1,))[0][0]
+        self.db.insert("INSERT INTO forum_posts VALUES (null,?,?,'kaixo')", (topicid, id1))
+        self.db.insert("INSERT INTO ErreserbenHistoriala VALUES (?,?)", (id1, idlib))
+        self.db.insert("INSERT INTO Mailegatu VALUES (?,?,'2024-01-04',NULL)", (id1, idlib))
+        
+        jaime1Lagunak = self.db.select("SELECT * FROM Lagunak WHERE lagun1Id = ?", (id1,))
+        self.assertTrue(len(jaime1Lagunak) > 0)
+        jaime2Lagunak = self.db.select("SELECT * FROM Lagunak WHERE lagun2Id = ?", (id2,))
+        self.assertTrue(len(jaime2Lagunak) > 0)
+        erreseinak = self.db.select("SELECT * FROM Erreseina WHERE eraId = ?", (id1,))
+        self.assertTrue(len(erreseinak)>0)
+        forumtopic = self.db.select("SELECT * FROM ForumTopic WHERE user_id = ?", (id1,))
+        self.assertTrue(len(forumtopic)>0)
+        erreserbaHistoriala = self.db.select("SELECT * FROM ErreserbenHistoriala WHERE userId = ?", (id1,))
+        self.assertTrue(len(erreserbaHistoriala)>0)
+        mailegatuak = self.db.select("SELECT * FROM Mailegatu WHERE eraId = ?", (id1,))
+        self.assertTrue(len(mailegatuak)>0)
+
+        
+        data = {
+            'name': 'Jaime1',
+            'email': 'jaime1@gmail.com',
+            'password': '123',
+            'admin': 'true'
+        }
+        res = self.client.post('erabiltzaileaEzabatu', data=data)
+        data = {
+            'name': 'Jaime2',
+            'email': 'jaime2@gmail.com',
+            'password': '123',
+            'admin': 'true'
+        }
+        res = self.client.post('erabiltzaileaEzabatu', data=data)
+        data = {
+            'titulo': 'Liburua',
+            'autor': 'Jon', 
+            'cover': 'A',
+            'descripcion': 'B'
+        }
+        res = self.client.post('/liburuaEzabatu', data=data)
+        
+
+        jaime1Lagunak = self.db.select("SELECT * FROM Lagunak WHERE lagun1Id = ?", (id1,))
+        self.assertFalse(len(jaime1Lagunak) > 0)
+        jaime2Lagunak = self.db.select("SELECT * FROM Lagunak WHERE lagun2Id = ?", (id2,))
+        self.assertFalse(len(jaime2Lagunak) > 0)
+        erreseinak = self.db.select("SELECT * FROM Erreseina WHERE eraId = ?", (id1,))
+        self.assertFalse(len(erreseinak)>0)
+        forumtopic = self.db.select("SELECT * FROM ForumTopic WHERE user_id = ?", (id1,))
+        self.assertFalse(len(forumtopic)>0)
+        erreserbaHistoriala = self.db.select("SELECT * FROM ErreserbenHistoriala WHERE userId = ?", (id1,))
+        self.assertFalse(len(erreserbaHistoriala)>0)
+        mailegatuak = self.db.select("SELECT * FROM Mailegatu WHERE eraId = ?", (id1,))
+        self.assertFalse(len(mailegatuak)>0)
