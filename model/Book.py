@@ -4,12 +4,13 @@ from .Author import Author
 db = Connection()
 
 class Book:
-	def __init__(self, id, title, author, cover, description):
+	def __init__(self, id, title, author, cover, description, reserved):
 		self.id = id
 		self.title = title
 		self.author = author
 		self.cover = cover
 		self.description = description
+		self.reserved = reserved
 
 	@property
 	def author(self):

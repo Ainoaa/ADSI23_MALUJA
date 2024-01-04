@@ -13,13 +13,27 @@ class ErreserbatutakoLiburuakController:
         return cls.__instance
 
 
-    def bueltatu_liburua(self, hasiData, bukatuData, erabId, bookId):
-        db.delete("DELETE FROM Mailegatu WHERE hasiData = ? AND bukatuData = ? AND erabId = ? AND bookId = ?", (hasiData, bukatuData, erabId, bookId))
+    def liburua_bueltatu(self, eraId, libId):
+        # Verificar si el usuario ya ha tenido reservado el libro
+        if self.jada_mailegatuta_dago(eraId, libId):
+            # Actualizar la fecha de finalización para indicar que el libro ha sido devuelto
+            db.update("UPDATE Mailegatu SET bukaeraData = CURRENT_TIMESTAMP WHERE eraId = ? AND libId = ? AND bukaeraData IS NULL", (eraId, libId))
+            return True
+        else:
+            return False
 
 
+    def erreserben_historialera_gehitu(self, userId, bookId):
+        # Verificar si ya existe una entrada para este libro y usuario en el historial
+        badago = db.select("SELECT * FROM ErreserbenHistoriala WHERE userId = ? AND bookId = ?", (userId, bookId))
 
-    def add_liburu_erreserbatua(self, bookId):
-        self.libros_reservados.append(bookId)
+        if not badago:
+            # Si no existe, agregar una nueva entrada al historial
+            db.insert("INSERT INTO ErreserbenHistoriala (userId, bookId) VALUES (?, ?)", (userId, bookId))
+            return True
+        else:
+            # Ya existe una entrada para este libro y usuario
+            return False
 
 
     def erreserbatu_liburua(self, userId, bookId):
@@ -42,32 +56,13 @@ class ErreserbatutakoLiburuakController:
     	return katalogo_erreserbatuak
 
 
-    def get_liburu_erreserbatuak(self, title="", author=""):
-    	# Utiliza los parámetros title y author en la consulta SQL
-    	kontsulta = """
-        	SELECT b.*
-        	FROM Mailegatu M
-        	INNER JOIN Book b ON M.libId = b.id
-        	WHERE M.bukaeraData IS NULL
-    	"""
-    
-    	if title:
-        	kontsulta += " AND b.title LIKE ?"
-    	if author:
-        	kontsulta += " AND b.author LIKE ?"
-
-    	# Usa los parámetros de búsqueda en la consulta
-    	params = ()
-    	if title:
-        	params += (f"%{title}%",)
-    	if author:
-        	params += (f"%{author}%",)
-
-        #Ejecuta la consulta y retorna la lista de libros reservados
-    	lista = db.select(kontsulta, params)
-    	return lista
-
-    
+    def jada_mailegatuta_dago(self, eraId, libId):
+        # Verificar si el usuario ya ha tenido reservado el libro
+        count_result = db.select("SELECT count(*) FROM Mailegatu M WHERE M.eraId = ? AND M.libId = ? AND bukaeraData IS NULL", (eraId, libId))
+        
+        # Si el recuento es mayor o igual a 1, significa que el libro ya está reservado
+        return count_result[0][0] >= 1
+        
 
     def jadaMailegatuZuen(self, eraId, libId):
     	# Verificar si el usuario ya ha tenido reservado el libro
