@@ -374,31 +374,36 @@ def liburuGomendioak():
 
 
 
-@app.route('/ErreserbatutakoLiburuak', methods=['GET', 'POST'])
-def historialErreserba():
-    title = request.values.get("title")
-    author = request.values.get("author")
-    libros_reservados = erreserbatuak.get_liburu_erreserbatuak(title, author)
+@app.route('/libros_reservados', methods=['GET'])
+def libros_reservados():
+    libros_reservados_ids, libros_reservados = erreserbatuak.get_liburu_erreserbatuak()
+    return render_template('libros_reservados.html', libros_reservados=libros_reservados)
 
+
+@app.route('/ErreserbatutakoLiburuak')
+def historialErreserba():
+    title = request.form.get("title", "")
+    author = request.form.get("author", "")
+    libros_reservados = erreserbatuak.get_liburu_erreserbatuak(title, author)
     return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados, title=title, author=author)
-    
+
+        
  
-@app.route('/liburuaErreserbatu', methods=['GET','POST'])
+@app.route('/liburuaErreserbatu', methods=['GET', 'POST'])
 def liburuaErreserbatu():
+
     if request.method == 'POST':
         libId = request.values.get("libId")
         eraId = request.values.get("eraId")
-        title = request.values.get("title")
-        author = request.values.get("author")
-        cover = request.values.get("cover")
-        description = request.values.get("description")
-        if erreserbatuak.liburua_dago(title, author):
+
+        if erreserbatuak.jada_mailegatuta_dago(eraId, libId):
             return render_template('liburuaErreserbatutaZegoenJada.html')
         else:
-            liburua = library.erreserbatu(libId, eraId)
+            liburua = erreserbatuak.erreserbatu_liburua(libId, eraId)
             return render_template('liburuaErreserbatuDa.html')
     else:
         return render_template('liburuaErreserbatu.html')
+
 
         
 @app.route('/catalogue/<int:bookId>') 
