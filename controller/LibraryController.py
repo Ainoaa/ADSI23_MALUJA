@@ -73,10 +73,10 @@ class LibraryController:
 			return None
 			
 	def liburua_dago(self, titulua, autorea):
-		a = db.select("SELECT * FROM Author WHERE name = ?", (autorea,))
+		a = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))
 		if len(a)>0:
-			autore_id = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
-			emaitza = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autore_id))
+			autoreId = self.get_autoreId(autorea)
+			emaitza = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreId))
 			if len(emaitza)>0:
 				return True
 			else:
@@ -99,16 +99,15 @@ class LibraryController:
 		liburua = Book(b[0],b[1],b[2],b[3],b[4])
 		return liburua
 
-	def liburua_ezabatu(self, titulua, autorea):
+	def liburua_ezabatu(self, libId, autoreId):
 		#print(titulua, autorea)
-		autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
-		b = db.select("SELECT * FROM BOOK WHERE title = ? AND author = ?", (titulua, autoreId))[0]
+		b = db.select("SELECT * FROM BOOK WHERE id = ? AND author = ?", (libId, autoreId))[0]
 		liburua = Book(b[0],b[1],b[2],b[3],b[4])
-		db.delete("DELETE FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))
+		db.delete("DELETE FROM Book WHERE id = ? AND author = ?", (libId, autoreId))
 		#print (autoreId)
 		lista = db.select("SELECT * FROM Book WHERE author = ?", (autoreId,))
 		if len(lista) == 0:
-			db.delete("DELETE FROM Author WHERE id = ? OR name = ?", (autoreId, autorea))
+			db.delete("DELETE FROM Author WHERE id = ?", (autoreId,))
 		return liburua
 			
 				
@@ -139,24 +138,28 @@ class LibraryController:
     		db.insert("INSERT INTO Mailegatu (eraId, libId, hasieraData) VALUES (?, ?, ?)", (userId, bookId, hasiera_data))
     		return book_info
 
+	def get_autoreId(self, autorea):
+	    autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
+	    return autoreId
+
+	def get_libId(self, titulua, autorea):
+	    autoreId = self.get_autoreId(autorea)  
+	    libId = db.select("SELECT id FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))[0][0]
+	    return libId
+
+
 
 
 ##################### ERLAZIOAK EZABATZEKO ######################
 
 
-	def erreseinakEzabatu(self, titulua, autorea):
-	    autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
-	    libId = db.select("SELECT id FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))[0][0]
+	def erreseinakEzabatu(self, libId):
 	    db.delete("DELETE FROM Erreseina WHERE libId = ?", (libId,))
 
-	def erreserbenHistorialaEzabatu(self, titulua, autorea):
-	    autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
-	    libId = db.select("SELECT id FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))[0][0]
+	def erreserbenHistorialaEzabatu(self, libId):
 	    db.delete("DELETE FROM ErreserbenHistoriala WHERE bookId = ?", (libId,))
 
-	def mailegatuakEzabatu(self, titulua, autorea):
-	    autoreId = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))[0][0]
-	    libId = db.select("SELECT id FROM Book WHERE title = ? AND author = ?", (titulua, autoreId))[0][0]
+	def mailegatuakEzabatu(self, libId):
 	    db.delete("DELETE FROM Mailegatu WHERE libId = ?", (libId,))
 
 

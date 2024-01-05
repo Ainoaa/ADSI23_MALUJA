@@ -181,10 +181,12 @@ def liburuaEzabatu():
         titulua = request.values.get("titulo")
         autorea = request.values.get("autor")
         if library.liburua_dago(titulua, autorea):
-            library.erreseinakEzabatu(titulua, autorea)
-            library.erreserbenHistorialaEzabatu(titulua, autorea)
-            library.mailegatuakEzabatu(titulua, autorea)
-            liburua = library.liburua_ezabatu(titulua, autorea)
+            autoreId = library.get_autoreId(autorea)
+            libId = library.get_libId(titulua, autorea)
+            library.erreseinakEzabatu(libId)
+            library.erreserbenHistorialaEzabatu(libId)
+            library.mailegatuakEzabatu(libId)
+            liburua = library.liburua_ezabatu(libId, autoreId)
             return render_template('liburuaEzabatuDa.html',liburua=liburua)
         else:
             return render_template('ezDagoLiburua.html')
@@ -212,13 +214,14 @@ def erabiltzaileaEzabatu():
         izena = request.form.get('name')
         emaila = request.form.get('email')
         if erabiltzaileak.erabiltzailea_dago(emaila,):
-            erabiltzaileak.lagunakEzabatu(izena, emaila)
-            erabiltzaileak.erreseinakEzabatu(izena, emaila)
-            erabiltzaileak.forumTopicEzabatu(izena, emaila)
-            erabiltzaileak.forum_posts_ezabatu(izena, emaila)
-            erabiltzaileak.erreserbenHistorialaEzabatu(izena, emaila)
-            erabiltzaileak.mailegatuakEzabatu(izena, emaila)
-            erabiltzailea = erabiltzaileak.erabiltzailea_ezabatu(izena, emaila)
+            eraId = erabiltzaileak.get_erabiltzaileId(izena, emaila)
+            erabiltzaileak.lagunakEzabatu(eraId)
+            erabiltzaileak.erreseinakEzabatu(eraId)
+            erabiltzaileak.forumTopicEzabatu(eraId)
+            erabiltzaileak.forum_posts_ezabatu(eraId)
+            erabiltzaileak.erreserbenHistorialaEzabatu(eraId)
+            erabiltzaileak.mailegatuakEzabatu(eraId)
+            erabiltzailea = erabiltzaileak.erabiltzailea_ezabatu(eraId)
             return render_template('erabiltzaileaEzabatuDa.html', erabiltzailea=erabiltzailea)
         else:
             return render_template('erabiltzaileaEzDago.html')
@@ -369,43 +372,39 @@ def liburuGomendioak():
                 books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
                 title=title, author=author, max=max, min=min)
 
-@app.route('/libros_reservados', methods=['GET'])
-def libros_reservados():
-    libros_reservados_ids, libros_reservados = erreserbatuak.get_liburu_erreserbatuak()
-    return render_template('libros_reservados.html', libros_reservados=libros_reservados)
 
 
-@app.route('/ErreserbatutakoLiburuak')
+@app.route('/ErreserbatutakoLiburuak', methods=['GET', 'POST'])
 def historialErreserba():
-    title = request.form.get("title", "")
-    author = request.form.get("author", "")
+    title = request.values.get("title")
+    author = request.values.get("author")
     libros_reservados = erreserbatuak.get_liburu_erreserbatuak(title, author)
+
     return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados, title=title, author=author)
-
-        
+    
  
-@app.route('/liburuaErreserbatu', methods=['GET', 'POST'])
+@app.route('/liburuaErreserbatu', methods=['GET','POST'])
 def liburuaErreserbatu():
-
     if request.method == 'POST':
         libId = request.values.get("libId")
         eraId = request.values.get("eraId")
-
-        if erreserbatuak.jada_mailegatuta_dago(eraId, libId):
+        title = request.values.get("title")
+        author = request.values.get("author")
+        cover = request.values.get("cover")
+        description = request.values.get("description")
+        if erreserbatuak.liburua_dago(title, author):
             return render_template('liburuaErreserbatutaZegoenJada.html')
         else:
-            liburua = erreserbatuak.erreserbatu_liburua(libId, eraId)
+            liburua = library.erreserbatu(libId, eraId)
             return render_template('liburuaErreserbatuDa.html')
     else:
         return render_template('liburuaErreserbatu.html')
-
 
         
 @app.route('/catalogue/<int:bookId>') 
 def info_liburu(bookId):
     book_info = library.info_liburu(bookId)
     return render_template('info_liburu.html', book_info=book_info)
-   
    
     
     
