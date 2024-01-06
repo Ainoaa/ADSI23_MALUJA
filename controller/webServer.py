@@ -409,7 +409,7 @@ def liburuaErreserbatu():
 @app.route('/catalogue/<int:bookId>') 
 def info_liburu(bookId):
     book_info = library.info_liburu(bookId)
-    return render_template('info_liburu.html', book_info=book_info)
+    return render_template('info_liburu_catalogo.html', book_info=book_info)
    
     
     

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #fff; 
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #3498db;
+        color: #fff;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    .left-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%; 
+        height: auto; 
+    }
+
+    .center-content {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container p-5 my-5 border">
+    <h1>{{ book_info.title }}</h1>
+    <p>Author: {{ book_info.author }}</p>
+    <p>Description: {{ book_info.description }}</p>
+    <img src="{{ book_info.cover }}" alt="{{ book_info.title }} cover" class="left-image">
+</div>
+
+<div class="container">
+    <form action="{{ url_for('liburuaErreserbatu', bookId=book_info.id) }}" method="POST">
+        <button type="submit" class="btn btn-primary" style="background-color: #3498db;">Erreserbatu</button>
+    </form>
+    <form action="{{ url_for('liburuaErreserbatu', bookId=book_info.id) }}" method="POST">
+        <button type="submit" class="btn btn-primary" style="background-color: #3498db;">Erreseinak ikusi</button>
+    </form>
+    <form action="{{ url_for('liburuaErreserbatu', bookId=book_info.id) }}" method="POST">
+        <button type="submit" class="btn btn-primary" style="background-color: #3498db;">Erreseina sortu</button>
+    </form>
+</div>
+
+{% endblock %}
+

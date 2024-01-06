@@ -12,6 +12,15 @@ class ErreserbatutakoLiburuakController:
             cls.__instance.libros_reservados = []
         return cls.__instance
 
+    def get_user_id(self, userId):
+    	user_id = db.select("SELECT userId FROM ErreserbenHistoriala WHERE id = ?", (userId,))[0][0]
+    	return user_id
+
+
+    def get_book_id(self, bookId):
+    	book_id = db.select("SELECT bookId FROM ErreserbenHistoriala WHERE id = ?", (bookId,))[0][0]
+    	return book_id
+
 
     def liburua_bueltatu(self, eraId, libId):
         # Verificar si el usuario ya ha tenido reservado el libro
