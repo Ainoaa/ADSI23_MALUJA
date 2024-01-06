@@ -374,24 +374,35 @@ def liburuGomendioak():
 
 
 
-@app.route('/libros_reservados', methods=['GET'])
-def libros_reservados():
-    libros_reservados_ids, libros_reservados = erreserbatuak.get_liburu_erreserbatuak()
-    return render_template('libros_reservados.html', libros_reservados=libros_reservados)
-
-
 @app.route('/ErreserbatutakoLiburuak')
 def historialErreserba():
-    title = request.form.get("title", "")
-    author = request.form.get("author", "")
-    libros_reservados = erreserbatuak.get_liburu_erreserbatuak(title, author)
-    return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados, title=title, author=author)
+    libros_reservados = erreserbatuak.get_liburu_erreserbatuak()
+    return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados)
 
+
+@app.route('/liburuaBueltatu', methods=['GET', 'POST'])
+def liburuaBueltatu():
+    if request.method == 'POST':
+        liburu_id = request.values.get("bookId")
+        user_id = request.values.get("userId")
         
+        if erreserbatuak.jada_mailegatuta_dago(liburu_id, user_id):
+            eraId = erreserbatuak.get_user_id(user_id)
+            libId = erreserbatuak.get_book_id(liburu_id)
+            erreserbatuak.erreseinakEzabatu(libId)
+            erreserbatuak.erreserbenHistorialaEzabatu(libId)
+            erreserbatuak.mailegatuakEzabatu(libId)
+            liburua = erreserbatuak.liburua_bueltatu(libId, eraId)
+            return render_template('liburuaBueltatuDa.html',liburua=liburua)
+        else:
+            return render_template('liburuaEzDago.html')
+    else:
+        return render_template('liburuaBueltatu.html')
+       
+ 
  
 @app.route('/liburuaErreserbatu', methods=['GET', 'POST'])
 def liburuaErreserbatu():
-
     if request.method == 'POST':
         libId = request.values.get("libId")
         eraId = request.values.get("eraId")
@@ -405,10 +416,15 @@ def liburuaErreserbatu():
         return render_template('liburuaErreserbatu.html')
 
 
+@app.route('/infoLiburuErreserbatuta/<int:bookId>') 
+def info_liburu_erreserbatuta(bookId):
+    book_info = erreserbatuak.info_liburu_erreserbatuta(bookId)
+    return render_template('info_liburu_erreserbatuta.html', book_info=book_info)
+
         
-@app.route('/catalogue/<int:bookId>') 
-def info_liburu(bookId):
-    book_info = library.info_liburu(bookId)
+@app.route('/infoLiburuCatalogo/<int:bookId>') 
+def info_liburu_catalogo(bookId):
+    book_info = library.info_liburu_catalogo(bookId)
     return render_template('info_liburu_catalogo.html', book_info=book_info)
    
     

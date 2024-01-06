@@ -78,7 +78,7 @@
 </div>
 
 <div class="container">
-    <form action="{{ url_for('historialErreserba', bookId=book_info.id) }}" method="POST">
+    <form action="{{ url_for('liburuaBueltatu', bookId=book_info.id) }}" method="POST">
         <button type="submit" class="btn btn-primary" style="background-color: #3498db;">Bueltatu</button>
     </form>
     <form action="{{ url_for('liburuaErreserbatu', bookId=book_info.id) }}" method="POST">
