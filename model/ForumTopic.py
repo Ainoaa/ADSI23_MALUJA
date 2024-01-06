@@ -3,6 +3,7 @@ from model.ForumPost import ForumPost
 
 db = Connection()
 
+
 class ForumTopic:
     def __init__(self, id, user_id, username, title, content, created_at):
         self.id = id

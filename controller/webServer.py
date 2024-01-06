@@ -292,16 +292,10 @@ def create_topic():
         title = request.form.get('title')
         content = request.form.get('content')
         forum_controller.create_forum_topic(user_id, username, title, content)
-        return redirect(url_for('list_topics'))
+        return redirect(url_for('foroa'))
 
     return render_template('foroa.html')
 
-
-@app.route('/list_topics')
-def list_topics():
-    # Lógica para obtener y mostrar la lista de temas del foro
-    topics = forum_controller.get_forum_topics_with_posts()
-    return render_template('foroa.html', topics=topics)
 
 @app.route('/foroa')
 def foroa():
@@ -312,16 +306,12 @@ def foroa():
 def create_reply():
     if 'user' in dir(request) and request.user and request.user.token:
         user_id = request.user.id
-        topic_id = request.form.get('topic_id')  # Asegúrate de tener un campo oculto en el formulario HTML para el topic_id
+        topic_id = request.form.get('topic_id')
         content = request.form.get('reply_content')
-
-        # Aquí deberías llamar a la lógica para crear una respuesta en tu modelo o controlador
+        # Erantzuna sortu:
         forum_controller.create_reply(user_id, topic_id, content)
-
-        # Después de crear la respuesta, redirige a la página del tema para mostrar la respuesta
         return redirect(url_for('foroa'))
-
-    # Si el usuario no está autenticado, redirige a la página de inicio de sesión
+    # Identifikatuta ez badago, login orrira bidali
     return redirect(url_for('login'))
 
 
