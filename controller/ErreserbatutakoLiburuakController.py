@@ -137,14 +137,3 @@ class ErreserbatutakoLiburuakController:
 
     def mailegatuakEzabatu(self, libId):
         db.delete("DELETE FROM Mailegatu WHERE libId = ?", (libId,))
-
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
