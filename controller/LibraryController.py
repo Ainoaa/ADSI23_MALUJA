@@ -121,7 +121,7 @@ class LibraryController:
 		
 		
 		
-	def info_liburu(self, bookId):
+	def info_liburu_catalogo(self, bookId):
     		book_info = db.select("SELECT * FROM Book WHERE id = ?", (bookId,))
 
     		if book_info:
