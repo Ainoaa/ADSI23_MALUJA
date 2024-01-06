@@ -6,6 +6,7 @@ from .ErreserbatutakoLiburuakController import ErreserbatutakoLiburuakController
 from flask import Flask, render_template, request, redirect, make_response, url_for
 from datetime import datetime
 from model import Connection
+
 app = Flask(__name__, static_url_path='', static_folder='../view/static', template_folder='../view/')
 db = Connection()
 
@@ -48,8 +49,8 @@ def catalogue():
     page = int(request.values.get("page", 1))
     books, nb_books = library.search_books(title=title, author=author, page=page - 1)
     total_pages = (nb_books // 6) + 1
-    return render_template('catalogue.html', books=books, title=title, author=author, current_page=page, total_pages=total_pages, max=max, min=min)
-
+    return render_template('catalogue.html', books=books, title=title, author=author, current_page=page,
+                           total_pages=total_pages, max=max, min=min)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,6 +84,7 @@ def logout():
         request.user = None
     return resp
 
+
 @app.route('/erreseina_sortu')
 def jadaMailegatuZuen():
     eraId = request.values.get("eraId")
@@ -90,9 +92,10 @@ def jadaMailegatuZuen():
     if erreserbatuak.jadaMailegatuZuen(eraId, libId):
         dataOrain = datetime.now()
         dataFormatua = dataOrain.strftime("%Y-%m-%d %H:%M:%S")
-        return render_template('erreseina.html', eraId = eraId, libId = libId, data = dataFormatua, nota = None, iruzkina = None)
+        return render_template('erreseina.html', eraId=eraId, libId=libId, data=dataFormatua, nota=None, iruzkina=None)
     else:
         return render_template('erroreaErreseina.html')
+
 
 @app.route('/erreseina_sortuta')
 def erreseinaSortu():
@@ -105,7 +108,8 @@ def erreseinaSortu():
         erreseinak.erreseinaSortu(eraId, libId, data, nota, iruzkina)
         return render_template('erreseinaEginda.html')
     else:
-         return render_template('erroreaErreseina.html')
+        return render_template('erroreaErreseina.html')
+
 
 @app.route('/erreseina_editatu')
 def jadaErreseinaZuen():
@@ -121,6 +125,7 @@ def jadaErreseinaZuen():
             return render_template('erroreaErreseina.html')
     else:
         return render_template('erroreaErreseina.html')
+
 
 @app.route('/erreseina_editatuta')
 def erreseinaEditatu():
@@ -141,7 +146,6 @@ def erreseinaEditatu():
         return render_template('erroreaErreseina.html')
 
 
-
 @app.route('/liburuko_erreseina_katalogoa')
 def liburuko_erreseina_katalogoa():
     eraId = request.values.get("eraId")
@@ -157,7 +161,7 @@ def admin():
 
 ###############################################################################################################
 
-@app.route('/liburuaGehitu', methods=['GET','POST'])
+@app.route('/liburuaGehitu', methods=['GET', 'POST'])
 def liburuaGehitu():
     if request.method == 'POST':
         titulua = request.values.get("titulo")
@@ -173,8 +177,6 @@ def liburuaGehitu():
         return render_template('liburuaGehitu.html')
 
 
-
-
 @app.route('/liburuaEzabatu', methods=['GET', 'POST'])
 def liburuaEzabatu():
     if request.method == 'POST':
@@ -187,11 +189,12 @@ def liburuaEzabatu():
             library.erreserbenHistorialaEzabatu(libId)
             library.mailegatuakEzabatu(libId)
             liburua = library.liburua_ezabatu(libId, autoreId)
-            return render_template('liburuaEzabatuDa.html',liburua=liburua)
+            return render_template('liburuaEzabatuDa.html', liburua=liburua)
         else:
             return render_template('ezDagoLiburua.html')
     else:
         return render_template('liburuaEzabatu.html')
+
 
 @app.route('/erabiltzaileaGehitu', methods=['GET', 'POST'])
 def erabiltzaileaGehitu():
@@ -200,7 +203,7 @@ def erabiltzaileaGehitu():
         emaila = request.form.get('email')
         pasahitza = request.form.get('password')
         admin = request.form.get('admin')
-        if erabiltzaileak.erabiltzailea_dago(emaila,):
+        if erabiltzaileak.erabiltzailea_dago(emaila, ):
             return render_template('erabiltzaileaDagoJada.html')
         else:
             erabiltzailea = erabiltzaileak.erabiltzailea_gehitu(izena, emaila, pasahitza, admin)
@@ -208,12 +211,13 @@ def erabiltzaileaGehitu():
     else:
         return render_template('erabiltzaileaGehitu.html')
 
+
 @app.route('/erabiltzaileaEzabatu', methods=['GET', 'POST'])
 def erabiltzaileaEzabatu():
     if request.method == 'POST':
         izena = request.form.get('name')
         emaila = request.form.get('email')
-        if erabiltzaileak.erabiltzailea_dago(emaila,):
+        if erabiltzaileak.erabiltzailea_dago(emaila, ):
             eraId = erabiltzaileak.get_erabiltzaileId(izena, emaila)
             erabiltzaileak.lagunakEzabatu(eraId)
             erabiltzaileak.erreseinakEzabatu(eraId)
@@ -227,22 +231,23 @@ def erabiltzaileaEzabatu():
             return render_template('erabiltzaileaEzDago.html')
     return render_template('erabiltzaileaEzabatu.html')
 
+
 ##############################################################################################################
 
 @app.route('/LagunenGomendioak')
 def LagunenGomendioak():
-    if not('user' in dir(request) and request.user and request.user.token):
+    if not ('user' in dir(request) and request.user and request.user.token):
         return redirect("/")
     name = request.values.get("name", "")
     email = request.values.get("user_email", "")
     page_lagunen_lagunak = int(request.values.get("page_lagunen_lagunak", 1))
     page_zure_lag_lib = int(request.values.get("page_zure_lag_lib", 1))
 
-    #Lagunen lagunak gomendatu
+    # Lagunen lagunak gomendatu
     lagun_zerrenda = request.user.get_lagunen_zerrenda()
     gomendatutako_lagunen_lagunak = []
     for User in lagun_zerrenda:
-        lista = User.get_lagunen_zerrenda(name,email)
+        lista = User.get_lagunen_zerrenda(name, email)
         gomendatutako_lagunen_lagunak.extend(
             user
             for user in lista
@@ -251,14 +256,14 @@ def LagunenGomendioak():
             user not in gomendatutako_lagunen_lagunak
         )
     gomendatutako_lagunen_lagunak = [user for user in gomendatutako_lagunen_lagunak if user.id != request.user.id]
-    total_pages_lagunen_lagunak = (len(gomendatutako_lagunen_lagunak)//4) +1
+    total_pages_lagunen_lagunak = (len(gomendatutako_lagunen_lagunak) // 4) + 1
     lagunen_lagunak = gomendatutako_lagunen_lagunak
 
-    #Irakurritako liburuen araberako lagunak gomendatu
+    # Irakurritako liburuen araberako lagunak gomendatu
     irakurritako_liburuak = request.user.get_irakurritako_liburuak()
     gomendatutako_lagunak_liburuekiko = []
     for book in irakurritako_liburuak:
-        liburua_irakurri_dutenek = request.user.get_liburua_irakurri_dutenek(book.id,name,email)
+        liburua_irakurri_dutenek = request.user.get_liburua_irakurri_dutenek(book.id, name, email)
         gomendatutako_lagunak_liburuekiko.extend(
             user
             for user in liburua_irakurri_dutenek
@@ -267,15 +272,18 @@ def LagunenGomendioak():
         )
 
     irakurritako_liburuen_lagunak = gomendatutako_lagunak_liburuekiko
-    total_pages_zure_lag_lib = (len(gomendatutako_lagunak_liburuekiko)//4) +1
+    total_pages_zure_lag_lib = (len(gomendatutako_lagunak_liburuekiko) // 4) + 1
+
+    return render_template('LagunenGomendioak.html', lagunen_lagunak=lagunen_lagunak,
+                           current_page_lagunen_lagunak=page_lagunen_lagunak,
+                           total_pages_lagunen_lagunak=total_pages_lagunen_lagunak,
+                           irakurritako_liburuen_lagunak=irakurritako_liburuen_lagunak,
+                           current_page_zure_lag_lib=page_zure_lag_lib,
+                           total_pages_zure_lag_lib=total_pages_zure_lag_lib,
+                           name=name, email=email, max=max, min=min)
 
 
-    return render_template('LagunenGomendioak.html', lagunen_lagunak=lagunen_lagunak, current_page_lagunen_lagunak=page_lagunen_lagunak, total_pages_lagunen_lagunak=total_pages_lagunen_lagunak,
-                irakurritako_liburuen_lagunak=irakurritako_liburuen_lagunak, current_page_zure_lag_lib=page_zure_lag_lib, total_pages_zure_lag_lib=total_pages_zure_lag_lib,
-                name=name, email=email, max=max, min=min)
-
-
-
+##################################################################################################################################################################################################################################################################################################################
 @app.route('/create_topic', methods=['GET', 'POST'])
 def create_topic():
     if request.method == 'POST':
@@ -335,31 +343,31 @@ def get_forum_posts_for_topic(topic_id):
 
 @app.route('/liburuGomendioak')
 def liburuGomendioak():
-    if not('user' in dir(request) and request.user and request.user.token):
+    if not ('user' in dir(request) and request.user and request.user.token):
         return redirect("/")
     title = request.values.get("title", "")
     author = request.values.get("author", "")
     page_lagunak = int(request.values.get("page_lagunak", 1))
     page_zure_lib = int(request.values.get("page_zure_lib", 1))
-    #Lagunak irakurritakoaren araberako gomendioak
+    # Lagunak irakurritakoaren araberako gomendioak
     lagun_zerrenda = request.user.get_lagunen_zerrenda()
     irakurritako_liburuak = request.user.get_irakurritako_liburuak()
     gomendatutako_liburuak_lagunak = []
     for User in lagun_zerrenda:
-        lista = User.get_irakurritako_liburuak(title,author)
+        lista = User.get_irakurritako_liburuak(title, author)
         gomendatutako_liburuak_lagunak.extend(
             book
             for book in lista
             if book not in irakurritako_liburuak and
             book not in gomendatutako_liburuak_lagunak
         )
-    total_pages_lagunak = (len(gomendatutako_liburuak_lagunak)//6) +1
+    total_pages_lagunak = (len(gomendatutako_liburuak_lagunak) // 6) + 1
     books_lagunak = gomendatutako_liburuak_lagunak
-    #Erabiltzailearen irakurritakoaren araberako gomendioak
+    # Erabiltzailearen irakurritakoaren araberako gomendioak
     irakurritako_liburuak = request.user.get_irakurritako_liburuak()
     gomendatutako_liburuak = []
     for book in irakurritako_liburuak:
-        autorearen_liburuak = library.get_autore_baten_liburuak(book.author,author,title)
+        autorearen_liburuak = library.get_autore_baten_liburuak(book.author, author, title)
         gomendatutako_liburuak.extend(
             book
             for book in autorearen_liburuak
@@ -367,11 +375,12 @@ def liburuGomendioak():
             book not in gomendatutako_liburuak
         )
     books_zure_lib = gomendatutako_liburuak
-    total_pages_zure_lib = (len(gomendatutako_liburuak)//6) + 1
-    return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak,
-                books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
-                title=title, author=author, max=max, min=min)
-
+    total_pages_zure_lib = (len(gomendatutako_liburuak) // 6) + 1
+    return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak,
+                           total_pages_lagunak=total_pages_lagunak,
+                           books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib,
+                           total_pages_zure_lib=total_pages_zure_lib,
+                           title=title, author=author, max=max, min=min)
 
 
 @app.route('/libros_reservados', methods=['GET'])
@@ -385,13 +394,12 @@ def historialErreserba():
     title = request.form.get("title", "")
     author = request.form.get("author", "")
     libros_reservados = erreserbatuak.get_liburu_erreserbatuak(title, author)
-    return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados, title=title, author=author)
+    return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados, title=title,
+                           author=author)
 
-        
- 
+
 @app.route('/liburuaErreserbatu', methods=['GET', 'POST'])
 def liburuaErreserbatu():
-
     if request.method == 'POST':
         libId = request.values.get("libId")
         eraId = request.values.get("eraId")
@@ -405,46 +413,35 @@ def liburuaErreserbatu():
         return render_template('liburuaErreserbatu.html')
 
 
-        
-@app.route('/catalogue/<int:bookId>') 
+@app.route('/catalogue/<int:bookId>')
 def info_liburu(bookId):
     book_info = library.info_liburu(bookId)
     return render_template('info_liburu_catalogo.html', book_info=book_info)
-   
-    
-    
+
 
 @app.route('/nireLagunak')
 def nireLagunak():
-        eraId = request.values.get("eraId", "")
+    eraId = request.values.get("eraId", "")
 
-        #lagun_zerrenda = request.user.get_lagunen_zerrenda()
-        lagun_zerrenda = request.user.getLagunak()
-        lagunak = []
-        for User in lagun_zerrenda:
-            lagunak.extend(
-                lagun
-                for lagun in lagun_zerrenda
-                #if lagun not in lagun_zerrenda
-            )
-        lagunak = list(set(lagunak))
+    # lagun_zerrenda = request.user.get_lagunen_zerrenda()
+    lagun_zerrenda = request.user.getLagunak()
+    lagunak = []
+    for User in lagun_zerrenda:
+        lagunak.extend(
+            lagun
+            for lagun in lagun_zerrenda
+            # if lagun not in lagun_zerrenda
+        )
+    lagunak = list(set(lagunak))
 
-        return render_template('nireLagunak.html', eraId=eraId, lagunak=lagunak)
-    
-    
+    return render_template('nireLagunak.html', eraId=eraId, lagunak=lagunak)
+
+
 @app.route('/jasotakoEskaerak')
 def jasotakoEskaerak():
     return render_template('jasotakoEskaerak.html')
-    
-    
+
+
 @app.route('/bidalitakoEskaerak')
 def bidalitakoEskaerak():
     return render_template('bidalitakoEskaerak.html')
-    
-    
-    
-    
-    
-    
-    
-    
