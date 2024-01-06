@@ -5,9 +5,15 @@
     <div style="text-align: center; margin-top: 50px;">
         <h1>Erreseina sortzerakoan/editatzerakoan errore bat gertatu da!!</h1>
         <p>Gogoratu erreseina bat sortzerakoa edo editatzerakoan baldintza batzuk bete behar direla:</p>
+        <p>- Erreseina bat sortzeko edo editatzeko, web sisteman logeatuta egon behar zara. </p>
         <p>- Erreseina bat sortzeko, jada liburu hori mailegatuta eta bueltatuta egon behar da.</p>
         <p>- Erreseina bat editatzeko, editatu nahi den erreseina jada sortuta egon behar da.</p>
     </div>
+    <ul class="nav nav-pills justify-content-center">
+	    <li class="nav-item">
+		<a href="/catalogue" class="nav-link {% if request.path == '/catalogue' %}active{% endif %} btn btn-light" aria-current="page">ATZERA</a>
+	    </li>
+    </ul>
 </div>
 {% endblock %}
 

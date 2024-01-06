@@ -419,13 +419,13 @@ def liburuaErreserbatu():
 @app.route('/infoLiburuErreserbatuta/<int:bookId>') 
 def info_liburu_erreserbatuta(bookId):
     book_info = erreserbatuak.info_liburu_erreserbatuta(bookId)
-    return render_template('info_liburu_erreserbatuta.html', book_info=book_info)
+    return render_template('info_liburu_erreserbatuta.html', book_info=book_info, eraId=1, libId=1)
 
         
 @app.route('/infoLiburuCatalogo/<int:bookId>') 
 def info_liburu_catalogo(bookId):
     book_info = library.info_liburu_catalogo(bookId)
-    return render_template('info_liburu_catalogo.html', book_info=book_info)
+    return render_template('info_liburu_catalogo.html', book_info=book_info, eraId=1, libId=2)
    
     
     
