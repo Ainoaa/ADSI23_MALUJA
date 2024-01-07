@@ -359,11 +359,15 @@ def liburuGomendioak():
                 title=title, author=author, max=max, min=min)
 
 
-
 @app.route('/ErreserbatutakoLiburuak')
 def historialErreserba():
-    libros_reservados = erreserbatuak.get_liburu_erreserbatuak()
-    return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados)
+    if 'user' in dir(request) and request.user and request.user.token:
+        eraId = request.user.id
+        libros_reservados = erreserbatuak.get_liburu_erreserbatuak(request.user)
+        return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados)
+    else:
+    	return redirect(url_for('login')) 
+   
 
 
 @app.route('/liburuaBueltatu', methods=['GET', 'POST'])

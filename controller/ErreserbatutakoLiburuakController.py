@@ -47,11 +47,8 @@ class ErreserbatutakoLiburuakController:
         	
 
     def liburua_bueltatu(self, eraId, libId):
-        # Verificar si el usuario ya ha tenido reservado el libro
         if self.jada_mailegatuta_dago(eraId, libId):
-            # Actualizar la fecha de finalización para indicar que el libro ha sido devuelto
             db.update("UPDATE Mailegatu SET bukaeraData = CURRENT_TIMESTAMP WHERE eraId = ? AND libId = ? AND bukaeraData IS NULL", (eraId, libId))
-            # Eliminar el libro de la lista de libros reservados
             self.libros_reservados.remove(libId)
             return True
         else:
@@ -59,35 +56,33 @@ class ErreserbatutakoLiburuakController:
 
 
     def erreserben_historialera_gehitu(self, userId, bookId):
-        # Verificar si ya existe una entrada para este libro y usuario en el historial
         badago = db.select("SELECT * FROM ErreserbenHistoriala WHERE userId = ? AND bookId = ?", (userId, bookId))
 
         if not badago:
-            # Si no existe, agregar una nueva entrada al historial
             db.insert("INSERT INTO ErreserbenHistoriala (userId, bookId) VALUES (?, ?)", (userId, bookId))
             return True
         else:
-            # Ya existe una entrada para este libro y usuario
             return False
 
     
     def erreserbatu_liburua(self, userId, bookId):
-        # Reservar el libro para el usuario
-        db.insert("INSERT INTO Mailegatu (eraId, libId, hasiData) VALUES (?, ?, CURRENT_TIMESTAMP)", (userId, bookId))
-        # Agregar el libro a la lista de libros reservados
-        self.libros_reservados.append(bookId)
+    	booka = db.select("SELECT * FROM Mailegatu")
+    
+    	for fila in booka:
+        	print(fila)
+    
+    	db.insert("INSERT INTO Mailegatu (eraId, libId, hasieraData) VALUES (?, ?, CURRENT_TIMESTAMP)", (userId, bookId))
+    	self.libros_reservados.append(bookId)
+
 
 
     def jada_mailegatuta_dago(self, eraId, libId):
-        # Verificar si el usuario ya tiene reservado el libro
         num = db.select("SELECT count(*) FROM Mailegatu M WHERE M.eraId = ? AND M.libId = ? AND bukaeraData IS NULL", (eraId, libId))
-        
-        # Si el recuento es mayor o igual a 1, significa que el libro ya está reservado
+
         return num[0][0] >= 1
         
 
     def jadaMailegatuZuen(self, eraId, libId):
-        # Verificar si el usuario ya ha tenido reservado el libro
         zenbakia = db.select("SELECT count(*) FROM Mailegatu M WHERE M.eraId= ? AND M.libId= ? And bukaeraData is not Null", (eraId, libId))
         
         
@@ -98,17 +93,22 @@ class ErreserbatutakoLiburuakController:
          
          
 
-    def get_liburu_erreserbatuak(self):
-    	self.libros_reservados = []  
-    
-    	lista = db.select("SELECT * FROM ErreserbenHistoriala")
-    	for row in lista:
-            user_id, book_id = row
-            libro = self.get_book_id(book_id)    
-            if libro:
-                self.libros_reservados.append(libro)
-
-    	return self.libros_reservados
+    def get_liburu_erreserbatuak(self, user):
+    	reserved_books = db.select("""
+    	    SELECT T.* 
+    	    FROM Book T, Mailegatu T2
+    	    WHERE T2.libId = T.id AND T2.eraId = ?
+    	""", (user.id,))
+    	
+    	books = [
+    	    Book(b[0],b[1],b[2],b[3],b[4])
+    	    for b in reserved_books
+    	]
+    	
+    	for book in books:
+    	    print(book.title)
+    	    
+    	return books
 
 
 
