@@ -405,13 +405,21 @@ def liburuaErreserbatu():
 @app.route('/infoLiburuErreserbatuta/<int:bookId>') 
 def info_liburu_erreserbatuta(bookId):
     book_info = erreserbatuak.info_liburu_erreserbatuta(bookId)
-    return render_template('info_liburu_erreserbatuta.html', book_info=book_info, eraId=1, libId=1)
+    if 'user' in dir(request) and request.user and request.user.token:
+        eraId = request.user.id
+    else:
+    	eraId = -1
+    return render_template('info_liburu_erreserbatuta.html', book_info=book_info, eraId=eraId, libId=book_info.id)
 
         
 @app.route('/infoLiburuCatalogo/<int:bookId>') 
 def info_liburu_catalogo(bookId):
     book_info = library.info_liburu_catalogo(bookId)
-    return render_template('info_liburu_catalogo.html', book_info=book_info, eraId=1, libId=2)
+    if 'user' in dir(request) and request.user and request.user.token:
+        eraId = request.user.id
+    else:
+    	eraId = -1
+    return render_template('info_liburu_catalogo.html', book_info=book_info, eraId=eraId, libId=book_info.id)
    
     
     
