@@ -275,6 +275,7 @@ def LagunenGomendioak():
                 name=name, email=email, max=max, min=min)
 
 
+#########################################################################################################################################################################################################################################################################
 
 @app.route('/create_topic', methods=['GET', 'POST'])
 def create_topic():
@@ -309,17 +310,12 @@ def create_reply():
 
 @app.route('/get_forum_posts_for_topic/<int:topic_id>', methods=['GET'])
 def get_forum_posts_for_topic(topic_id):
-    # Instancia del controlador del foro
     forum_controller = ForumController()
-    # Obtiene los mensajes relacionados con el tema específico
     posts = forum_controller.get_forum_posts_for_topic(topic_id)
     if posts is not None:
-        # Renderiza la plantilla con los mensajes del tema
         return redirect(url_for('foroa'))
     else:
-        # Manejo de errores: imprime un mensaje en la consola
         print('Error al obtener mensajes del tema')
-        # Puedes redirigir a alguna otra página si lo deseas
         return redirect(url_for('foroa'))
 
 
