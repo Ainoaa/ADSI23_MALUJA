@@ -98,3 +98,44 @@ class User:
 
 	def getIzena(self):
 		return self.name
+
+	def getJasotakoEskaerak(self):
+		jaso = db.select("SELECT us.* FROM Eskaerak es, User us WHERE es.eskJaso = ? AND us.id = es.eskBidali", self.id)
+		jasoZerrenda = [
+			User(b[0],b[1],b[2],b[4])
+			for b in jaso
+		]
+		return jasoZerrenda
+
+	def getBidalitakoEskaerak(self):
+		bidali = db.select("SELECT us.* FROM Eskaerak es, User us WHERE es.eskBidali = ? AND us.id = es.eskJaso", self.id)
+		bidaliZerrenda = [
+			User(b[0], b[1], b[2], b[4])
+			for b in bidali
+		]
+		return bidaliZerrenda
+
+	def eskaeraEzabatu(self, email):
+		# Bidalitako eskaera ezabatu
+		db.delete("DELETE FROM Eskaerak es, User us WHERE es.eskBidali = ? AND us.email = ? AND us.id = es.eskJaso", self.id, email)
+
+	def eskaeraOnartu(self, email):
+		# Jasotako eskaera onartu
+		idBestea = db.select("SELECT id FROM User WHERE email = ? ", email)
+		db.delete("DELETE FROM Eskaerak WHERE eskBidali = ? AND eskJaso = ?", idBestea, self.id,)
+		db.insert("INSERT INTO Lagunak l VALUES ?, ? ", (self.id, idBestea))
+
+	def eskaeraEzeztatu(self, email):
+		# Jasotako eskaera ezeztatu
+		idBestea = db.select("SELECT id FROM User WHERE email = ? ", email)
+		db.delete("DELETE FROM Eskaerak WHERE eskBidali = ? AND eskJaso = ?", idBestea, self.id)
+
+	def lagunaEzabatu(self, email):
+		# Lagun bat ezabatu
+		idBestea = db.select("SELECT id FROM User WHERE email = ? ", email)
+		db.delete("DELETE FROM Lagunal WHERE (lagun1Id = ? AND lagun2Id =?) OR (lagun2Id = ? AND lagun1Id = ?)", self.id, idBestea, idBestea, self.id)
+
+	def gehituEskaera(self, email):
+		# Eskaera bidali
+		idBestea = db.select("SELECT id FROM User WHERE email = ? ", email)
+		db.insert("INSERT INTO Eskaerak VALUES (?, ?) ", self.id, idBestea)
