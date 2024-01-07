@@ -418,20 +418,19 @@ def info_liburu_catalogo(bookId):
 
 @app.route('/nireLagunak')
 def nireLagunak():
+        if not ('user' in dir(request) and request.user and request.user.token):
+            return redirect("/")
+        page = int(request.values.get("page", 1))
         eraId = request.values.get("eraId", "")
-
-        #lagun_zerrenda = request.user.get_lagunen_zerrenda()
         lagun_zerrenda = request.user.getLagunak()
         lagunak = []
         for User in lagun_zerrenda:
             lagunak.extend(
                 lagun
                 for lagun in lagun_zerrenda
-                #if lagun not in lagun_zerrenda
             )
         lagunak = list(set(lagunak))
-
-        return render_template('nireLagunak.html', eraId=eraId, lagunak=lagunak)
+        return render_template('nireLagunak.html', eraId=eraId, lagunak=lagunak, current_page=page, max=max, min=min)
     
     
 @app.route('/jasotakoEskaerak')
