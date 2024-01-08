@@ -62,24 +62,36 @@ cur.execute("""
 """)
 
 cur.execute("""
-    CREATE TABLE ForumTopic(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        title VARCHAR(50),
-        content TEXT,
+    CREATE TABLE ForumTopic (
+        id         INTEGER  PRIMARY KEY AUTOINCREMENT,
+        user_id    INTEGER,
+        username   TEXT,
+        title      TEXT,
+        content    TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(user_id) REFERENCES User(id)
+        FOREIGN KEY (
+            user_id
+        )
+        REFERENCES User (id) 
     )
 """)
 
 cur.execute("""
 	CREATE TABLE forum_posts (
-    	id INTEGER PRIMARY KEY AUTOINCREMENT,
-    	topic_id INTEGER,
-    	user_id INTEGER,
-    	content TEXT,
-    	FOREIGN KEY (topic_id) REFERENCES ForumTopic(id),
-    	FOREIGN KEY (user_id) REFERENCES User(id)
+        id         INTEGER  PRIMARY KEY AUTOINCREMENT,
+        topic_id   INTEGER  REFERENCES ForumTopic (id),
+        user_id    INTEGER,
+        content    TEXT,
+        username   TEXT,
+        created_at DATETIME DEFAULT (CURRENT_TIMESTAMP),
+        FOREIGN KEY (
+            topic_id
+        )
+        REFERENCES ForumTopic (id),
+        FOREIGN KEY (
+            user_id
+        )
+        REFERENCES User (id) 
     )
 """)
 
@@ -112,6 +124,15 @@ cur.execute("""
 		PRIMARY KEY (eraId, libId, hasieraData),
 		FOREIGN KEY(eraId) REFERENCES User(id),
 		FOREIGN KEY(libId) REFERENCES Book(id)
+	)
+""")
+
+cur.execute("""
+	CREATE TABLE Eskaerak(
+		eskBidali integer,
+		eskJaso integer,
+		FOREIGN KEY(eskBidali) REFERENCES User(id),
+		FOREIGN KEY(eskJaso) REFERENCES User(id)
 	)
 """)
 
