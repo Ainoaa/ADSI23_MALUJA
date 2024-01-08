@@ -358,10 +358,6 @@ def liburuGomendioak():
         )
     books_zure_lib = gomendatutako_liburuak
     total_pages_zure_lib = (len(gomendatutako_liburuak)//6) + 1
-    if "eskaera" in request.values:
-        User.gehituEskaera(request.values.get("mail"))
-    elif "eskaera1" in request.values:
-        User.gehituEskaera(request.values.get("mail1"))
     return render_template('liburuGomendioak.html', books_lagunak=books_lagunak, current_page_lagunak=page_lagunak, total_pages_lagunak=total_pages_lagunak,
                 books_zure_lib=books_zure_lib, current_page_zure_lib=page_zure_lib, total_pages_zure_lib=total_pages_zure_lib,
                 title=title, author=author, max=max, min=min)
