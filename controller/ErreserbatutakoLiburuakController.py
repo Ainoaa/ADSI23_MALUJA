@@ -11,7 +11,40 @@ class ErreserbatutakoLiburuakController:
             cls.__instance.__initialized = False
             cls.__instance.libros_reservados = []
         return cls.__instance
+        
+    def get_liburu_by_id(self, book_id):
+        emaitza = db.select("SELECT * FROM Book WHERE id = ?", (book_id,))
+        if emaitza:
+            book_id, title, author, description, cover = result[0]
+            return {
+                'id': book_id,
+                'title': title,
+                'author': author,
+                'description': description,
+                'cover': cover
+            }
+        else:
+            return None
 
+    def get_user_id(self, userId):
+    	user_id = db.select("SELECT userId FROM ErreserbenHistoriala WHERE id = ?", (userId,))[0][0]
+    	return user_id
+
+
+    def get_book_id(self, bookId):
+    	book_id = db.select("SELECT bookId FROM ErreserbenHistoriala WHERE bookId = ?", (bookId,))[0][0]
+    	return book_id
+
+    	
+
+    def info_liburu_erreserbatuta(self, bookId):
+    	book_info = db.select("SELECT * FROM Book WHERE id = ?", (bookId,))
+
+    	if book_info:
+        	return Book(book_info[0][0], book_info[0][1], book_info[0][2], book_info[0][3], book_info[0][4])
+    	else:
+        	return None
+        	
 
     def liburua_bueltatu(self, eraId, libId):
         # Verificar si el usuario ya ha tenido reservado el libro
@@ -46,7 +79,7 @@ class ErreserbatutakoLiburuakController:
 
 
     def jada_mailegatuta_dago(self, eraId, libId):
-        # Verificar si el usuario ya ha tenido reservado el libro
+        # Verificar si el usuario ya tiene reservado el libro
         num = db.select("SELECT count(*) FROM Mailegatu M WHERE M.eraId = ? AND M.libId = ? AND bukaeraData IS NULL", (eraId, libId))
         
         # Si el recuento es mayor o igual a 1, significa que el libro ya está reservado
@@ -65,40 +98,20 @@ class ErreserbatutakoLiburuakController:
          
          
 
-    def get_liburu_erreserbatuak(self, title="", author=""):
-        # Utiliza los parámetros title y author en la consulta SQL
-        kontsulta = """
-            SELECT b.*
-            FROM Mailegatu M
-            INNER JOIN Book b ON M.libId = b.id
-            WHERE M.bukaeraData IS NULL
-        """
-
-        if title:
-            kontsulta += " AND b.title LIKE ?"
-        if author:
-            kontsulta += " AND b.author LIKE ?"
-
-        # Usa los parámetros de búsqueda en la consulta
-        params = ()
-        if title:
-            params += (f"%{title}%",)
-        if author:
-            params += (f"%{author}%",)
-
-        # Ejecuta la consulta y retorna la lista de libros reservados
-        lista = db.select(kontsulta, params)
-
-        # Obtén la lista de IDs de libros reservados
-        libros_reservados_ids = [libro['id'] for libro in lista]
-
-        # Actualiza la lista de libros reservados en la instancia del controlador
-        self.libros_reservados = libros_reservados_ids
+    def get_liburu_erreserbatuak(self):
+    	self.libros_reservados = []  
     
+    	lista = db.select("SELECT * FROM ErreserbenHistoriala")
+    	for row in lista:
+            user_id, book_id = row
+            libro = self.get_book_id(book_id)    
+            if libro:
+                self.libros_reservados.append(libro)
 
-        return libros_reservados_ids, lista
+    	return self.libros_reservados
 
-           
+
+
 
     def liburua_dago(self, titulua, autorea):
         autore_id = db.select("SELECT id FROM Author WHERE name = ?", (autorea,))
@@ -109,3 +122,18 @@ class ErreserbatutakoLiburuakController:
             return len(emaitza) > 0
 
         return False
+        
+        
+        
+        
+##################### ERLAZIOAK EZABATZEKO ######################
+
+
+    def erreseinakEzabatu(self, libId):
+    	db.delete("DELETE FROM Erreseina WHERE libID = ?", (libId,))
+
+    def erreserbenHistorialaEzabatu(self, libId):
+        db.delete("DELETE FROM ErreserbenHistoriala WHERE bookId = ?", (libId,))
+
+    def mailegatuakEzabatu(self, libId):
+        db.delete("DELETE FROM Mailegatu WHERE libId = ?", (libId,))
