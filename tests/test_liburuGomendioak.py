@@ -46,7 +46,7 @@ class TestLiburuGomendioak(BaseTestClass):
 		self.assertGreater(len(cards_amigos), 0)
 	
 	def test_lagunek_irakurritako_liburuen_arabera_lagunak_izaten_baina_liburuak_irakurri_gabe(self):
-		self.login('ejemplo2@gmail.com', '123456')
+		self.login('ejemplo@gmail.com', '123456')
 		res = self.client.get('/liburuGomendioak')
 		self.assertEqual(200, res.status_code)
 		page = BeautifulSoup(res.data, features="html.parser")
