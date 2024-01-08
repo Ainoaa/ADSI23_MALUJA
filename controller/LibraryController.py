@@ -36,28 +36,6 @@ class LibraryController:
 		]
 		return books, count
 
-	def search_people(self, name="", email="", limit=4, page=0):
-		count = db.select("""
-		    SELECT count()
-		    FROM User u
-		    WHERE u.name LIKE ? 
-		        AND u.email LIKE ? 
-		""", (f"%{name}%", f"%{email}%"))[0][0]
-		
-		res = db.select("""
-				SELECT u.*
-				FROM Lagunak L, User U
-				WHERE L.lagun1Id LIKE ? 
-					AND L.Lagun2Id LIKE ? 
-				LIMIT ? OFFSET ?
-		""", (f"%{name}%", f"%{email}%", limit, limit * page))
-
-		people = [
-		    User(u[0], u[1], u[2], u[4])
-		    for u in res
-		]
-		return people, count
-
 	def get_user(self, email, password):
 		user = db.select("SELECT * from User WHERE email = ? AND password = ?", (email, hash_password(password)))
 		if len(user) > 0:
