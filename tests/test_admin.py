@@ -285,7 +285,11 @@ class TestAdmin(BaseTestClass):
         self.db.insert("INSERT INTO ForumTopic (user_id, username, title, content) VALUES (?,?,?,?)",
                        (id1, 'nombre_usuario', 'kaixo', 'polita'))
         topicid = self.db.select("SELECT id FROM ForumTopic WHERE user_id = ?", (id1,))[0][0]
-        self.db.insert("INSERT INTO forum_posts VALUES (null,?,?,'kaixo')", (topicid, id1))
+        #self.db.insert("INSERT INTO forum_posts VALUES (null,?,?,'kaixo')", (topicid, id1))
+        self.db.insert(
+            "INSERT INTO forum_posts (topic_id, user_id, content, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)",
+            (topicid, id1, 'Contenido de la respuesta'))
+
         self.db.insert("INSERT INTO ErreserbenHistoriala VALUES (?,?)", (id1, idlib))
         self.db.insert("INSERT INTO Mailegatu VALUES (?,?,'2024-01-04',NULL)", (id1, idlib))
         
