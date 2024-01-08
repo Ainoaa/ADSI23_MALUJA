@@ -20,6 +20,13 @@
       "password": "123456",
       "id": "NgbZCib",
       "admin": false
+    },
+    {
+      "nombres": "Juan Ejemplo",
+      "email": "ejemplo2@gmail.com",
+      "password": "123456",
+      "id": "4",
+      "admin": false
     }
   ]
 }

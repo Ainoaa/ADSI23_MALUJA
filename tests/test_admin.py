@@ -52,6 +52,13 @@ class TestAdmin(BaseTestClass):
 
     def test_bazegoen_liburua_gehitu(self):
         #Liburua gure katagora igotzen saiatuko gara
+        data = {
+            'titulo': 'Vuelo con turbulencias',
+            'autor': 'Mercedes Abad',
+            'cover': '-',
+            'descripcion': '¡La vida es un viaje con turbulencias! Y eso es lo que reflexiona en este libro Mercedes Abad, con un estilo divertido y lleno de anécdotas que invita al lector a disfrutar de su propio viaje con turbulencias. A lo largo de este libro, Mercedes Abad nos presenta una reflexión sobre la vida que abarca todos los aspectos: el amor, la amistad, la familia, el trabajo, el dinero, la salud, el éxito, la felicidad... Y todo ello desde una perspectiva positiva. ¡Un viaje con mucho humor!'
+        }
+        res = self.client.post('/liburuaGehitu', data=data)
         autoreId = self.db.select("SELECT id FROM Author WHERE name = 'Mercedes Abad'")[0][0]
         lib = self.db.select("SELECT * FROM Book WHERE author = ?", (autoreId,))
         self.assertTrue(len(lib)>0)
