@@ -93,9 +93,6 @@ class User:
 		]
 		return lagun_zerrenda
 
-	def getIzena(self):
-		return self.name
-
 	def getJasotakoEskaerak(self):
 		jaso = db.select("SELECT us.* FROM Eskaerak es, User us WHERE es.eskJaso = ? AND us.id = es.eskBidali", (self.id,))
 		jasoZerrenda = [
