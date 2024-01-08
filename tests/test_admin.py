@@ -281,7 +281,9 @@ class TestAdmin(BaseTestClass):
         idlib = self.db.select("SELECT id FROM Book WHERE title = 'Liburua'")[0][0]
         self.db.insert("INSERT INTO Lagunak VALUES (?,?)", (id1, id2))
         self.db.insert("INSERT INTO Erreseina VALUES (?,?,'2024-01-03','hola','iepa!')", (id1, idlib))
-        self.db.insert("INSERT INTO ForumTopic VALUES (NULL,?,'kaixo','polita',null)", (id1,))
+        #self.db.insert("INSERT INTO ForumTopic VALUES (NULL,?,'kaixo','polita',null)", (id1,))
+        self.db.insert("INSERT INTO ForumTopic (user_id, username, title, content) VALUES (?,?,?,?)",
+                       (id1, 'nombre_usuario', 'kaixo', 'polita'))
         topicid = self.db.select("SELECT id FROM ForumTopic WHERE user_id = ?", (id1,))[0][0]
         self.db.insert("INSERT INTO forum_posts VALUES (null,?,?,'kaixo')", (topicid, id1))
         self.db.insert("INSERT INTO ErreserbenHistoriala VALUES (?,?)", (id1, idlib))
