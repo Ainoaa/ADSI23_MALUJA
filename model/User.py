@@ -114,7 +114,8 @@ class User:
 
 	def eskaeraEzabatu(self, email):
 		# Bidalitako eskaera ezabatu
-		db.delete("DELETE FROM Eskaerak es, User us WHERE es.eskBidali = ? AND us.email = ? AND us.id = es.eskJaso", (self.id, email))
+		idBestea = db.select("SELECT id FROM User WHERE email = ? ", (email))
+		db.delete("DELETE FROM Eskaerak WHERE eskBidali = ? AND eskJaso = ?", (self.id, idBestea))
 
 	def eskaeraOnartu(self, email):
 		# Jasotako eskaera onartu
