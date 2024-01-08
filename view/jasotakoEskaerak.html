@@ -3,27 +3,39 @@
 {% block content %}
 <div class="container p-5 my-5 border">
 
+
+
 <h1>Jasotako lagun eskaerak</h1>
     <hr class="hr" />
-        {% for eskaera in eskaerak %}
+    <!-- Jasotako lagun eskaerak -->
+    <div class="row">
+        {% for User in lagunak %}
             <div class="col-lg-4 col-md-6 col-sm-12 my-2">
                 <div class="card d-flex flex-row" style="width: 18rem;">
+                    {% if book.cover: %}
+                        <img src="{{book.cover}}" class="rounded" style="max-width: 6rem; height: fit-content;">
+                    {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{eskaera.name}}</h5>
-                        <p class="card-text">{{eskaera.email}}</p>
-                        <form method="POST">
-                        <button type="button" class="btn btn-primary" value="onartu" id="onartu" name="onartu">Onartu</button>
-                        <button type="button" class="btn btn-primary" value="ezeztatu" id="ezeztatu" name="ezeztatu">Ezeztatu</button>
-                        <input type="hidden" value="{{eskaera.email}}" id="mail" name="mail">
-                        </form>
+                        <h5 class="card-title">{{book.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{book.author}}</h6>
+                        {% if book.description: %}
+                        <p class="card-text">{{book.description}}</p>
+                        {% endif %}
+                        {% if request.user %}
+                            <a href='/reserve/book/{{book.id}}' class="btn btn-primary mt-2">
+                                <i class="fas fa-book"></i> Reservar
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         {% endfor %}
+    </div>
 <hr class="hr" />
 <a href="/nireLagunak">
 <button type="button" class="btn btn-primary">Nire lagunak atalera itzuli</button>
 </a>
 </div>
+
 
 {% endblock %}
