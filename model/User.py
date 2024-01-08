@@ -120,7 +120,7 @@ class User:
 		# Jasotako eskaera onartu
 		idBestea = db.select("SELECT id FROM User WHERE email = ? ", email)
 		db.delete("DELETE FROM Eskaerak WHERE eskBidali = ? AND eskJaso = ?", (idBestea, self.id))
-		db.insert("INSERT INTO Lagunak l VALUES ?, ? ", (self.id, idBestea))
+		db.insert("INSERT INTO Lagunak VALUES ?, ? ", (self.id, idBestea))
 
 	def eskaeraEzeztatu(self, email):
 		# Jasotako eskaera ezeztatu
@@ -130,7 +130,7 @@ class User:
 	def lagunaEzabatu(self, email):
 		# Lagun bat ezabatu
 		idBestea = db.select("SELECT id FROM User WHERE email = ? ", email)
-		db.delete("DELETE FROM Lagunal WHERE (lagun1Id = ? AND lagun2Id =?) OR (lagun2Id = ? AND lagun1Id = ?)", (self.id, idBestea, idBestea, self.id))
+		db.delete("DELETE FROM Lagunak WHERE (lagun1Id = ? AND lagun2Id =?) OR (lagun2Id = ? AND lagun1Id = ?)", (self.id, idBestea, idBestea, self.id))
 
 	def gehituEskaera(self, email):
 		# Eskaera bidali
