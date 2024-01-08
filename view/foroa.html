@@ -9,23 +9,23 @@
         <!-- Formulario para agregar un nuevo tema (solo visible si el usuario está autenticado) -->
         {% if 'user' in request.__dict__ and request.user and request.user.token %}
             <div class="new-topic">
-                <h3>Nuevo Tema</h3>
+                <h3>Gai Berria</h3>
                 <form action="{{ url_for('create_topic') }}" method="POST">
                     <div class="form-group">
-                        <label for="title">Título del Tema:</label>
+                        <label for="title">Gaiaren izenburua:</label>
                         <input type="text" class="form-control" id="title" name="title" required>
                     </div>
                     <div class="form-group">
-                        <label for="content">Mensaje:</label>
+                        <label for="content">Mezua:</label>
                         <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Crear Tema</button>
+                    <button type="submit" class="btn btn-primary">Gai berria sortu</button>
                 </form>
             </div>
         {% else %}
             <div class="login-alert">
-                <p>Debes iniciar sesión para crear un nuevo tema en el foro.</p>
-                <a href="/login" class="btn btn-primary">Iniciar Sesión</a>
+                <p>Gai berri bat sortzeko saioa hasi egin behar duzu.</p>
+                <a href="/login" class="btn btn-primary">Saioa Hasi</a>
             </div>
         {% endif %}
 
@@ -38,7 +38,7 @@
                     <li>
                         <h4>{{ topic.title }}</h4>
                         <p>{{ topic.content }}</p>
-                        <p>Creado por: {{ topic.username }} en {{ topic.created_at }}</p>
+                        <p>Egilea: {{ topic.username }}  {{ topic.created_at }}-an</p>
 
                         <!-- Lista de respuestas -->
                         <ul>
@@ -53,14 +53,14 @@
                         <!-- Formulario para agregar una respuesta al tema -->
                         {% if 'user' in request.__dict__ and request.user and request.user.token %}
                             <div class="new-reply">
-                                <h5>Responder al tema</h5>
+                                <h5>Erantzun</h5>
                                 <form action="{{ url_for('create_reply') }}" method="POST">
                                     <input type="hidden" name="topic_id" value="{{ topic.id }}">
                                     <div class="form-group">
-                                        <label for="reply_content">Respuesta:</label>
+                                        <label for="reply_content">Erantzuna:</label>
                                         <textarea class="form-control" id="reply_content" name="reply_content" rows="3" required></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Responder</button>
+                                    <button type="submit" class="btn btn-primary">Erantzun</button>
                                 </form>
                             </div>
                         {% endif %}
@@ -69,7 +69,7 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No hay temas en el foro.</p>
+            <p>Ez dago gairik foroan.</p>
         {% endif %}
     </div>
 </div>
