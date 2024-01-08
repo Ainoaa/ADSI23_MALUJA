@@ -229,7 +229,7 @@ def erabiltzaileaEzabatu():
 
 ##############################################################################################################
 
-@app.route('/LagunenGomendioak', methods=['GET', 'POST'])
+@app.route('/LagunenGomendioak')
 def LagunenGomendioak():
     if not('user' in dir(request) and request.user and request.user.token):
         return redirect("/")
@@ -269,10 +269,10 @@ def LagunenGomendioak():
     irakurritako_liburuen_lagunak = gomendatutako_lagunak_liburuekiko
     total_pages_zure_lag_lib = (len(gomendatutako_lagunak_liburuekiko)//4) +1
 
-    if "eskaera" in request.values:
-        User.gehituEskaera(request.values.get("mail"))
-    elif "eskaera1" in request.values:
-        User.gehituEskaera(request.values.get("mail1"))
+    #if "eskaera" in request.values:
+    #    User.gehituEskaera(request.values.get("mail"))
+    #elif "eskaera1" in request.values:
+    #    User.gehituEskaera(request.values.get("mail1"))
 
     return render_template('LagunenGomendioak.html', lagunen_lagunak=lagunen_lagunak, current_page_lagunen_lagunak=page_lagunen_lagunak, total_pages_lagunen_lagunak=total_pages_lagunen_lagunak,
                 irakurritako_liburuen_lagunak=irakurritako_liburuen_lagunak, current_page_zure_lag_lib=page_zure_lag_lib, total_pages_zure_lag_lib=total_pages_zure_lag_lib,
