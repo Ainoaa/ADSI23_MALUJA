@@ -144,8 +144,8 @@ def erreseinaEditatu():
 
 @app.route('/liburuko_erreseina_katalogoa')
 def liburuko_erreseina_katalogoa():
-    eraId = request.values.get("eraId")
-    libId = request.values.get("libId")
+    eraId = request.values.get("eraId", -1)
+    libId = request.values.get("libId", -1)
     lista = erreseinak.bilatuErreseinak(libId)
     return render_template('libErreseinaKatalogo.html', lista=lista, eraId=eraId)
 
