@@ -2,24 +2,16 @@
 
 {% block content %}
 <div class="container p-5 my-5 border">
-     <div class="col-lg-4 col-md-6 col-sm-12 my-2">
-          <div class="card d-flex flex-row" style="width: 18rem;">
-               <div class="card-body">
-                    <h5 class="card-title">{{eskaera.name}}</h5>
-                    <p class="card-text">{{eskaera.email}}</p>
-                    <form method="POST">
-                         <button type="button" class="btn btn-primary" value="ezabatu" id="ezabatu" name="ezabatu" >Ezabatu</button>
-                         <input type="hidden" value="{{eskaera.email}}" id="mail" name="mail">
-                    </form>
-               </div>
-          </div>
-     </div>
 
-     <h1>Bidalitako lagun eskaerak</h1>
 
+
+<h1>Bidalitako lagun eskaerak</h1>
      <hr class="hr" />
-     <a href="/nireLagunak">
-     <button type="button" class="btn btn-primary">Nire lagunak atalera itzuli</button>
-     </a>
+<a href="/nireLagunak">
+<button type="button" class="btn btn-primary">Nire lagunak atalera itzuli</button>
+</a>
+
+
 </div>
+
 {% endblock %}
