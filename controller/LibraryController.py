@@ -121,7 +121,7 @@ class LibraryController:
 		
 		
 		
-	def info_liburu_catalogo(self, bookId):
+	def info_liburu(self, bookId):
     		book_info = db.select("SELECT * FROM Book WHERE id = ?", (bookId,))
 
     		if book_info:
@@ -161,7 +161,6 @@ class LibraryController:
 
 	def mailegatuakEzabatu(self, libId):
 	    db.delete("DELETE FROM Mailegatu WHERE libId = ?", (libId,))
-
 
 
 

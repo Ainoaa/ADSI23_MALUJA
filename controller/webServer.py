@@ -269,17 +269,12 @@ def LagunenGomendioak():
     irakurritako_liburuen_lagunak = gomendatutako_lagunak_liburuekiko
     total_pages_zure_lag_lib = (len(gomendatutako_lagunak_liburuekiko)//4) +1
 
-    #if "eskaera" in request.values:
-    #    User.gehituEskaera(request.values.get("mail"))
-    #elif "eskaera1" in request.values:
-    #    User.gehituEskaera(request.values.get("mail1"))
 
     return render_template('LagunenGomendioak.html', lagunen_lagunak=lagunen_lagunak, current_page_lagunen_lagunak=page_lagunen_lagunak, total_pages_lagunen_lagunak=total_pages_lagunen_lagunak,
                 irakurritako_liburuen_lagunak=irakurritako_liburuen_lagunak, current_page_zure_lag_lib=page_zure_lag_lib, total_pages_zure_lag_lib=total_pages_zure_lag_lib,
                 name=name, email=email, max=max, min=min)
 
 
-#########################################################################################################################################################################################################################################################################
 
 @app.route('/create_topic', methods=['GET', 'POST'])
 def create_topic():
@@ -289,10 +284,16 @@ def create_topic():
         title = request.form.get('title')
         content = request.form.get('content')
         forum_controller.create_forum_topic(user_id, username, title, content)
-        return redirect(url_for('foroa'))
+        return redirect(url_for('list_topics'))
 
     return render_template('foroa.html')
 
+
+@app.route('/list_topics')
+def list_topics():
+    # Lógica para obtener y mostrar la lista de temas del foro
+    topics = forum_controller.get_forum_topics_with_posts()
+    return render_template('foroa.html', topics=topics)
 
 @app.route('/foroa')
 def foroa():
@@ -303,23 +304,32 @@ def foroa():
 def create_reply():
     if 'user' in dir(request) and request.user and request.user.token:
         user_id = request.user.id
-        topic_id = request.form.get('topic_id')
+        topic_id = request.form.get('topic_id')  # Asegúrate de tener un campo oculto en el formulario HTML para el topic_id
         content = request.form.get('reply_content')
-        # Erantzuna sortu:
+
+        # Aquí deberías llamar a la lógica para crear una respuesta en tu modelo o controlador
         forum_controller.create_reply(user_id, topic_id, content)
+
+        # Después de crear la respuesta, redirige a la página del tema para mostrar la respuesta
         return redirect(url_for('foroa'))
-    # Identifikatuta ez badago, login orrira bidali
+
+    # Si el usuario no está autenticado, redirige a la página de inicio de sesión
     return redirect(url_for('login'))
 
 
 @app.route('/get_forum_posts_for_topic/<int:topic_id>', methods=['GET'])
 def get_forum_posts_for_topic(topic_id):
+    # Instancia del controlador del foro
     forum_controller = ForumController()
+    # Obtiene los mensajes relacionados con el tema específico
     posts = forum_controller.get_forum_posts_for_topic(topic_id)
     if posts is not None:
+        # Renderiza la plantilla con los mensajes del tema
         return redirect(url_for('foroa'))
     else:
+        # Manejo de errores: imprime un mensaje en la consola
         print('Error al obtener mensajes del tema')
+        # Puedes redirigir a alguna otra página si lo deseas
         return redirect(url_for('foroa'))
 
 
@@ -363,40 +373,25 @@ def liburuGomendioak():
                 title=title, author=author, max=max, min=min)
 
 
+
+@app.route('/libros_reservados', methods=['GET'])
+def libros_reservados():
+    libros_reservados_ids, libros_reservados = erreserbatuak.get_liburu_erreserbatuak()
+    return render_template('libros_reservados.html', libros_reservados=libros_reservados)
+
+
 @app.route('/ErreserbatutakoLiburuak')
 def historialErreserba():
-    if 'user' in dir(request) and request.user and request.user.token:
-        eraId = request.user.id
-        libros_reservados = erreserbatuak.get_liburu_erreserbatuak(request.user)
-        return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados)
-    else:
-    	return redirect(url_for('login')) 
-   
+    title = request.form.get("title", "")
+    author = request.form.get("author", "")
+    libros_reservados = erreserbatuak.get_liburu_erreserbatuak(title, author)
+    return render_template('erreserbatutakoLiburuak.html', libros_reservados=libros_reservados, title=title, author=author)
 
-
-@app.route('/liburuaBueltatu', methods=['GET', 'POST'])
-def liburuaBueltatu():
-    if request.method == 'POST':
-        liburu_id = request.values.get("bookId")
-        user_id = request.values.get("userId")
         
-        if erreserbatuak.jada_mailegatuta_dago(liburu_id, user_id):
-            eraId = erreserbatuak.get_user_id(user_id)
-            libId = erreserbatuak.get_book_id(liburu_id)
-            erreserbatuak.erreseinakEzabatu(libId)
-            erreserbatuak.erreserbenHistorialaEzabatu(libId)
-            erreserbatuak.mailegatuakEzabatu(libId)
-            liburua = erreserbatuak.liburua_bueltatu(libId, eraId)
-            return render_template('liburuaBueltatuDa.html',liburua=liburua)
-        else:
-            return render_template('liburuaEzDago.html')
-    else:
-        return render_template('liburuaBueltatu.html')
-       
- 
  
 @app.route('/liburuaErreserbatu', methods=['GET', 'POST'])
 def liburuaErreserbatu():
+
     if request.method == 'POST':
         libId = request.values.get("libId")
         eraId = request.values.get("eraId")
@@ -410,83 +405,46 @@ def liburuaErreserbatu():
         return render_template('liburuaErreserbatu.html')
 
 
-@app.route('/infoLiburuErreserbatuta/<int:bookId>') 
-def info_liburu_erreserbatuta(bookId):
-    book_info = erreserbatuak.info_liburu_erreserbatuta(bookId)
-    if 'user' in dir(request) and request.user and request.user.token:
-        eraId = request.user.id
-    else:
-    	eraId = -1
-    return render_template('info_liburu_erreserbatuta.html', book_info=book_info, eraId=eraId, libId=book_info.id)
-
         
-@app.route('/infoLiburuCatalogo/<int:bookId>') 
-def info_liburu_catalogo(bookId):
-    book_info = library.info_liburu_catalogo(bookId)
-    if 'user' in dir(request) and request.user and request.user.token:
-        eraId = request.user.id
-    else:
-    	eraId = -1
-    return render_template('info_liburu_catalogo.html', book_info=book_info, eraId=eraId, libId=book_info.id)
+@app.route('/catalogue/<int:bookId>') 
+def info_liburu(bookId):
+    book_info = library.info_liburu(bookId)
+    return render_template('info_liburu.html', book_info=book_info)
    
     
     
-# ***************************************************        Lagunak        ***************************************************
-@app.route('/nireLagunak', methods=['GET', 'POST'])
+
+@app.route('/nireLagunak')
 def nireLagunak():
-    if not ('user' in dir(request) and request.user and request.user.token):
-        return redirect("/")
+        eraId = request.values.get("eraId", "")
 
-    page = int(request.values.get("page", 1))
-    eraId = request.values.get("eraId", "")
-    lagun_zerrenda = request.user.getLagunak()
-    lagunak = []
-    for User in lagun_zerrenda:
-        lagunak.extend(
-            lagun
+        #lagun_zerrenda = request.user.get_lagunen_zerrenda()
+        lagun_zerrenda = request.user.getLagunak()
+        lagunak = []
+        for User in lagun_zerrenda:
+            lagunak.extend(
+                lagun
                 for lagun in lagun_zerrenda
-        )
-    lagunak = list(set(lagunak))
+                #if lagun not in lagun_zerrenda
+            )
+        lagunak = list(set(lagunak))
 
-    if "ezabatu" in request.values:
-        User.lagunaEzabatu(request.values.get("mail"))
         return render_template('nireLagunak.html', eraId=eraId, lagunak=lagunak)
     
     
-@app.route('/jasotakoEskaerak', methods=['GET', 'POST'])
+@app.route('/jasotakoEskaerak')
 def jasotakoEskaerak():
-    if not ('user' in dir(request) and request.user and request.user.token):
-        return redirect("/")
-
-    eskaera_zerrenda = request.user.getJasotakoEskaerak()
-    eskaerak = []
-    for User in eskaera_zerrenda:
-        eskaerak.extend(
-            eskaera
-            for eskaera in eskaerak
-        )
-    eskaerak = list(set(eskaerak))
-
-    if "onartu" in request.values:
-        User.eskaeraOnartu(request.values.get("mail"))
-    elif "ezeztatu" in request.values:
-        User.eskaeraEzeztatu(request.values.get("mail"))
-    return render_template('jasotakoEskaerak.html', eskaerak=eskaerak)
+    return render_template('jasotakoEskaerak.html')
     
     
-@app.route('/bidalitakoEskaerak', methods=['GET', 'POST'])
+@app.route('/bidalitakoEskaerak')
 def bidalitakoEskaerak():
-    if not ('user' in dir(request) and request.user and request.user.token):
-        return redirect("/")
-
-    eskaera_zerrenda = request.user.getBidalitakoEskaerak()
-    eskaerak = []
-    for User in eskaera_zerrenda:
-        eskaerak.extend(
-            eskaera
-            for eskaera in eskaerak
-        )
-    eskaerak = list(set(eskaerak))
-    if "ezabatu" in request.values:
-        User.eskaeraEzabatu(request.values.get("mail"))
-    return render_template('bidalitakoEskaerak.html', eskaerak=eskaerak)
+    return render_template('bidalitakoEskaerak.html')
+    
+    
+    
+    
+    
+    
+    
+    

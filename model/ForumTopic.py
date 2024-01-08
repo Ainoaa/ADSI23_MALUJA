@@ -3,7 +3,6 @@ from model.ForumPost import ForumPost
 
 db = Connection()
 
-
 class ForumTopic:
     def __init__(self, id, user_id, username, title, content, created_at):
         self.id = id
@@ -29,10 +28,11 @@ class ForumTopic:
     @staticmethod
     def get_all_topics():
         try:
+            # Lógica para obtener todos los temas desde la base de datos
             result = db.select("SELECT * FROM ForumTopic")
             return [ForumTopic(*row) for row in result]
         except Exception as e:
-            print(f"Error getting forum topics: {str(e)}")
+            print(f"Error al obtener temas del foro: {str(e)}")
             return []
 
     def get_posts(self):

@@ -43,14 +43,14 @@ class ErreseinaController:
 	def bilatuErreseina(self, eraId, libId, lehenData):
 		erreseina = None
 		for item in self.lista:
-			if int(item.getEraId()) == int(eraId) and int(item.getLibId()) == int(libId) and item.getData() == lehenData:
+			if item.getEraId() == int(eraId) and item.getLibId() == int(libId) and item.getData() == lehenData:
 				erreseina = item
 				return erreseina
 		return erreseina
 
 
 	def bilatuErreseinak(self, libId):
-		erreseinak = [item for item in self.lista if int(item.getLibId()) == int(libId)]
+		erreseinak = [item for item in self.lista if item.getLibId() == int(libId)]
 		return erreseinak
 		
 	def inprimatu(self):

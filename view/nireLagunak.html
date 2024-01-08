@@ -2,6 +2,17 @@
 
 {% block content %}
 <div class="container p-5 my-5 border">
+
+    <form class="form-inline">
+      <div class="input-group mb-2 mr-sm-2">
+        <label for="title" class="col-sm-2 col-form-label">Lagunaren izena</label>
+        <input type="text" class="form-control mb-2" id="title" name="title" placeholder=" " {% if title != "": %}value="{{title}}"{% endif %}>
+      </div>
+      <button type="submit" class="btn btn-primary">
+          <i class="fa fa-search"></i>
+          Bilatu
+      </button>
+    </form>
     <h1>Nire lagunak</h1>
     <hr class="hr" />
 
@@ -11,16 +22,12 @@
                     <div class="card-body">
                         <h5 class="card-title">{{lagun.name}}</h5>
                         <p class="card-text">{{lagun.email}}</p>
-                        <form method="POST">
-                        <button type="button" class="btn btn-primary" value="ezabatu" id="ezabatu" name="ezabatu">Ezabatu</button>
-                        <input type="hidden" value="{{lagun.email}}" id="mail" name="mail">
-                        </form>
+                        <button type="button" class="btn btn-primary">Ezabatu</button>
                     </div>
                 </div>
             </div>
+
         {% endfor %}
-    
-        <hr class="hr" />
 
     <a href="/jasotakoEskaerak">
     <button type="button" class="btn btn-primary">Jasotako lagun eskaerak ikusi</button>

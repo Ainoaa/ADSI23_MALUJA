@@ -18,26 +18,20 @@
       </button>
     </form>
 
+
     <br>
     <p style="font-size: 28px;">Zuk erreserbatutako liburu zerrenda</p>
 
-    {% if libros_reservados %}
+    {% if libros %}
         <div class="row">
-            {% for libro_reservado in libros_reservados %}
+            {% for libro in libros %}
                 <div class="col-lg-4 col-md-6 col-sm-12 my-2">
                     <div class="card d-flex flex-row" style="width: 18rem;">
-                        {% if libro_reservado.cover: %}
-                            <img src="{{libro_reservado.cover}}" class="rounded" style="max-width: 6rem; height: fit-content;">
-                        {% else %}
-                            <img src="{{url_for('static', filename='none.jpg')}}" class="rounded" style="max-width: 6rem; height: fit-content; background-color: white;">
-                        {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="{{ url_for('info_liburu_erreserbatuta', bookId=libro_reservado.id) }}">{{ libro_reservado.title }}</a>
-                            </h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{libro_reservado.author}}</h6>
-                            {% if libro_reservado.description %}
-                                <p class="card-text" style="height: 8rem; overflow: auto;">{{libro_reservado.description}}</p>
+                            <h5 class="card-title">{{libro.title}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{libro.author}}</h6>
+                            {% if libro.description %}
+                                <p class="card-text">{{libro.description}}</p>
                             {% endif %}
                         </div>
                     </div>
